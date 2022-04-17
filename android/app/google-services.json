@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "81617547118",
+    "project_id": "rais-accounting",
+    "storage_bucket": "rais-accounting.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:81617547118:android:bb2457858e9c8d7b0d5b7f",
+        "android_client_info": {
+          "package_name": "com.vmendesneto.rias_accounting"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "81617547118-h04r7p21dfj50im0bt25bdf04l255rg4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD8deXDGZ0Gzsn7bG75fmmfMWHSMXrO7e8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "81617547118-h04r7p21dfj50im0bt25bdf04l255rg4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
