@@ -1,6 +1,8 @@
 import 'dart:convert' as convert;
 import 'package:http/http.dart' as http;
-import 'package:rias_accounting/core/models/dados_balanco.dart';
+
+
+import '../models/dados_balanco.dart';
 
 const String URL =
     "https://script.google.com/macros/s/AKfycbyMqPR3cpCzGCuv0kLX0KBEk2O9a1ulbK7wyqrf5jW8uJjduDI/exec";
