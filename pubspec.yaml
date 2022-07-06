@@ -37,6 +37,7 @@ dependencies:
   http: ^0.13.4
   cloud_firestore: ^3.1.12
   firebase_core: ^1.14.1
+  syncfusion_flutter_datepicker: ^20.2.36
 
 dev_dependencies:
   flutter_test:
