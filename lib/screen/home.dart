@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rias_accounting/report/report_screen/reportAccountScreen.dart';
-import 'package:rias_accounting/report/report_screen/reportFinancialScreen.dart';
-import 'package:rias_accounting/wigted_calender.dart';
-import '../old/view/faturamentos/faturamento.dart';
+import '../report/report_screen/reportScreen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -36,7 +33,7 @@ class _HomePageState extends State<HomePage> {
             ),
             ListTile(
               selected: 1 == _selectedIndex,
-              title: const Text('Relatórios Financeiros'),
+              title: const Text('Relatórios'),
               leading: const Icon(Icons.arrow_forward),
               onTap: () {
                 _onSelectItem(1);
@@ -45,17 +42,17 @@ class _HomePageState extends State<HomePage> {
                 //     builder: (context) => const ReportScreen()),);
               },
             ),
-            ListTile(
-              selected: 2 == _selectedIndex,
-              title: const Text('Relatórios Contabéis'),
-              onTap: () {
-                _onSelectItem(2);
-
-                // Update the state of the app
-                // ...
-                // Then close the drawer
-              },
-            ),
+            // ListTile(
+            //   selected: 2 == _selectedIndex,
+            //   title: const Text('Relatórios Contabéis'),
+            //   onTap: () {
+            //     _onSelectItem(2);
+            //
+            //     // Update the state of the app
+            //     // ...
+            //     // Then close the drawer
+            //   },
+            // ),
           ],
         ),
       ),
@@ -68,9 +65,8 @@ class _HomePageState extends State<HomePage> {
       case 0:
         return Container();
       case 1:
-        return const ReportFinancialScreen();
-      case 2:
-        return const ReportAccountScreen();
+        return const ReportScreen();
+
     }
   }
 
