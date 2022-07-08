@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:rias_accounting/report/receive/domain/models/receive_model.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class MyCalender extends StatefulWidget {
   final String task;
+  Future<List<Receive>>? receives;
 
-  const MyCalender({Key? key, required this.task}) : super(key: key);
+   MyCalender({Key? key, required this.task, this.receives}) : super(key: key);
 
   @override
   MyCalenderState createState() => MyCalenderState();
@@ -29,36 +31,61 @@ class MyCalenderState extends State<MyCalender> {
 
   @override
   Widget build(BuildContext context) {
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+
     return Scaffold(
-        body: Column(children: [
-      const SizedBox(height: 30),
-      Text('Selected range: $_range'),
-      const SizedBox(height: 10),
-      Text(widget.task),
-      const SizedBox(height: 15),
-      const Text("Filtrar Periodo :"),
-      const SizedBox(height: 15),
-      Container(
-          color: Colors.amberAccent,
-          height: 200,
-          width: double.infinity,
-          child: Stack(
-            children: <Widget>[
-              SfDateRangePicker(
-                onSelectionChanged: _onSelectionChanged,
-                selectionMode: DateRangePickerSelectionMode.range,
-                initialSelectedRange: PickerDateRange(
-                    DateTime.now().subtract(const Duration(days: 4)),
-                    DateTime.now().add(const Duration(days: 0))),
-              ),
-            ],
+        appBar: AppBar(
+          title: Center(
+              child: Text(
+            widget.task,
+            style: TextStyle(fontSize: _width * 0.1),
           )),
-      ElevatedButton(
-        onPressed: () {
-          //ALGUEM VAI RECEBER O _RANGE
-        },
-        child: const Text('Selecionar'),
-      ),
-    ]));
+        ),
+        body: Column(children: [
+          SizedBox(height: _height * 0.009),
+          Text('Selected range: $_range'),
+          SizedBox(height: _height * 0.005),
+          Text("Filtrar : ", style: TextStyle(fontSize: _width * 0.1)),
+          SizedBox(height: _height * 0.005),
+          Container(
+              color: const Color(0xffDCDCDC),
+              height: _height * 0.25,
+              width: double.infinity,
+              child: Stack(
+                children: <Widget>[
+                  SfDateRangePicker(
+                     todayHighlightColor: Colors.green,
+                    onSelectionChanged: _onSelectionChanged,
+                    selectionMode: DateRangePickerSelectionMode.range,
+                    initialSelectedRange: PickerDateRange(
+                        DateTime.now().subtract(const Duration(days: 4)),
+                        DateTime.now().add(const Duration(days: 0))),
+                  ),
+                ],
+              )),
+          Container(
+            color: Colors.red,
+            child: FutureBuilder<List<Receive>>(
+                future: widget.receives,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return ListView.builder(
+                      scrollDirection: Axis.horizontal,
+                        itemCount: snapshot.data!.length,
+                        itemBuilder: (context, index) {
+                          return Text(snapshot.data![index].empresa.toString());
+                        });
+                  }
+                  return const CircularProgressIndicator();
+                }),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              //ALGUEM VAI RECEBER O _RANGE
+            },
+            child: const Text('Selecionar'),
+          ),
+        ]));
   }
 }

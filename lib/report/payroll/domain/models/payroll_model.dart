@@ -45,6 +45,6 @@ Future<List<PayRoll>> fetchPost() async {
         .map((data) => PayRoll.fromJson(data))
         .toList();
   } else {
-    throw Exception('Falha ao carregar um post');
+    throw Exception('Verifique Conexão e tente novamente');
   }
 }

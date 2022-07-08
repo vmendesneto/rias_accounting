@@ -106,6 +106,6 @@ Future<List<Sale>> fetchSale() async {
 
 
   } else {
-    throw Exception('Falha ao carregar um post');
+    throw Exception('Verifique Conexão e tente novamente');
   }
 }

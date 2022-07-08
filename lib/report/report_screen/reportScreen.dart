@@ -40,9 +40,9 @@ class _ReportScreenState extends State<ReportScreen> {
                     alignment: Alignment.center,
                     height: _height * 0.1,
                     width: _width * 0.78,
-                    child: const Text(
+                    child: Text(
                       "Relatórios Financeiros",
-                      style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w700),
+                      style: TextStyle(color: Colors.white, fontSize: _width * 0.08, fontWeight: FontWeight.w700),
                       textAlign: TextAlign.center,
                     ),
                     color: const Color(0xff000080))),
@@ -71,9 +71,9 @@ class _ReportScreenState extends State<ReportScreen> {
                     alignment: Alignment.center,
                     height: _height * 0.1,
                     width: _width * 0.78,
-                    child: const Text(
-                      "Relatórios Contabeis",
-                      style: TextStyle(color: Colors.white, fontSize: 30, fontWeight: FontWeight.w700),
+                    child: Text(
+                      "Relatórios Contábeis",
+                      style: TextStyle(color: Colors.white, fontSize: _width * 0.08, fontWeight: FontWeight.w700),
                       textAlign: TextAlign.center,
                     ),
                     color: const Color(0xff8B008B))),
@@ -91,18 +91,20 @@ Widget test(BuildContext context, String a, String b, String c, int color) {
   final _width = MediaQuery.of(context).size.width;
   final _height = MediaQuery.of(context).size.height;
 
+  String _task = '';
+
   return Column(children: [
     SizedBox(height: _height * 0.02),
     GestureDetector(
       onTap: () {
-        String _task = a;
+        _task = a;
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => MyCalender(task: _task)));
       },
       child: Container(
         alignment: Alignment.center,
         child: Text(
-          a,style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+          a,style:  TextStyle(color: Colors.white, fontSize: _width * 0.06, fontWeight: FontWeight.w400),
           textAlign: TextAlign.center,
         ),
         color: Color(color),
@@ -113,7 +115,7 @@ Widget test(BuildContext context, String a, String b, String c, int color) {
     SizedBox(height: _height * 0.005),
     GestureDetector(
         onTap: () {
-          String _task = b;
+           _task = b;
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => MyCalender(task: _task)));
         },
@@ -123,20 +125,20 @@ Widget test(BuildContext context, String a, String b, String c, int color) {
             height: _height * 0.06,
             width: _width * 0.78,
             child: Text(
-              b,style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+              b,style: TextStyle(color: Colors.white, fontSize: _width * 0.06, fontWeight: FontWeight.w400),
               textAlign: TextAlign.center,
             ))),
     SizedBox(height: _height * 0.005),
     GestureDetector(
         onTap: () {
-          String _task = c;
+          _task = c;
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => MyCalender(task: _task)));
         },
         child: Container(
           alignment: Alignment.center,
           child: Text(
-            c,style: const TextStyle(color: Colors.white, fontSize: 20, fontWeight: FontWeight.w400),
+            c,style: TextStyle(color: Colors.white, fontSize: _width * 0.06, fontWeight: FontWeight.w400),
             textAlign: TextAlign.center,
           ),
           color: Color(color),

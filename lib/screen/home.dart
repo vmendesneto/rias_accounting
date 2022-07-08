@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../report/receive/domain/models/receive_model.dart';
 import '../report/report_screen/reportScreen.dart';
 
 class HomePage extends StatefulWidget {
@@ -13,9 +14,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+
+    final _width = MediaQuery.of(context).size.width;
+
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text("Rias-Accounting")),
+        title: Center(child: Text("Rias-Accounting", style: TextStyle(fontSize: _width * 0.07))),
       ),
       drawer: Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
@@ -35,8 +39,9 @@ class _HomePageState extends State<HomePage> {
               selected: 1 == _selectedIndex,
               title: const Text('Relatórios'),
               leading: const Icon(Icons.arrow_forward),
-              onTap: () {
+              onTap: () async {
                 _onSelectItem(1);
+                await fetchReceive();
                 // Navigator.push(
                 //   context, MaterialPageRoute(
                 //     builder: (context) => const ReportScreen()),);

@@ -77,14 +77,16 @@ class Receive {
 
 Future<List<Receive>> fetchReceive() async {
   final List<Receive> receives;
+
   final response = await http.get(Uri.parse(
       'https://script.google.com/macros/s/AKfycbyZdYaiIckDdf-YgpDDKgAj0v9LHiyfmzeoyVXA3Cfd_9uvW2sq/exec'));
   if (response.statusCode == 200) {
     //transformei em uma lista de Maps POST
+    print(response.body);
     return receives = (json.decode(response.body) as List)
         .map((data) => Receive.fromJson(data))
         .toList();
   } else {
-    throw Exception('Falha ao carregar um post');
+    throw Exception('Verifique Conexão e tente novamente');
   }
 }

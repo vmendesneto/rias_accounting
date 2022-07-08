@@ -53,6 +53,6 @@ Future<List<Inventory>> fetchInventory() async {
         .map((data) => Inventory.fromJson(data))
         .toList();
   } else {
-    throw Exception('Falha ao carregar um post');
+    throw Exception('Verifique Conexão e tente novamente');
   }
 }

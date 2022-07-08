@@ -70,6 +70,6 @@ Future<List<Devolution>> fetchDevolution() async {
         .map((data) => Devolution.fromJson(data))
         .toList();
   } else {
-    throw Exception('Falha ao carregar um post');
+    throw Exception('Verifique Conexão e tente novamente');
   }
 }

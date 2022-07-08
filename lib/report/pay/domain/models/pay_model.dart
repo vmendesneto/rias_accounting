@@ -55,6 +55,6 @@ Future<List<Pay>> fetchPay() async {
         .toList();
 
   } else {
-    throw Exception('Falha ao carregar um post');
+    throw Exception('Verifique Conexão e tente novamente');
   }
 }
