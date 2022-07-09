@@ -5,9 +5,9 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 class MyCalender extends StatefulWidget {
   final String task;
-  Future<List<Receive>>? receives;
+ // Future<List<Receive>>? receives;
 
-   MyCalender({Key? key, required this.task, this.receives}) : super(key: key);
+  MyCalender({Key? key, required this.task,}) : super(key: key);
 
   @override
   MyCalenderState createState() => MyCalenderState();
@@ -34,6 +34,7 @@ class MyCalenderState extends State<MyCalender> {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
 
+    //widget.receives = fetchReceive();
     return Scaffold(
         appBar: AppBar(
           title: Center(
@@ -42,7 +43,7 @@ class MyCalenderState extends State<MyCalender> {
             style: TextStyle(fontSize: _width * 0.1),
           )),
         ),
-        body: Column(children: [
+        body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           SizedBox(height: _height * 0.009),
           Text('Selected range: $_range'),
           SizedBox(height: _height * 0.005),
@@ -55,7 +56,7 @@ class MyCalenderState extends State<MyCalender> {
               child: Stack(
                 children: <Widget>[
                   SfDateRangePicker(
-                     todayHighlightColor: Colors.green,
+                    todayHighlightColor: Colors.green,
                     onSelectionChanged: _onSelectionChanged,
                     selectionMode: DateRangePickerSelectionMode.range,
                     initialSelectedRange: PickerDateRange(
@@ -64,22 +65,15 @@ class MyCalenderState extends State<MyCalender> {
                   ),
                 ],
               )),
-          Container(
-            color: Colors.red,
-            child: FutureBuilder<List<Receive>>(
-                future: widget.receives,
-                builder: (context, snapshot) {
-                  if (snapshot.hasData) {
-                    return ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                        itemCount: snapshot.data!.length,
-                        itemBuilder: (context, index) {
-                          return Text(snapshot.data![index].empresa.toString());
-                        });
-                  }
-                  return const CircularProgressIndicator();
-                }),
+          const SizedBox(
+            height: 20,
           ),
+          Center(
+              child: Container(
+            //color: Colors.red,
+            height: 20.0,
+            child: listEmpresas(),
+          )),
           ElevatedButton(
             onPressed: () {
               //ALGUEM VAI RECEBER O _RANGE
@@ -88,4 +82,40 @@ class MyCalenderState extends State<MyCalender> {
           ),
         ]));
   }
+}
+
+Widget listEmpresas() {
+  List<int>? empresas = [0];
+  Future<List<Receive>>? receives = fetchReceive();
+
+  return FutureBuilder<List<Receive>>(
+      future: receives,
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          for (var i = 0; i < snapshot.data!.length;) {
+            if (empresas.contains(snapshot.data![i].empresa!)) {
+              i++;
+            } else {
+              empresas.add(snapshot.data![i].empresa!);
+              empresas.sort();
+              i++;
+            }
+          }
+          empresas.remove(0);
+          return ListView.builder(
+              scrollDirection: Axis.horizontal,
+              itemCount: empresas.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  child:
+
+
+                  Text(empresas[index].toString()),
+                  color: Colors.grey,
+                  padding: const EdgeInsets.only(left: 3.0, right: 3.0),
+                );
+              });
+        }
+        return const CircularProgressIndicator();
+      });
 }

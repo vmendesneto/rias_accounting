@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
               leading: const Icon(Icons.arrow_forward),
               onTap: () async {
                 _onSelectItem(1);
-                await fetchReceive();
+                //await fetchReceive();
                 // Navigator.push(
                 //   context, MaterialPageRoute(
                 //     builder: (context) => const ReportScreen()),);
