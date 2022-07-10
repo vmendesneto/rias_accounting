@@ -1,17 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../widget/wigted_calender.dart';
+import '../receive/domain/models/receive_model.dart';
+import '../receive/providers/receive_provider.dart';
 
-class ReportScreen extends StatefulWidget {
+class ReportScreen extends ConsumerStatefulWidget {
   const ReportScreen({Key? key}) : super(key: key);
 
   @override
-  _ReportScreenState createState() => _ReportScreenState();
+  ConsumerState createState() => ReportScreenState();
 }
 
-class _ReportScreenState extends State<ReportScreen> {
+class ReportScreenState extends ConsumerState<ReportScreen> {
   int visivel = 0;
-
+  Future<List<Receive>>? tasks;
+  @override
+  void initState() {
+    final receive = ref.read(receiveProvider.notifier);
+    tasks = receive.emp();
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
