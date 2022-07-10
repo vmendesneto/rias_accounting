@@ -5,7 +5,7 @@ import 'package:rias_accounting/report/receive/screen/receive_screen.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
 import '../report/receive/providers/receive_provider.dart';
-import '../report/report_screen/reportScreen.dart';
+
 
 class MyCalender extends ConsumerStatefulWidget {
   final String task;
@@ -86,6 +86,7 @@ class MyCalenderState extends ConsumerState<MyCalender> {
           ElevatedButton(
             onPressed: () {
               //ALGUEM VAI RECEBER O _RANGE
+              receive.filter();
               Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) =>ReceiveScreen()));
             },

@@ -279,7 +279,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         scrollDirection: Axis.vertical,
-        itemCount: state.receives!.length,
+        itemCount: state.filtered!.length,
         itemBuilder: (context, int index) {
           return Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -292,7 +292,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.all(2),
-                    child: Text(state.receives![index].nf.toString(),
+                    child: Text(state.filtered![index].nf.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -304,7 +304,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                     child: Text(
                         DateFormat("dd/MM/yyyy")
                             .format(DateTime.parse(
-                                (state.receives![index].data_nota!)))
+                                (state.filtered![index].data_nota!)))
                             .toString(),
                         //                   // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
@@ -314,7 +314,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].empresa!.toString(),
+                    child: Text(state.filtered![index].empresa!.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -323,7 +323,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].serie!.toString(),
+                    child: Text(state.filtered![index].serie!.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -332,7 +332,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].lanc.toString(),
+                    child: Text(state.filtered![index].lanc.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -341,7 +341,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].cliente!,
+                    child: Text(state.filtered![index].cliente!,
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -350,7 +350,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].valor.toString(),
+                    child: Text(state.filtered![index].valor.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -359,7 +359,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].juros.toString(),
+                    child: Text(state.filtered![index].juros.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -368,7 +368,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].desc.toString(),
+                    child: Text(state.filtered![index].desc.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -377,7 +377,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].outros.toString(),
+                    child: Text(state.filtered![index].outros.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -386,7 +386,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].total!.toString(),
+                    child: Text(state.filtered![index].total!.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -395,7 +395,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].valor_pago.toString(),
+                    child: Text(state.filtered![index].valor_pago.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -407,7 +407,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                     child: Text(
                         DateFormat("dd/MM/yyyy")
                             .format(DateTime.parse(
-                                (state.receives![index].data_vencimento!)))
+                                (state.filtered![index].data_vencimento!)))
                             .toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
@@ -420,7 +420,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                     child: Text(
                         DateFormat("dd/MM/yyyy")
                             .format(DateTime.parse(
-                                (state.receives![index].data_pagamento!)))
+                                (state.filtered![index].data_pagamento!)))
                             .toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
@@ -430,7 +430,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].cob.toString(),
+                    child: Text(state.filtered![index].cob.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -442,7 +442,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                     child: Text(
                         DateFormat("dd/MM/yyyy")
                             .format(DateTime.parse(
-                                (state.receives![index].data_baixa!)))
+                                (state.filtered![index].data_baixa!)))
                             .toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
@@ -452,7 +452,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].banco_baixa.toString(),
+                    child: Text(state.filtered![index].banco_baixa.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -461,7 +461,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].especie.toString(),
+                    child: Text(state.filtered![index].especie.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -470,7 +470,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].cnpj.toString(),
+                    child: Text(state.filtered![index].cnpj.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -479,7 +479,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                       border: Border.all(color: Colors.black, width: 1.0),
                     ),
                     padding: const EdgeInsets.only(top: 2, bottom: 2),
-                    child: Text(state.receives![index].n_bancario.toString(),
+                    child: Text(state.filtered![index].n_bancario.toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
                 Container(
@@ -491,7 +491,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                     child: Text(
                         DateFormat("dd/MM/yyyy")
                             .format(DateTime.parse(
-                                state.receives![index].data_acerto!))
+                            state.filtered![index].data_acerto!))
                             .toString(),
                         // style: state.textTheme.bodyText1,
                         textAlign: TextAlign.center)),
