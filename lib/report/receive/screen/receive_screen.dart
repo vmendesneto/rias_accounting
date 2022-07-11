@@ -18,7 +18,9 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
   Widget build(
     BuildContext context,
   ) {
-
+    final _width = MediaQuery.of(context).size.width;
+    final _height = MediaQuery.of(context).size.height;
+    
     return Scaffold(
         appBar: AppBar(
           title: const Text("Widget Table"),
@@ -34,6 +36,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          SizedBox(height: _height * 0.009),
                           head(),
                           listData(),
                         ])))));

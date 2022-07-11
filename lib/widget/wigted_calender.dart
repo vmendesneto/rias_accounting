@@ -47,7 +47,7 @@ class MyCalenderState extends ConsumerState<MyCalender> {
         ),
         body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           SizedBox(height: _height * 0.009),
-          Text('Selected range: ${stateReceive.initialDate.toString()} - ${stateReceive.endDate.toString()}'),
+         // Text('Selected range: ${stateReceive.initialDate.toString()} - ${stateReceive.endDate.toString()}'),
           SizedBox(height: _height * 0.005),
           Text("Filtrar : ", style: TextStyle(fontSize: _width * 0.1)),
           SizedBox(height: _height * 0.005),
