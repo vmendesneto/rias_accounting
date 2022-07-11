@@ -273,7 +273,7 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
   }
 
   Widget listData() {
-    final state = ref.watch(receiveProvider);
+    final state = ref.read(receiveProvider);
 
     return ListView.builder(
         shrinkWrap: true,

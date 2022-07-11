@@ -22,19 +22,11 @@ class MyCalender extends ConsumerStatefulWidget {
 }
 
 class MyCalenderState extends ConsumerState<MyCalender> {
-  String _range = '${DateFormat('dd/MM/yyyy').format(
-    DateTime.now().subtract(const Duration(days: 4)),
-  )} -'
-      ' ${DateFormat('dd/MM/yyyy').format(DateTime.now().add(const Duration(days: 0)))}';
 
-  void _onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
-    setState(() {
-      if (args.value is PickerDateRange) {
-        _range = '${DateFormat('dd/MM/yyyy').format(args.value.startDate)} -'
-            ' ${DateFormat('dd/MM/yyyy').format(args.value.endDate ?? args.value.startDate)}';
-      }
-    });
-  }
+  // var now = DateFormat('dd/MM/yyyy').format(
+  //     DateTime.now().subtract(const Duration(days: 4)));
+  // var end = DateFormat('dd/MM/yyyy').format(
+  //     DateTime.now().add(const Duration(days: 0)));
 
 
 
@@ -55,7 +47,7 @@ class MyCalenderState extends ConsumerState<MyCalender> {
         ),
         body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           SizedBox(height: _height * 0.009),
-          Text('Selected range: $_range'),
+          Text('Selected range: ${stateReceive.initialDate.toString()} - ${stateReceive.endDate.toString()}'),
           SizedBox(height: _height * 0.005),
           Text("Filtrar : ", style: TextStyle(fontSize: _width * 0.1)),
           SizedBox(height: _height * 0.005),
@@ -67,7 +59,7 @@ class MyCalenderState extends ConsumerState<MyCalender> {
                 children: <Widget>[
                   SfDateRangePicker(
                     todayHighlightColor: Colors.green,
-                    onSelectionChanged: _onSelectionChanged,
+                    onSelectionChanged: receive.onSelectionChanged,
                     selectionMode: DateRangePickerSelectionMode.range,
                     initialSelectedRange: PickerDateRange(
                         DateTime.now().subtract(const Duration(days: 4)),

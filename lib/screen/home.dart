@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../report/receive/domain/models/receive_model.dart';
+import '../report/receive/providers/receive_provider.dart';
 import '../report/report_screen/reportScreen.dart';
 
-class HomePage extends StatefulWidget {
+class HomePage extends ConsumerStatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends ConsumerState<HomePage> {
   int _selectedIndex = 0;
 
   @override
   Widget build(BuildContext context) {
 
+    final receive = ref.read(receiveProvider.notifier);
     final _width = MediaQuery.of(context).size.width;
 
     return Scaffold(
@@ -41,6 +44,7 @@ class _HomePageState extends State<HomePage> {
               leading: const Icon(Icons.arrow_forward),
               onTap: () async {
                 _onSelectItem(1);
+                receive.dateInitial();
                 //await fetchReceive();
                 // Navigator.push(
                 //   context, MaterialPageRoute(
