@@ -65,6 +65,7 @@ Future<List<Devolution>> fetchDevolution() async {
   final response = await http.get(Uri.parse(
       'https://script.google.com/macros/s/AKfycbyJyBDRayDgUuVHXpqvoV9o68B9QxxcMYM-oZZJMj-gm_HvohY/exec'));
   if (response.statusCode == 200) {
+    print(response.body);
     //transformei em uma lista de Maps POST
     return devolutions = (json.decode(response.body) as List)
         .map((data) => Devolution.fromJson(data))

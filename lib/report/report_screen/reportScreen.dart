@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../widget/wigted_calender.dart';
-import '../receive/domain/models/receive_model.dart';
-import '../receive/providers/receive_provider.dart';
 
 class ReportScreen extends ConsumerStatefulWidget {
   const ReportScreen({Key? key}) : super(key: key);
@@ -14,13 +12,7 @@ class ReportScreen extends ConsumerStatefulWidget {
 
 class ReportScreenState extends ConsumerState<ReportScreen> {
   int visivel = 0;
-  Future<List<Receive>>? tasks;
-  @override
-  void initState() {
-    final receive = ref.read(receiveProvider.notifier);
-    tasks = receive.emp();
-    super.initState();
-  }
+
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
@@ -43,7 +35,6 @@ class ReportScreenState extends ConsumerState<ReportScreen> {
                   setState(() {
                     visivel != 1 ? visivel = 1 : visivel = 0;
                   });
-                  print(visivel);
                 },
                 child: Container(
                     alignment: Alignment.center,
@@ -51,12 +42,16 @@ class ReportScreenState extends ConsumerState<ReportScreen> {
                     width: _width * 0.78,
                     child: Text(
                       "Relatórios Financeiros",
-                      style: TextStyle(color: Colors.white, fontSize: _width * 0.08, fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: _width * 0.08,
+                          fontWeight: FontWeight.w700),
                       textAlign: TextAlign.center,
                     ),
                     color: const Color(0xff000080))),
             visivel == 1
-                ? test(context, "Recebimentos", "Pagamentos", 'Devolução', 0xff6495ED)
+                ? expandWidget(context, "Recebimentos", "Pagamentos",
+                    'Devolução', 0xff6495ED)
                 : Container()
           ],
         ),
@@ -82,12 +77,15 @@ class ReportScreenState extends ConsumerState<ReportScreen> {
                     width: _width * 0.78,
                     child: Text(
                       "Relatórios Contábeis",
-                      style: TextStyle(color: Colors.white, fontSize: _width * 0.08, fontWeight: FontWeight.w700),
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: _width * 0.08,
+                          fontWeight: FontWeight.w700),
                       textAlign: TextAlign.center,
                     ),
                     color: const Color(0xff8B008B))),
             visivel == 2
-                ? test(context, "Fluxo", "D.R.E", 'C.M.V', 0xffEE82EE)
+                ? expandWidget(context, "Fluxo", "D.R.E", 'C.M.V', 0xffEE82EE)
                 : Container()
           ],
         ),
@@ -96,7 +94,8 @@ class ReportScreenState extends ConsumerState<ReportScreen> {
   }
 }
 
-Widget test(BuildContext context, String a, String b, String c, int color) {
+Widget expandWidget(
+    BuildContext context, String a, String b, String c, int color) {
   final _width = MediaQuery.of(context).size.width;
   final _height = MediaQuery.of(context).size.height;
 
@@ -107,13 +106,20 @@ Widget test(BuildContext context, String a, String b, String c, int color) {
     GestureDetector(
       onTap: () {
         _task = a;
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => MyCalender(task: _task)));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => MyCalender(
+                  title: _task,
+                  select: 0,
+                )));
       },
       child: Container(
         alignment: Alignment.center,
         child: Text(
-          a,style:  TextStyle(color: Colors.white, fontSize: _width * 0.06, fontWeight: FontWeight.w400),
+          a,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: _width * 0.06,
+              fontWeight: FontWeight.w400),
           textAlign: TextAlign.center,
         ),
         color: Color(color),
@@ -124,9 +130,9 @@ Widget test(BuildContext context, String a, String b, String c, int color) {
     SizedBox(height: _height * 0.005),
     GestureDetector(
         onTap: () {
-           _task = b;
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => MyCalender(task: _task)));
+          _task = b;
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MyCalender(title: _task, select: 1)));
         },
         child: Container(
             alignment: Alignment.center,
@@ -134,20 +140,28 @@ Widget test(BuildContext context, String a, String b, String c, int color) {
             height: _height * 0.06,
             width: _width * 0.78,
             child: Text(
-              b,style: TextStyle(color: Colors.white, fontSize: _width * 0.06, fontWeight: FontWeight.w400),
+              b,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: _width * 0.06,
+                  fontWeight: FontWeight.w400),
               textAlign: TextAlign.center,
             ))),
     SizedBox(height: _height * 0.005),
     GestureDetector(
         onTap: () {
           _task = c;
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => MyCalender(task: _task)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MyCalender(title: _task, select: 2)));
         },
         child: Container(
           alignment: Alignment.center,
           child: Text(
-            c,style: TextStyle(color: Colors.white, fontSize: _width * 0.06, fontWeight: FontWeight.w400),
+            c,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: _width * 0.06,
+                fontWeight: FontWeight.w400),
             textAlign: TextAlign.center,
           ),
           color: Color(color),

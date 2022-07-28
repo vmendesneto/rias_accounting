@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rias_accounting/report/%20devolution/domain/models/devolution_model.dart';
+import 'package:rias_accounting/report/%20devolution/providers/devolution_provider.dart';
+import '../report/pay/domain/models/pay_model.dart';
+import '../report/pay/providers/pay_provider.dart';
 import '../report/receive/domain/models/receive_model.dart';
 import '../report/receive/providers/receive_provider.dart';
 import '../report/report_screen/reportScreen.dart';
@@ -13,16 +17,22 @@ class HomePage extends ConsumerStatefulWidget {
 
 class _HomePageState extends ConsumerState<HomePage> {
   int _selectedIndex = 0;
+  Future<List<Receive>>? receives;
+  Future<List<Pay>>? pays;
+  Future<List<Devolution>>? devs;
 
   @override
   Widget build(BuildContext context) {
-
     final receive = ref.read(receiveProvider.notifier);
+    final pay = ref.read(payProvider.notifier);
+    final dev = ref.read(devolutionProvider.notifier);
     final _width = MediaQuery.of(context).size.width;
 
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("Rias-Accounting", style: TextStyle(fontSize: _width * 0.07))),
+        title: Center(
+            child: Text("Rias-Accounting",
+                style: TextStyle(fontSize: _width * 0.07))),
       ),
       drawer: Drawer(
         // Add a ListView to the drawer. This ensures the user can scroll
@@ -45,10 +55,11 @@ class _HomePageState extends ConsumerState<HomePage> {
               onTap: () async {
                 _onSelectItem(1);
                 receive.dateInitial();
-                //await fetchReceive();
-                // Navigator.push(
-                //   context, MaterialPageRoute(
-                //     builder: (context) => const ReportScreen()),);
+                pay.dateInitial();
+                dev.dateInitial();
+                devs = dev.emp();
+                receives = receive.emp();
+                pays = pay.emp();
               },
             ),
             // ListTile(
@@ -75,7 +86,6 @@ class _HomePageState extends ConsumerState<HomePage> {
         return Container();
       case 1:
         return const ReportScreen();
-
     }
   }
 

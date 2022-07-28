@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import '../models/receive_model.dart';
-import 'package:intl/intl.dart';
+
 
 
 class ViewState {
@@ -27,17 +27,17 @@ class ReceiveController extends StateNotifier<ViewState> {
 
   Future<List<Receive>> emp() async {
     List<int> lista = [];
-    List<Receive> test = await fetchReceive();
-    for (var i = 0; i < test.length;) {
+    List<Receive> receives = await fetchReceive();
+    for (var i = 0; i < receives.length;) {
       if (lista.isEmpty) {
-        lista.add(test[i].empresa!);
+        lista.add(receives[i].empresa!);
         lista.sort();
         i++;
       } else {
-        if (lista.contains(test[i].empresa!)) {
+        if (lista.contains(receives[i].empresa!)) {
           i++;
         } else {
-          lista.add(test[i].empresa!);
+          lista.add(receives[i].empresa!);
           lista.sort();
           i++;
         }
@@ -47,14 +47,14 @@ class ReceiveController extends StateNotifier<ViewState> {
     state.filtered ??=[];
     state = ViewState(
         empresas: lista,
-        receives: test,
+        receives: receives,
         isChecked: state.isChecked,
         check: state.check,
         filtered: state.filtered, initialDate: state.initialDate, endDate: state.endDate);
-    return test;
+    return receives;
   }
   List<Receive>? filter () {
-    List<Receive>? test = state.receives;
+    List<Receive>? a = state.receives;
     var dado;
     var checks = state.check;
     var check;
@@ -62,33 +62,35 @@ class ReceiveController extends StateNotifier<ViewState> {
     var dateI = dateInitial!.subtract(const Duration(days: 1));
     var dateFinal = state.endDate;
     var dateF = dateFinal!.add(const Duration(days: 1));
-    List<Receive>? testando = state.filtered;
-    testando!.clear();
+    List<Receive>? filters = state.filtered;
+    filters!.clear();
     for (var i = 0; i < checks!.length; i++) {
       check = checks[i];
-        dado = test!.where((e) =>
-            e.empresa!.toString().contains(check.toString())).toList();
+        dado = a!.where((e) =>
+             e.empresa!.toString().contains(check.toString())).toList();
                if (dado == null) {
               //fazer função pra receiverScreen ser informada que não a lançamentos
                } else {
                 for (var i = 0; i < dado.length; i++) {
+                  if(dado[i].empresa == check){
                   var dataPgto = DateTime.parse(dado[i].data_pagamento!);
                   if (dataPgto.isBefore(dateF) && dataPgto.isAfter(dateI)) {
                     print('dado[i]: ${dado[i]}');
-                    testando.add(dado[i]);
+                    filters.add(dado[i]);
                   }else{
                   }
               }
+                }
             }
     }
     //ORDENANDO POR DATA DE PG
-   testando.sort((a,b) => a.data_pagamento!.compareTo(b.data_pagamento!));
+   filters.sort((a,b) => a.data_pagamento!.compareTo(b.data_pagamento!));
       state = ViewState(
           empresas: state.empresas,
           receives: state.receives,
           check: state.check,
-          filtered: testando, initialDate: state.initialDate, endDate: state.endDate);
-      return testando;
+          filtered: filters, initialDate: state.initialDate, endDate: state.endDate);
+      return filters;
   }
   trueCheck(int emp) {
     state.check!.add(emp);

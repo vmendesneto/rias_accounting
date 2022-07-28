@@ -1,11 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rias_accounting/report/receive/providers/receive_provider.dart';
 import 'package:intl/intl.dart';
 
 class ReceiveScreen extends ConsumerStatefulWidget {
+  final String title;
+
   ReceiveScreen({
+    required this.title,
     Key? key,
   }) : super(key: key);
 
@@ -20,10 +22,10 @@ class ReceiveScreenState extends ConsumerState<ReceiveScreen> {
   ) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-    
+
     return Scaffold(
         appBar: AppBar(
-          title: const Text("Widget Table"),
+          title: Text(widget.title),
         ),
         body: SingleChildScrollView(
             scrollDirection: Axis.horizontal,

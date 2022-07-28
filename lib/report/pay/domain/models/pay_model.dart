@@ -18,10 +18,11 @@ class Pay {
   final int? codConta;
   final String? conta;
   final String? centroCusto;
+  final int? nf;
 
   Pay({this.lancamento, this.empresa, this.data_lancamento, this.vencimento,
     this.historico, this.fornecedor, this.cnpj, this.valor, this.juros, this.desc,
-    this.total, this.datapagamento, this.codConta, this.conta,this.centroCusto
+    this.total, this.datapagamento, this.codConta, this.conta,this.centroCusto, this.nf,
   });
   factory Pay.fromJson(Map<String, dynamic> json) {
     return Pay(
@@ -40,6 +41,7 @@ class Pay {
       codConta: json['cod. conta'],
       conta: json['conta'],
       centroCusto: json['centro de custos'],
+      nf: json['nf'] ?? 0,
     );
   }
 }
@@ -47,7 +49,7 @@ class Pay {
 Future<List<Pay>> fetchPay() async {
   final List<Pay?> pays;
   final response = await http.get(Uri.parse('https://script.google.com/macros/s/AKfycbyMqPR3cpCzGCuv0kLX0KBEk2O9a1ulbK7wyqrf5jW8uJjduDI/exec'));
-  print(response);
+  print(response.body);
   if (response.statusCode == 200) {
     //transformei em uma lista de Maps POST
     return pays = (json.decode(response.body) as List)
