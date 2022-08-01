@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-
+import 'package:flutter/services.dart';
 import '../provider/sale_provider.dart';
 
 class SaleScreen extends ConsumerStatefulWidget {
@@ -18,12 +18,29 @@ class SaleScreen extends ConsumerStatefulWidget {
 
 class SaleScreenState extends ConsumerState<SaleScreen> {
   @override
+  void initState(){
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
+  }
+  @override
+  dispose(){
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
+    super.dispose();
+  }
+
+  @override
   Widget build(
       BuildContext context,
       ) {
     final _width = MediaQuery.of(context).size.width;
     final _height = MediaQuery.of(context).size.height;
-
+    final sales = ref. read(saleProvider);
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -41,6 +58,7 @@ class SaleScreenState extends ConsumerState<SaleScreen> {
                         children: [
                           SizedBox(height: _height * 0.009),
                           head(),
+                          sales.filtered!.isEmpty ? const Text("Não há lançamentos.", style: TextStyle(fontSize: 20.0),) :
                           listData(),
                         ])))));
   }
