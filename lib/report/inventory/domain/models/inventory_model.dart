@@ -7,10 +7,10 @@ class Inventory {
   String? data;
   int? id;
   String? descricao;
-  double? quantidade;
-  double? custo;
-  double? margem;
-  double? venda;
+  num? quantidade;
+  num? custo;
+  num? margem;
+  num? venda;
   String? tipo;
   int? ncm;
 

@@ -23,7 +23,7 @@ class ReportScreenState extends ConsumerState<ReportScreen> {
             child:
                 Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       Container(
-        height: visivel == 1 ? (_height * 0.32) : (_height * 0.105),
+        height: visivel == 1 ? (_height * 0.45) : (_height * 0.105),
         alignment: Alignment.center,
         width: _width * 0.8,
         color: const Color(0xffDCDCDC),
@@ -50,8 +50,8 @@ class ReportScreenState extends ConsumerState<ReportScreen> {
                     ),
                     color: const Color(0xff000080))),
             visivel == 1
-                ? expandWidget(context, "Recebimentos", "Pagamentos",
-                    'Devolução', 0xff6495ED)
+                ? expandFinanc(context, "Recebimentos", "Pagamentos",
+                    'Devolução', 'Folha de Pagamento',"Vendas", 0xff6495ED)
                 : Container()
           ],
         ),
@@ -85,7 +85,7 @@ class ReportScreenState extends ConsumerState<ReportScreen> {
                     ),
                     color: const Color(0xff8B008B))),
             visivel == 2
-                ? expandWidget(context, "Fluxo", "D.R.E", 'C.M.V', 0xffEE82EE)
+                ? expandCont(context, "Fluxo", "D.R.E", 'C.M.V', 0xffEE82EE)
                 : Container()
           ],
         ),
@@ -94,8 +94,8 @@ class ReportScreenState extends ConsumerState<ReportScreen> {
   }
 }
 
-Widget expandWidget(
-    BuildContext context, String a, String b, String c, int color) {
+Widget expandFinanc(
+    BuildContext context, String a, String b, String c, String d,String e, int color) {
   final _width = MediaQuery.of(context).size.width;
   final _height = MediaQuery.of(context).size.height;
 
@@ -153,6 +153,124 @@ Widget expandWidget(
           _task = c;
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => MyCalender(title: _task, select: 2)));
+        },
+        child: Container(
+          alignment: Alignment.center,
+          child: Text(
+            c,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: _width * 0.06,
+                fontWeight: FontWeight.w400),
+            textAlign: TextAlign.center,
+          ),
+          color: Color(color),
+          height: _height * 0.06,
+          width: _width * 0.78,
+        )),
+    SizedBox(height: _height * 0.005),
+    GestureDetector(
+        onTap: () {
+          _task = d;
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MyCalender(title: _task, select: 3)));
+        },
+        child: Container(
+          alignment: Alignment.center,
+          child: Text(
+            d,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: _width * 0.06,
+                fontWeight: FontWeight.w400),
+            textAlign: TextAlign.center,
+          ),
+          color: Color(color),
+          height: _height * 0.06,
+          width: _width * 0.78,
+        )),
+    SizedBox(height: _height * 0.005),
+    GestureDetector(
+        onTap: () {
+          _task = e;
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MyCalender(title: _task, select: 5)));
+        },
+        child: Container(
+          alignment: Alignment.center,
+          child: Text(
+            e,
+            style: TextStyle(
+                color: Colors.white,
+                fontSize: _width * 0.06,
+                fontWeight: FontWeight.w400),
+            textAlign: TextAlign.center,
+          ),
+          color: Color(color),
+          height: _height * 0.06,
+          width: _width * 0.78,
+        )),
+  ]);
+}
+Widget expandCont(
+    BuildContext context, String a, String b, String c, int color) {
+  final _width = MediaQuery.of(context).size.width;
+  final _height = MediaQuery.of(context).size.height;
+
+  String _task = '';
+
+  return Column(children: [
+    SizedBox(height: _height * 0.02),
+    GestureDetector(
+      onTap: () {
+        _task = a;
+        // Navigator.of(context).push(MaterialPageRoute(
+        //     builder: (context) => MyCalender(
+        //       title: _task,
+        //       select: 0,
+        //     )));
+      },
+      child: Container(
+        alignment: Alignment.center,
+        child: Text(
+          a,
+          style: TextStyle(
+              color: Colors.white,
+              fontSize: _width * 0.06,
+              fontWeight: FontWeight.w400),
+          textAlign: TextAlign.center,
+        ),
+        color: Color(color),
+        height: _height * 0.06,
+        width: _width * 0.78,
+      ),
+    ),
+    SizedBox(height: _height * 0.005),
+    GestureDetector(
+        onTap: () {
+          _task = b;
+          // Navigator.of(context).push(MaterialPageRoute(
+          //     builder: (context) => MyCalender(title: _task, select: 1)));
+        },
+        child: Container(
+            alignment: Alignment.center,
+            color: Color(color),
+            height: _height * 0.06,
+            width: _width * 0.78,
+            child: Text(
+              b,
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: _width * 0.06,
+                  fontWeight: FontWeight.w400),
+              textAlign: TextAlign.center,
+            ))),
+    SizedBox(height: _height * 0.005),
+    GestureDetector(
+        onTap: () {
+          _task = c;
+          // Navigator.of(context).push(MaterialPageRoute(
+          //     builder: (context) => MyCalender(title: _task, select: 2)));
         },
         child: Container(
           alignment: Alignment.center,

@@ -49,7 +49,7 @@ class Pay {
 Future<List<Pay>> fetchPay() async {
   final List<Pay?> pays;
   final response = await http.get(Uri.parse('https://script.google.com/macros/s/AKfycbyMqPR3cpCzGCuv0kLX0KBEk2O9a1ulbK7wyqrf5jW8uJjduDI/exec'));
-  print(response.body);
+
   if (response.statusCode == 200) {
     //transformei em uma lista de Maps POST
     return pays = (json.decode(response.body) as List)

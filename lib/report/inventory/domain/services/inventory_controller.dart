@@ -1,29 +1,28 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rias_accounting/report/inventory/domain/models/inventory_model.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
-
-import '../models/devolution_model.dart';
 
 class ViewState {
   bool isChecked;
   List<int>? check;
-  List<Devolution>? devolutions;
+  List<Inventory>? inventorys;
   List<int>? empresas = [];
-  List<Devolution>? filtered;
+  List<Inventory>? filtered;
   DateTime? initialDate;
   DateTime? endDate;
 
   ViewState(
-      {this.devolutions,
-      this.check,
-      this.isChecked = false,
-      this.empresas,
-      this.filtered,
-      this.initialDate,
-      this.endDate});
+      {this.inventorys,
+        this.check,
+        this.isChecked = false,
+        this.empresas,
+        this.filtered,
+        this.initialDate,
+        this.endDate});
 }
 
-class DevolutionController extends StateNotifier<ViewState> {
-  DevolutionController([ViewState? state]) : super(ViewState());
+class InventoryController extends StateNotifier<ViewState> {
+  InventoryController([ViewState? state]) : super(ViewState());
 
   void dateInitial() {
     var now = DateTime.now().subtract(const Duration(days: 4));
@@ -31,19 +30,19 @@ class DevolutionController extends StateNotifier<ViewState> {
     state = ViewState(initialDate: now, endDate: end);
   }
 
-  Future<List<Devolution>> emp() async {
+  Future<List<Inventory>> emp() async {
     List<int> lista = [];
-    List<Devolution> devolutions = await fetchDevolution();
-    for (var i = 0; i < devolutions.length;) {
+    List<Inventory> inventorys = await fetchInventory();
+    for (var i = 0; i < inventorys.length;) {
       if (lista.isEmpty) {
-        lista.add(devolutions[i].empresa!);
+        lista.add(inventorys[i].empresa!);
         lista.sort();
         i++;
       } else {
-        if (lista.contains(devolutions[i].empresa!)) {
+        if (lista.contains(inventorys[i].empresa!)) {
           i++;
         } else {
-          lista.add(devolutions[i].empresa!);
+          lista.add(inventorys[i].empresa!);
           lista.sort();
           i++;
         }
@@ -53,17 +52,17 @@ class DevolutionController extends StateNotifier<ViewState> {
     state.filtered ??= [];
     state = ViewState(
         empresas: lista,
-        devolutions: devolutions,
+        inventorys: inventorys,
         isChecked: state.isChecked,
         check: state.check,
         filtered: state.filtered,
         initialDate: state.initialDate,
         endDate: state.endDate);
-    return devolutions;
+    return inventorys;
   }
 
-  List<Devolution>? filter() {
-    List<Devolution>? a = state.devolutions;
+  List<Inventory>? filter() {
+    List<Inventory>? a = state.inventorys;
     var dado;
     var checks = state.check;
     var check;
@@ -71,7 +70,7 @@ class DevolutionController extends StateNotifier<ViewState> {
     var dateI = dateInitial!.subtract(const Duration(days: 1));
     var dateFinal = state.endDate;
     var dateF = dateFinal!.add(const Duration(days: 1));
-    List<Devolution>? filters = state.filtered;
+    List<Inventory>? filters = state.filtered;
     filters!.clear();
     for (var i = 0; i < checks!.length; i++) {
       check = checks[i];
@@ -82,8 +81,8 @@ class DevolutionController extends StateNotifier<ViewState> {
       } else {
         for (var i = 0; i < dado.length; i++) {
           if (dado[i].empresa == check) {
-            var dataLanc = DateTime.parse(dado[i].dataLancamento!);
-            if (dataLanc.isBefore(dateF) && dataLanc.isAfter(dateI)) {
+            var data = DateTime.parse(dado[i].data!);
+            if (data.isBefore(dateF) && data.isAfter(dateI)) {
               print('dado[i]: ${dado[i]}');
               filters.add(dado[i]);
             } else {}
@@ -92,10 +91,10 @@ class DevolutionController extends StateNotifier<ViewState> {
       }
     }
     //ORDENANDO POR DATA DE PG
-    filters.sort((a, b) => a.dataLancamento!.compareTo(b.dataLancamento!));
+    filters.sort((a, b) => a.data!.compareTo(b.data!));
     state = ViewState(
         empresas: state.empresas,
-        devolutions: state.devolutions,
+        inventorys: state.inventorys,
         check: state.check,
         filtered: filters,
         initialDate: state.initialDate,
@@ -108,7 +107,7 @@ class DevolutionController extends StateNotifier<ViewState> {
 
     state = ViewState(
         empresas: state.empresas,
-        devolutions: state.devolutions,
+        inventorys: state.inventorys,
         check: state.check,
         endDate: state.endDate,
         filtered: state.filtered,
@@ -119,7 +118,7 @@ class DevolutionController extends StateNotifier<ViewState> {
     state.check!.remove(emp);
     state = ViewState(
         empresas: state.empresas,
-        devolutions: state.devolutions,
+        inventorys: state.inventorys,
         check: state.check,
         endDate: state.endDate,
         filtered: state.filtered,
@@ -134,7 +133,7 @@ class DevolutionController extends StateNotifier<ViewState> {
           initialDate: now,
           endDate: end,
           empresas: state.empresas,
-          devolutions: state.devolutions,
+          inventorys: state.inventorys,
           check: state.check,
           filtered: state.filtered,
           isChecked: state.isChecked);
