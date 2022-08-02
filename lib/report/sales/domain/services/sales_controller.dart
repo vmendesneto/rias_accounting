@@ -83,10 +83,12 @@ class SaleController extends StateNotifier<ViewState> {
       } else {
         for (var i = 0; i < dado.length; i++) {
           if (dado[i].empresa == check) {
-            var dataPedido = DateTime.parse(dado[i].dataPedido!);
-            if (dataPedido.isBefore(dateF) && dataPedido.isAfter(dateI)) {
+            if(dado[i].ideStatus == 'D'){
+            var dataFaturamento = DateTime.parse(dado[i].dataFaturamento!);
+            if dataFaturamento.isBefore(dateF) && dataFaturamento.isAfter(dateI)) {
               filters.add(dado[i]);
             } else {}
+            }else{}
           }
         }
       }
