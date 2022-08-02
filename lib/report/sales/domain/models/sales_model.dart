@@ -30,6 +30,7 @@ class Sale {
   String? prazo;
   String? cob;
   num? valorPes;
+  String? dataFaturamento;
 
   Sale(
       {this.empresa,
@@ -58,7 +59,8 @@ class Sale {
       this.prazoMedia,
       this.prazo,
       this.cob,
-      this.valorPes});
+      this.valorPes,
+      this.dataFaturamento,});
 
   factory Sale.fromJson(Map<String, dynamic> json) {
     return Sale(
@@ -89,6 +91,7 @@ class Sale {
       prazo: json['prazo'],
       cob: json['cob.'],
       valorPes: json['valor_pes'],
+      dataFaturamento: json['data_faturamento']
     );
   }
 }
