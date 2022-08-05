@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rias_accounting/report/%20devolution/providers/devolution_provider.dart';
-import 'package:rias_accounting/report/inventory/screen/inventory_sreen.dart';
-import 'package:rias_accounting/report/payroll/providers/payroll_provider.dart';
-import 'package:rias_accounting/report/payroll/screen/payroll_screen.dart';
-import 'package:rias_accounting/report/receive/screen/receive_screen.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 
-import '../report/ devolution/screen/devolution_screen.dart';
-import '../report/inventory/provider/inventory_provider.dart';
-import '../report/pay/providers/pay_provider.dart';
-import '../report/pay/screen/pay_screen.dart';
-import '../report/receive/providers/receive_provider.dart';
-import '../report/sales/provider/sale_provider.dart';
-import '../report/sales/screen/sale_screen.dart';
+import '../financial_report/ devolution/providers/devolution_provider.dart';
+import '../financial_report/ devolution/screen/devolution_screen.dart';
+import '../financial_report/inventory/provider/inventory_provider.dart';
+import '../financial_report/inventory/screen/inventory_sreen.dart';
+import '../financial_report/pay/providers/pay_provider.dart';
+import '../financial_report/pay/screen/pay_screen.dart';
+import '../financial_report/payroll/providers/payroll_provider.dart';
+import '../financial_report/payroll/screen/payroll_screen.dart';
+import '../financial_report/receive/providers/receive_provider.dart';
+import '../financial_report/receive/screen/receive_screen.dart';
+import '../financial_report/sales/provider/sale_provider.dart';
+import '../financial_report/sales/screen/sale_screen.dart';
+
+
 
 class MyCalender extends ConsumerStatefulWidget {
   final String title;
