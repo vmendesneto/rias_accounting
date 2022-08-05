@@ -40,6 +40,7 @@ dependencies:
   syncfusion_flutter_datepicker: ^20.2.36
   flutter_riverpod: ^1.0.4
   linked_scroll_controller: ^0.2.0
+  month_year_picker: ^0.2.0+1
 
 dev_dependencies:
   flutter_test:

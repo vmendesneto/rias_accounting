@@ -48,11 +48,7 @@ class _HomePageState extends ConsumerState<HomePage> {
                 style: TextStyle(fontSize: _width * 0.07))),
       ),
       drawer: Drawer(
-        // Add a ListView to the drawer. This ensures the user can scroll
-        // through the options in the drawer if there isn't enough vertical
-        // space to fit everything.
         child: ListView(
-          // Important: Remove any padding from the ListView.
           padding: EdgeInsets.zero,
           children: [
             const DrawerHeader(
@@ -82,7 +78,7 @@ class _HomePageState extends ConsumerState<HomePage> {
             ListTile(
               selected: 2 == _selectedIndex,
               title: const Text('Estoque'),
-              onTap: () async {
+              onTap: () {
                 inventory.dateInitial();
                 inventorys = inventory.emp();
                 _onSelectItem(2);

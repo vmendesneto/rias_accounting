@@ -60,8 +60,6 @@ class MyCalenderState extends ConsumerState<MyCalender> {
         ),
         body: Column(crossAxisAlignment: CrossAxisAlignment.center, children: [
           SizedBox(height: _height * 0.009),
-          // Text('Selected range: ${stateReceive.initialDate.toString()} - ${stateReceive.endDate.toString()}'),
-          SizedBox(height: _height * 0.005),
           Text("Filtrar : ", style: TextStyle(fontSize: _width * 0.1)),
           SizedBox(height: _height * 0.005),
           Container(
@@ -101,21 +99,6 @@ class MyCalenderState extends ConsumerState<MyCalender> {
                   saleOpt(context, ref);
                   break;
               }
-              // if (widget.select == 0) {
-              //   receiveOpt(context, ref);
-              // }
-              // if (widget.select == 1) {
-              //   payOpt(context, ref);
-              // }
-              // if (widget.select == 2) {
-              //   devOpt(context, ref);
-              // }
-              // if(widget.select == 3){
-              //   payrollOpt(context, ref);
-              // }
-              // if(widget.select == 4){
-              //   inventoryOpt(context, ref);
-              // }
             },
             child: const Text('Selecionar'),
           ),
