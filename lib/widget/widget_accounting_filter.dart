@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rias_accounting/financial_report/%20devolution/providers/devolution_provider.dart';
+import '../accounting_report/screen/fat_screen.dart';
+import '../core/global_variables.dart';
 import '../financial_report/pay/providers/pay_provider.dart';
 import '../financial_report/receive/providers/receive_provider.dart';
 import '../financial_report/sales/provider/sale_provider.dart';
@@ -14,7 +16,7 @@ class FilterAccounting extends ConsumerStatefulWidget {
 
 class FilterAccountingState extends ConsumerState<FilterAccounting> {
   var _itemSelecionado = 'Periodo';
-  int test = 0;
+  int option = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -81,8 +83,8 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
                 onChanged: (String? novoItemSelecionado) {
                   for (final entry in periodo.entries) {
                     if (entry.key.contains(novoItemSelecionado)) {
-                      test = entry.value;
-                      print(test);
+                      option = entry.value;
+                      print(option);
                     }
                   }
                   _dropDownItemSelected(novoItemSelecionado!);
@@ -117,8 +119,10 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
             height: _height * 0.05,
             width: double.infinity,
             child: ElevatedButton(
-                onPressed: () {
-                  period(receive, dev, sales);
+                onPressed: () async {
+
+                   Navigator.of(context).push(MaterialPageRoute(
+                       builder: (context) => FatScreen(title: "Faturamento")));
                 },
                 child: const Text(
                   "Exibir",
@@ -130,17 +134,22 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
     );
   }
 
-  void period(receive, dev, sales) async {
-    if (test == 1) {
-      var totalRec = await receive.filterAccount();
-      var totalDev = await dev.filterAccount();
-      var totalSales = await sales.filterAccount();
-      print(totalRec);
-      print(totalDev);
-      print(totalSales);
-    }
-  }
-
+onTouch() async {
+  final stateReceive = ref.watch(receiveProvider);
+  final receive = ref.read(receiveProvider.notifier);
+  final stateDev = ref.watch(devolutionProvider);
+  final dev = ref.read(devolutionProvider.notifier);
+  final stateSale = ref.watch(saleProvider);
+  final sales = ref.read(saleProvider.notifier);
+  receive.onSelection(option);
+  sales.onSelection(option);
+  await receive.separateMonth();
+  await sales.separateMonth();
+  await dev.separateMonth();
+  await receive.total();
+  await sales.total();
+  await dev.total();
+}
   Widget listEmpresas(stateReceive, receive, stateDev, dev, stateSale, sales) {
     return ListView.builder(
         scrollDirection: Axis.horizontal,
