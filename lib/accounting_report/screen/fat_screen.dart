@@ -61,6 +61,14 @@ class FatScreenState extends ConsumerState<FatScreen> {
                           SizedBox(height: _height * 0.009),
                           sale(),
                           SizedBox(height: _height * 0.003),
+                          dev(),
+                          SizedBox(height: _height * 0.003),
+                          frete(),
+                          SizedBox(height: _height * 0.003),
+                          fatLiq(),
+                          SizedBox(height: _height * 0.003),
+                          cmv(),
+                          SizedBox(height: _height * 0.003),
                           rec(),
                         ])))));
   }
@@ -135,6 +143,77 @@ class FatScreenState extends ConsumerState<FatScreen> {
               })),
     ]);
   }
+  Widget frete() {
+    final sale = ref.watch(saleProvider);
+    return Row(children: [
+      Container(
+          width: 100,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 1.0),
+          ),
+          padding: const EdgeInsets.all(2),
+          child: const Text('Frete',
+              //                   // style: state.textTheme.bodyText1,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w600))),
+      const SizedBox(
+        width: 20,
+      ),
+      SizedBox(
+          width: 1000,
+          height: 20,
+          child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: sale.count,
+              itemBuilder: (context, int index) {
+                double value = double.parse(sale.restFrete![index].toString());
+                return Row(
+                  children: [
+                    Text(value.toStringAsFixed(2)),
+                    const SizedBox(width: 20),
+                  ],
+                );
+              })),
+    ]);
+  }
+  Widget fatLiq() {
+    final sale = ref.watch(saleProvider);
+    final dev = ref.watch(devolutionProvider);
+    return Row(children: [
+      Container(
+          width: 100,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 1.0),
+          ),
+          padding: const EdgeInsets.all(2),
+          child: const Text('Fat. Liquido',
+              //                   // style: state.textTheme.bodyText1,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w600))),
+      const SizedBox(
+        width: 20,
+      ),
+      SizedBox(
+          width: 1000,
+          height: 20,
+          child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: sale.count,
+              itemBuilder: (context, int index) {
+                double value = double.parse((sale.rest![index] - dev.rest![index]).toString());
+                return Row(
+                  children: [
+                    Text(value.toStringAsFixed(2)),
+                    const SizedBox(width: 20),
+                  ],
+                );
+              })),
+    ]);
+  }
   Widget dev() {
     final dev = ref.watch(devolutionProvider);
     return Row(children: [
@@ -161,6 +240,42 @@ class FatScreenState extends ConsumerState<FatScreen> {
               itemCount: dev.count,
               itemBuilder: (context, int index) {
                 double value = double.parse(dev.rest![index].toString());
+                return Row(
+                  children: [
+                    Text(value.toStringAsFixed(2)),
+                    const SizedBox(width: 20),
+                  ],
+                );
+              })),
+    ]);
+  }
+  Widget cmv() {
+    final sale = ref.watch(saleProvider);
+    final dev = ref.watch(devolutionProvider);
+    return Row(children: [
+      Container(
+          width: 100,
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 1.0),
+          ),
+          padding: const EdgeInsets.all(2),
+          child: const Text('CMV Liq.',
+              //                   // style: state.textTheme.bodyText1,
+              textAlign: TextAlign.center,
+              style: TextStyle(fontWeight: FontWeight.w600))),
+      const SizedBox(
+        width: 20,
+      ),
+      SizedBox(
+          width: 1000,
+          height: 20,
+          child: ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: dev.count,
+              itemBuilder: (context, int index) {
+                double value = double.parse((sale.restCusto![index]- dev.restCusto![index]).toString());
                 return Row(
                   children: [
                     Text(value.toStringAsFixed(2)),

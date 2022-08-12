@@ -15,6 +15,8 @@ class ViewState {
   int? count;
   List<num>? result;
   List<num>? rest;
+  List<num>? restFrete;
+  List<num>? restCusto;
   List<num>? mes1;
   List<num>? mes2;
   List<num>? mes3;
@@ -27,6 +29,30 @@ class ViewState {
   List<num>? mes10;
   List<num>? mes11;
   List<num>? mes12;
+  List<num>? frete1;
+  List<num>? frete2;
+  List<num>? frete3;
+  List<num>? frete4;
+  List<num>? frete5;
+  List<num>? frete6;
+  List<num>? frete7;
+  List<num>? frete8;
+  List<num>? frete9;
+  List<num>? frete10;
+  List<num>? frete11;
+  List<num>? frete12;
+  List<num>? custo1;
+  List<num>? custo2;
+  List<num>? custo3;
+  List<num>? custo4;
+  List<num>? custo5;
+  List<num>? custo6;
+  List<num>? custo7;
+  List<num>? custo8;
+  List<num>? custo9;
+  List<num>? custo10;
+  List<num>? custo11;
+  List<num>? custo12;
   ViewState(
       {this.sales,
       this.check,
@@ -35,6 +61,18 @@ class ViewState {
       this.filtered,
       this.initialDate,
       this.endDate,this.count,
+        this.frete1,
+        this.frete2,
+        this.frete3,
+        this.frete4,
+        this.frete5,
+        this.frete6,
+        this.frete7,
+        this.frete8,
+        this.frete9,
+        this.frete10,
+        this.frete11,
+        this.frete12,
         this.mes1,
         this.mes2,
         this.mes3,
@@ -47,7 +85,21 @@ class ViewState {
         this.mes10,
         this.mes11,
         this.mes12,
-        this.rest,});
+        this.custo1,
+        this.custo2,
+        this.custo3,
+        this.custo4,
+        this.custo5,
+        this.custo6,
+        this.custo7,
+        this.custo8,
+        this.custo9,
+        this.custo10,
+        this.custo11,
+        this.custo12,
+        this.rest,
+      this.restFrete,
+      this.restCusto});
 }
 
 class SaleController extends StateNotifier<ViewState> {
@@ -289,6 +341,30 @@ class SaleController extends StateNotifier<ViewState> {
     List<num> mes10 = [];
     List<num> mes11 = [];
     List<num> mes12 = [];
+    List<num> frete1 = [];
+    List<num> frete2 = [];
+    List<num> frete3 = [];
+    List<num> frete4 = [];
+    List<num> frete5 = [];
+    List<num> frete6 = [];
+    List<num> frete7 = [];
+    List<num> frete8 = [];
+    List<num> frete9 = [];
+    List<num> frete10 = [];
+    List<num> frete11 = [];
+    List<num> frete12 = [];
+    List<num> custo1 = [];
+    List<num> custo2 = [];
+    List<num> custo3 = [];
+    List<num> custo4 = [];
+    List<num>custo5 = [];
+    List<num> custo6 = [];
+    List<num> custo7 = [];
+    List<num> custo8 = [];
+    List<num> custo9 = [];
+    List<num> custo10 = [];
+    List<num> custo11 = [];
+    List<num> custo12 = [];
     List<Sale>? filtro = filter();
     for (var i = 0; i < filtro!.length;) {
       if (filtro[i].dataFaturamento != null) {
@@ -298,72 +374,96 @@ class SaleController extends StateNotifier<ViewState> {
           case 1:
             {
               mes1.add(filtro[i].valorPedido!);
+              frete1.add(filtro[i].frete!);
+              custo1.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 2:
             {
               mes2.add(filtro[i].valorPedido!);
+              frete2.add(filtro[i].frete!);
+              custo2.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 3:
             {
               mes3.add(filtro[i].valorPedido!);
+              frete3.add(filtro[i].frete!);
+              custo3.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 4:
             {
               mes4.add(filtro[i].valorPedido!);
+              frete4.add(filtro[i].frete!);
+              custo4.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 5:
             {
               mes5.add(filtro[i].valorPedido!);
+              frete5.add(filtro[i].frete!);
+              custo5.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 6:
             {
               mes6.add(filtro[i].valorPedido!);
+              frete6.add(filtro[i].frete!);
+              custo6.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 7:
             {
               mes7.add(filtro[i].valorPedido!);
+              frete7.add(filtro[i].frete!);
+              custo7.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 8:
             {
               mes8.add(filtro[i].valorPedido!);
+              frete8.add(filtro[i].frete!);
+              custo8.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 9:
             {
               mes9.add(filtro[i].valorPedido!);
+              frete9.add(filtro[i].frete!);
+              custo9.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 10:
             {
               mes10.add(filtro[i].valorPedido!);
+              frete10.add(filtro[i].frete!);
+              custo10.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 11:
             {
               mes11.add(filtro[i].valorPedido!);
+              frete11.add(filtro[i].frete!);
+              custo11.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 12:
             {
               mes12.add(filtro[i].valorPedido!);
+              frete12.add(filtro[i].frete!);
+              custo12.add(filtro[i].valorCusto!);
               i++;
             }
             break;
@@ -385,6 +485,30 @@ class SaleController extends StateNotifier<ViewState> {
       mes10: mes10,
       mes11: mes11,
       mes12: mes12,
+      frete1: frete1,
+      frete2: frete2,
+      frete3: frete3,
+      frete4: frete4,
+      frete5: frete5,
+      frete6: frete6,
+      frete7: frete7,
+      frete8: frete8,
+      frete9: frete9,
+      frete10: frete10,
+      frete11: frete11,
+      frete12: frete12,
+      custo1: custo1,
+      custo2: custo2,
+      custo3: custo3,
+      custo4: custo4,
+      custo5: custo5,
+      custo6: custo6,
+      custo7: custo7,
+      custo8: custo8,
+      custo9: custo9,
+      custo10: custo10,
+      custo11: custo11,
+      custo12: custo12,
       empresas: state.empresas,
       sales: state.sales,
       check: state.check,
@@ -408,9 +532,53 @@ class SaleController extends StateNotifier<ViewState> {
       state.mes11!.sum,
       state.mes12!.sum,
     ];
+    var listFrete = [
+      state.frete1!.sum,
+      state.frete2!.sum,
+      state.frete3!.sum,
+      state.frete4!.sum,
+      state.frete5!.sum,
+      state.frete6!.sum,
+      state.frete7!.sum,
+      state.frete8!.sum,
+      state.frete9!.sum,
+      state.frete10!.sum,
+      state.frete11!.sum,
+      state.frete12!.sum,
+    ];
+    var listCusto = [
+      state.custo1!.sum,
+      state.custo2!.sum,
+      state.custo3!.sum,
+      state.custo4!.sum,
+      state.custo5!.sum,
+      state.custo6!.sum,
+      state.custo7!.sum,
+      state.custo8!.sum,
+      state.custo9!.sum,
+      state.custo10!.sum,
+      state.custo11!.sum,
+      state.custo12!.sum,
+    ];
     for (var i = 0; i < list.length;) {
       if (list[i] == 0) {
         list.remove(list[i]);
+        i++;
+      } else {
+        i++;
+      }
+    }
+    for (var i = 0; i < listFrete.length;) {
+      if (listFrete[i] == 0) {
+        listFrete.remove(listFrete[i]);
+        i++;
+      } else {
+        i++;
+      }
+    }
+    for (var i = 0; i < listCusto.length;) {
+      if (listCusto[i] == 0) {
+        listCusto.remove(listCusto[i]);
         i++;
       } else {
         i++;
@@ -436,6 +604,8 @@ class SaleController extends StateNotifier<ViewState> {
         filtered: state.filtered,
         isChecked: state.isChecked,
         rest: list,
-        count: state.count);
+        count: state.count,
+    restFrete: listFrete,
+    restCusto : listCusto);
   }
 }

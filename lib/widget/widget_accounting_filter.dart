@@ -120,7 +120,7 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
             width: double.infinity,
             child: ElevatedButton(
                 onPressed: () async {
-
+                  onTouch();
                    Navigator.of(context).push(MaterialPageRoute(
                        builder: (context) => FatScreen(title: "Faturamento")));
                 },
@@ -143,6 +143,7 @@ onTouch() async {
   final sales = ref.read(saleProvider.notifier);
   receive.onSelection(option);
   sales.onSelection(option);
+  dev.onSelection(option);
   await receive.separateMonth();
   await sales.separateMonth();
   await dev.separateMonth();
@@ -156,7 +157,7 @@ onTouch() async {
         itemCount: stateReceive.empresas.length,
         itemBuilder: (context, index) {
           return Container(
-              width: 70,
+              width: 105,
               child:
                   Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 Text(

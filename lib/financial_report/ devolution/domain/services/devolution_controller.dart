@@ -1,5 +1,4 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:rias_accounting/financial_report/receive/domain/services/receive_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:collection/collection.dart';
 import '../../../../core/global_variables.dart';
@@ -15,6 +14,7 @@ class ViewState {
   DateTime? endDate;
   int? count;
   List<num>? rest;
+  List<num>? restCusto;
   List<num>? mes1;
   List<num>? mes2;
   List<num>? mes3;
@@ -27,6 +27,18 @@ class ViewState {
   List<num>? mes10;
   List<num>? mes11;
   List<num>? mes12;
+  List<num>? custo1;
+  List<num>? custo2;
+  List<num>?custo3;
+  List<num>? custo4;
+  List<num>? custo5;
+  List<num>? custo6;
+  List<num>? custo7;
+  List<num>? custo8;
+  List<num>? custo9;
+  List<num>? custo10;
+  List<num>? custo11;
+  List<num>? custo12;
 
   ViewState(
       {this.devolutions,
@@ -49,6 +61,19 @@ class ViewState {
         this.mes10,
         this.mes11,
         this.mes12,
+        this.custo1,
+        this.custo2,
+        this.custo3,
+        this.custo4,
+        this.custo5,
+        this.custo6,
+        this.custo7,
+        this.custo8,
+        this.custo9,
+        this.custo10,
+        this.custo11,
+        this.custo12,
+        this.restCusto,
         this.rest,});
 }
 
@@ -285,6 +310,18 @@ class DevolutionController extends StateNotifier<ViewState> {
     List<num> mes10 = [];
     List<num> mes11 = [];
     List<num> mes12 = [];
+    List<num> custo1 = [];
+    List<num> custo2 = [];
+    List<num> custo3 = [];
+    List<num> custo4 = [];
+    List<num> custo5 = [];
+    List<num> custo6 = [];
+    List<num> custo7 = [];
+    List<num> custo8 = [];
+    List<num> custo9 = [];
+    List<num> custo10 = [];
+    List<num> custo11 = [];
+    List<num> custo12 = [];
     List<Devolution>? filtro = filter();
     for (var i = 0; i < filtro!.length;) {
       if (filtro[i].dataLancamento != null) {
@@ -294,72 +331,84 @@ class DevolutionController extends StateNotifier<ViewState> {
           case 1:
             {
               mes1.add(filtro[i].valor!);
+              custo1.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 2:
             {
               mes2.add(filtro[i].valor!);
+              custo2.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 3:
             {
               mes3.add(filtro[i].valor!);
+              custo3.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 4:
             {
               mes4.add(filtro[i].valor!);
+              custo4.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 5:
             {
               mes5.add(filtro[i].valor!);
+              custo5.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 6:
             {
               mes6.add(filtro[i].valor!);
+              custo6.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 7:
             {
               mes7.add(filtro[i].valor!);
+              custo7.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 8:
             {
               mes8.add(filtro[i].valor!);
+              custo8.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 9:
             {
               mes9.add(filtro[i].valor!);
+              custo9.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 10:
             {
               mes10.add(filtro[i].valor!);
+              custo10.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 11:
             {
               mes11.add(filtro[i].valor!);
+              custo11.add(filtro[i].valorCusto!);
               i++;
             }
             break;
           case 12:
             {
               mes12.add(filtro[i].valor!);
+              custo12.add(filtro[i].valorCusto!);
               i++;
             }
             break;
@@ -381,6 +430,18 @@ class DevolutionController extends StateNotifier<ViewState> {
       mes10: mes10,
       mes11: mes11,
       mes12: mes12,
+      custo1: custo1,
+      custo2: custo2,
+      custo3: custo3,
+      custo4: custo4,
+      custo5: custo5,
+      custo6: custo6,
+      custo7: custo7,
+      custo8: custo8,
+      custo9: custo9,
+      custo10: custo10,
+      custo11: custo11,
+      custo12: custo12,
       empresas: state.empresas,
       devolutions: state.devolutions,
       check: state.check,
@@ -404,9 +465,31 @@ class DevolutionController extends StateNotifier<ViewState> {
       state.mes11!.sum,
       state.mes12!.sum,
     ];
+    var listCusto = [
+      state.custo1!.sum,
+      state.custo2!.sum,
+      state.custo3!.sum,
+      state.custo4!.sum,
+      state.custo5!.sum,
+      state.custo6!.sum,
+      state.custo7!.sum,
+      state.custo8!.sum,
+      state.custo9!.sum,
+      state.custo10!.sum,
+      state.custo11!.sum,
+      state.custo12!.sum,
+    ];
     for (var i = 0; i < list.length;) {
       if (list[i] == 0) {
         list.remove(list[i]);
+        i++;
+      } else {
+        i++;
+      }
+    }
+    for (var i = 0; i < listCusto.length;) {
+      if (listCusto[i] == 0) {
+        listCusto.remove(listCusto[i]);
         i++;
       } else {
         i++;
@@ -432,6 +515,7 @@ class DevolutionController extends StateNotifier<ViewState> {
         filtered: state.filtered,
         isChecked: state.isChecked,
         rest: list,
+        restCusto: listCusto,
         count: state.count);
   }
 }
