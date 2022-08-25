@@ -135,22 +135,23 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
   }
 
 onTouch() async {
-  final stateReceive = ref.watch(receiveProvider);
-  final receive = ref.read(receiveProvider.notifier);
-  final stateDev = ref.watch(devolutionProvider);
-  final dev = ref.read(devolutionProvider.notifier);
-  final stateSale = ref.watch(saleProvider);
-  final sales = ref.read(saleProvider.notifier);
-  receive.onSelection(option);
-  sales.onSelection(option);
-  dev.onSelection(option);
-  await receive.separateMonth();
-  await sales.separateMonth();
-  await dev.separateMonth();
-  await receive.total();
-  await sales.total();
-  await dev.total();
-}
+    final stateReceive = ref.watch(receiveProvider);
+    final receive = ref.read(receiveProvider.notifier);
+    final stateDev = ref.watch(devolutionProvider);
+    final dev = ref.read(devolutionProvider.notifier);
+    final stateSale = ref.watch(saleProvider);
+    final sales = ref.read(saleProvider.notifier);
+    sales.onSelection(option);
+    receive.onSelection(option);
+    dev.onSelection(option);
+    await sales.separateMonth();
+    //await receive.separateMonth();
+    await dev.separateMonth();
+    await sales.total();
+   // await receive.total();
+
+    await dev.total();
+  }
   Widget listEmpresas(stateReceive, receive, stateDev, dev, stateSale, sales) {
     return ListView.builder(
         scrollDirection: Axis.horizontal,

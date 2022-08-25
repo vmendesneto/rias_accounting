@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rias_accounting/financial_report/sales/domain/services/sales_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:collection/collection.dart';
 import '../../../../core/global_variables.dart';
@@ -29,7 +30,7 @@ class ViewState {
   List<num>? mes12;
   List<num>? custo1;
   List<num>? custo2;
-  List<num>?custo3;
+  List<num>? custo3;
   List<num>? custo4;
   List<num>? custo5;
   List<num>? custo6;
@@ -40,47 +41,49 @@ class ViewState {
   List<num>? custo11;
   List<num>? custo12;
 
-  ViewState(
-      {this.devolutions,
-      this.check,
-      this.isChecked = false,
-      this.empresas,
-      this.filtered,
-      this.initialDate,
-      this.endDate,
-        this.count,
-        this.mes1,
-        this.mes2,
-        this.mes3,
-        this.mes4,
-        this.mes5,
-        this.mes6,
-        this.mes7,
-        this.mes8,
-        this.mes9,
-        this.mes10,
-        this.mes11,
-        this.mes12,
-        this.custo1,
-        this.custo2,
-        this.custo3,
-        this.custo4,
-        this.custo5,
-        this.custo6,
-        this.custo7,
-        this.custo8,
-        this.custo9,
-        this.custo10,
-        this.custo11,
-        this.custo12,
-        this.restCusto,
-        this.rest,});
+  ViewState({
+    this.devolutions,
+    this.check,
+    this.isChecked = false,
+    this.empresas,
+    this.filtered,
+    this.initialDate,
+    this.endDate,
+    this.count,
+    this.mes1,
+    this.mes2,
+    this.mes3,
+    this.mes4,
+    this.mes5,
+    this.mes6,
+    this.mes7,
+    this.mes8,
+    this.mes9,
+    this.mes10,
+    this.mes11,
+    this.mes12,
+    this.custo1,
+    this.custo2,
+    this.custo3,
+    this.custo4,
+    this.custo5,
+    this.custo6,
+    this.custo7,
+    this.custo8,
+    this.custo9,
+    this.custo10,
+    this.custo11,
+    this.custo12,
+    this.restCusto,
+    this.rest,
+  });
 }
 
 class DevolutionController extends StateNotifier<ViewState> {
   DevolutionController([ViewState? state]) : super(ViewState());
 
   Variables variables = Variables();
+
 
   void dateInitial() {
     var now = DateTime.now().subtract(const Duration(days: 4));
@@ -115,7 +118,8 @@ class DevolutionController extends StateNotifier<ViewState> {
         check: state.check,
         filtered: state.filtered,
         initialDate: state.initialDate,
-        endDate: state.endDate,count: state.count);
+        endDate: state.endDate,
+        count: state.count);
     return devolutions;
   }
 
@@ -181,7 +185,8 @@ class DevolutionController extends StateNotifier<ViewState> {
         check: state.check,
         endDate: state.endDate,
         filtered: state.filtered,
-        initialDate: state.initialDate,count: state.count);
+        initialDate: state.initialDate,
+        count: state.count);
   }
 
   void onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
@@ -204,9 +209,9 @@ class DevolutionController extends StateNotifier<ViewState> {
       case 1:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 1, 01);
+              DateTime(variables.today.year, variables.today.month - 1, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
+              DateTime(variables.today.year, variables.today.month, 01);
           state = ViewState(
             initialDate: dateInitial,
             endDate: dateFinal,
@@ -222,9 +227,9 @@ class DevolutionController extends StateNotifier<ViewState> {
       case 2:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 3, 01);
+              DateTime(variables.today.year, variables.today.month - 3, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
+              DateTime(variables.today.year, variables.today.month, 01);
           state = ViewState(
             initialDate: dateInitial,
             endDate: dateFinal,
@@ -234,16 +239,15 @@ class DevolutionController extends StateNotifier<ViewState> {
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: 3,
-
           );
         }
         break;
       case 3:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 6, 01);
+              DateTime(variables.today.year, variables.today.month - 6, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
+              DateTime(variables.today.year, variables.today.month, 01);
           state = ViewState(
             initialDate: dateInitial,
             endDate: dateFinal,
@@ -253,16 +257,15 @@ class DevolutionController extends StateNotifier<ViewState> {
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: 6,
-
           );
         }
         break;
       case 4:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 12, 01);
+              DateTime(variables.today.year, variables.today.month - 12, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
+              DateTime(variables.today.year, variables.today.month, 01);
           state = ViewState(
             initialDate: dateInitial,
             endDate: dateFinal,
@@ -272,16 +275,14 @@ class DevolutionController extends StateNotifier<ViewState> {
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: 12,
-
           );
         }
         break;
       case 5:
         {
-          var dateInitial =
-          DateTime(variables.today.year, 01, 01);
+          var dateInitial = DateTime(variables.today.year, 01, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
+              DateTime(variables.today.year, variables.today.month, 01);
           state = ViewState(
             initialDate: dateInitial,
             endDate: dateFinal,
@@ -290,13 +291,13 @@ class DevolutionController extends StateNotifier<ViewState> {
             check: state.check,
             filtered: state.filtered,
             isChecked: state.isChecked,
-            count: variables.today.month -1,
-
+            count: variables.today.month - 1,
           );
         }
         break;
     }
   }
+
   separateMonth() {
     List<num> mes1 = [];
     List<num> mes2 = [];
@@ -450,49 +451,71 @@ class DevolutionController extends StateNotifier<ViewState> {
       count: state.count,
     );
   }
+
   total() {
-    var list = [
-      state.mes1!.sum,
-      state.mes2!.sum,
-      state.mes3!.sum,
-      state.mes4!.sum,
-      state.mes5!.sum,
-      state.mes6!.sum,
-      state.mes7!.sum,
-      state.mes8!.sum,
-      state.mes9!.sum,
-      state.mes10!.sum,
-      state.mes11!.sum,
-      state.mes12!.sum,
-    ];
-    var listCusto = [
-      state.custo1!.sum,
-      state.custo2!.sum,
-      state.custo3!.sum,
-      state.custo4!.sum,
-      state.custo5!.sum,
-      state.custo6!.sum,
-      state.custo7!.sum,
-      state.custo8!.sum,
-      state.custo9!.sum,
-      state.custo10!.sum,
-      state.custo11!.sum,
-      state.custo12!.sum,
-    ];
-    for (var i = 0; i < list.length;) {
-      if (list[i] == 0) {
-        list.remove(list[i]);
-        i++;
+    List<String>? lista = ViewStates().meses;
+    List<num> list = [];
+    List<num> listCusto = [];
+    var valor = lista!.length;
+    for (var i = 0; i < valor; i++) {
+      if (lista!.contains('mes1')) {
+        list.add(state.mes1!.sum);
+        listCusto.add(state.custo1!.sum);
+        lista!.remove('mes1');
+      } else if (lista!.contains('mes2')) {
+        list.add(state.mes2!.sum);
+
+        listCusto.add(state.custo2!.sum);
+        lista!.remove('mes2');
+      } else if (lista!.contains('mes3')) {
+        list.add(state.mes3!.sum);
+
+        listCusto.add(state.custo3!.sum);
+        lista!.remove('mes3');
+      } else if (lista!.contains('mes4')) {
+        list.add(state.mes4!.sum);
+
+        listCusto.add(state.custo4!.sum);
+        lista!.remove('mes4');
+      } else if (lista!.contains('mes5')) {
+        list.add(state.mes5!.sum);
+
+        listCusto.add(state.custo5!.sum);
+        lista!.remove('mes5');
+      } else if (lista!.contains('mes6')) {
+        list.add(state.mes6!.sum);
+
+        listCusto.add(state.custo6!.sum);
+        lista!.remove('mes6');
+      } else if (lista!.contains('mes7')) {
+        list.add(state.mes7!.sum);
+
+        listCusto.add(state.custo7!.sum);
+        lista!.remove('mes7');
+      } else if (lista!.contains('mes8')) {
+        list.add(state.mes8!.sum);
+
+        listCusto.add(state.custo8!.sum);
+        lista!.remove('mes8');
+      } else if (lista!.contains('mes9')) {
+        list.add(state.mes9!.sum);
+
+        listCusto.add(state.custo9!.sum);
+        lista!.remove('mes9');
+      } else if (lista!.contains('mes10')) {
+        list.add(state.mes10!.sum);
+
+        listCusto.add(state.custo10!.sum);
+        lista!.remove('mes10');
+      } else if (lista!.contains('mes11')) {
+        list.add(state.mes11!.sum);
+
+        listCusto.add(state.custo11!.sum);
+        lista!.remove('mes11');
       } else {
-        i++;
-      }
-    }
-    for (var i = 0; i < listCusto.length;) {
-      if (listCusto[i] == 0) {
-        listCusto.remove(listCusto[i]);
-        i++;
-      } else {
-        i++;
+        list.add(state.mes12!.sum);
+        listCusto.add(state.custo12!.sum);
+        lista!.remove('mes12');
       }
     }
 
@@ -519,4 +542,3 @@ class DevolutionController extends StateNotifier<ViewState> {
         count: state.count);
   }
 }
-

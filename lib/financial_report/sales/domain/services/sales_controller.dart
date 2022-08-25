@@ -4,7 +4,7 @@ import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:collection/collection.dart';
 import '../models/sales_model.dart';
 
-class ViewState {
+class ViewStates {
   bool isChecked;
   List<int>? check;
   List<Sale>? sales;
@@ -13,6 +13,7 @@ class ViewState {
   DateTime? initialDate;
   DateTime? endDate;
   int? count;
+  List<String>? meses =[];
   List<num>? result;
   List<num>? rest;
   List<num>? restFrete;
@@ -53,65 +54,70 @@ class ViewState {
   List<num>? custo10;
   List<num>? custo11;
   List<num>? custo12;
-  ViewState(
+
+  ViewStates(
       {this.sales,
       this.check,
       this.isChecked = false,
       this.empresas,
       this.filtered,
       this.initialDate,
-      this.endDate,this.count,
-        this.frete1,
-        this.frete2,
-        this.frete3,
-        this.frete4,
-        this.frete5,
-        this.frete6,
-        this.frete7,
-        this.frete8,
-        this.frete9,
-        this.frete10,
-        this.frete11,
-        this.frete12,
-        this.mes1,
-        this.mes2,
-        this.mes3,
-        this.mes4,
-        this.mes5,
-        this.mes6,
-        this.mes7,
-        this.mes8,
-        this.mes9,
-        this.mes10,
-        this.mes11,
-        this.mes12,
-        this.custo1,
-        this.custo2,
-        this.custo3,
-        this.custo4,
-        this.custo5,
-        this.custo6,
-        this.custo7,
-        this.custo8,
-        this.custo9,
-        this.custo10,
-        this.custo11,
-        this.custo12,
-        this.rest,
+      this.endDate,
+      this.count,
+      this.frete1,
+      this.frete2,
+      this.frete3,
+      this.frete4,
+      this.frete5,
+      this.frete6,
+      this.frete7,
+      this.frete8,
+      this.frete9,
+      this.frete10,
+      this.frete11,
+      this.frete12,
+      this.mes1,
+      this.mes2,
+      this.mes3,
+      this.mes4,
+      this.mes5,
+      this.mes6,
+      this.mes7,
+      this.mes8,
+      this.mes9,
+      this.mes10,
+      this.mes11,
+      this.mes12,
+      this.custo1,
+      this.custo2,
+      this.custo3,
+      this.custo4,
+      this.custo5,
+      this.custo6,
+      this.custo7,
+      this.custo8,
+      this.custo9,
+      this.custo10,
+      this.custo11,
+      this.custo12,
+      this.rest,
       this.restFrete,
-      this.restCusto});
+      this.restCusto,
+      this.meses});
 }
 
-class SaleController extends StateNotifier<ViewState> {
-  SaleController([ViewState? state]) : super(ViewState());
+class SaleController extends StateNotifier<ViewStates> {
+  SaleController([ViewStates? state]) : super(ViewStates());
 
   Variables variables = Variables();
 
   void dateInitial() {
     var now = DateTime.now().subtract(const Duration(days: 4));
     var end = DateTime.now().add(const Duration(days: 0));
-    state = ViewState(initialDate: now, endDate: end);
+    state = ViewStates(initialDate: now, endDate: end);
   }
+
+List<String> lista =[];
 
   Future<List<Sale>> emp() async {
     List<int> lista = [];
@@ -133,7 +139,7 @@ class SaleController extends StateNotifier<ViewState> {
     }
     state.check ??= [];
     state.filtered ??= [];
-    state = ViewState(
+    state = ViewStates(
         empresas: lista,
         sales: sales,
         isChecked: state.isChecked,
@@ -179,47 +185,50 @@ class SaleController extends StateNotifier<ViewState> {
     }
     //ORDENANDO POR DATA DE PG
     filters.sort((a, b) => a.dataFaturamento!.compareTo(b.dataFaturamento!));
-    state = ViewState(
+    state = ViewStates(
         empresas: state.empresas,
         sales: state.sales,
         check: state.check,
         filtered: filters,
         initialDate: state.initialDate,
         endDate: state.endDate,
-        count: state.count);
+        count: state.count,
+        meses: state.meses);
     return filters;
   }
 
   trueCheck(int emp) {
     state.check!.add(emp);
 
-    state = ViewState(
+    state = ViewStates(
         empresas: state.empresas,
         sales: state.sales,
         check: state.check,
         endDate: state.endDate,
         filtered: state.filtered,
         initialDate: state.initialDate,
-        count: state.count);
+        count: state.count,
+        meses: state.meses);
   }
 
   falseCheck(int emp) {
     state.check!.remove(emp);
-    state = ViewState(
+    state = ViewStates(
         empresas: state.empresas,
         sales: state.sales,
         check: state.check,
         endDate: state.endDate,
         filtered: state.filtered,
         initialDate: state.initialDate,
-        count: state.count);
+        count: state.count,
+    meses: state.meses);
   }
 
   void onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
     if (args.value is PickerDateRange) {
       var now = args.value.startDate;
       var end = args.value.endDate ?? args.value.startDate;
-      state = ViewState(
+      state = ViewStates(
           initialDate: now,
           endDate: end,
           empresas: state.empresas,
@@ -229,15 +238,16 @@ class SaleController extends StateNotifier<ViewState> {
           isChecked: state.isChecked);
     }
   }
+
   void onSelection(int option) {
     switch (option) {
       case 1:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 1, 01);
+              DateTime(variables.today.year, variables.today.month - 1, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
-          state = ViewState(
+              DateTime(variables.today.year, variables.today.month, 01);
+          state = ViewStates(
             initialDate: dateInitial,
             endDate: dateFinal,
             empresas: state.empresas,
@@ -252,10 +262,10 @@ class SaleController extends StateNotifier<ViewState> {
       case 2:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 3, 01);
+              DateTime(variables.today.year, variables.today.month - 3, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
-          state = ViewState(
+              DateTime(variables.today.year, variables.today.month, 01);
+          state = ViewStates(
             initialDate: dateInitial,
             endDate: dateFinal,
             empresas: state.empresas,
@@ -264,17 +274,16 @@ class SaleController extends StateNotifier<ViewState> {
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: 3,
-
           );
         }
         break;
       case 3:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 6, 01);
+              DateTime(variables.today.year, variables.today.month - 6, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
-          state = ViewState(
+              DateTime(variables.today.year, variables.today.month, 01);
+          state = ViewStates(
             initialDate: dateInitial,
             endDate: dateFinal,
             empresas: state.empresas,
@@ -283,17 +292,16 @@ class SaleController extends StateNotifier<ViewState> {
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: 6,
-
           );
         }
         break;
       case 4:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 12, 01);
+              DateTime(variables.today.year, variables.today.month - 12, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
-          state = ViewState(
+              DateTime(variables.today.year, variables.today.month, 01);
+          state = ViewStates(
             initialDate: dateInitial,
             endDate: dateFinal,
             empresas: state.empresas,
@@ -302,17 +310,15 @@ class SaleController extends StateNotifier<ViewState> {
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: 12,
-
           );
         }
         break;
       case 5:
         {
-          var dateInitial =
-          DateTime(variables.today.year, 01, 01);
+          var dateInitial = DateTime(variables.today.year, 01, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
-          state = ViewState(
+              DateTime(variables.today.year, variables.today.month, 01);
+          state = ViewStates(
             initialDate: dateInitial,
             endDate: dateFinal,
             empresas: state.empresas,
@@ -320,8 +326,7 @@ class SaleController extends StateNotifier<ViewState> {
             check: state.check,
             filtered: state.filtered,
             isChecked: state.isChecked,
-            count: variables.today.month -1,
-
+            count: variables.today.month - 1,
           );
         }
         break;
@@ -357,7 +362,7 @@ class SaleController extends StateNotifier<ViewState> {
     List<num> custo2 = [];
     List<num> custo3 = [];
     List<num> custo4 = [];
-    List<num>custo5 = [];
+    List<num> custo5 = [];
     List<num> custo6 = [];
     List<num> custo7 = [];
     List<num> custo8 = [];
@@ -368,12 +373,13 @@ class SaleController extends StateNotifier<ViewState> {
     List<Sale>? filtro = filter();
     for (var i = 0; i < filtro!.length;) {
       if (filtro[i].dataFaturamento != null) {
-        DateTime ola = DateTime.parse((filtro[i].dataFaturamento !));
+        DateTime ola = DateTime.parse((filtro[i].dataFaturamento!));
         //colcar na lista do mes certo
         switch (ola.month) {
           case 1:
             {
               mes1.add(filtro[i].valorPedido!);
+              lista.add('mes1');
               frete1.add(filtro[i].frete!);
               custo1.add(filtro[i].valorCusto!);
               i++;
@@ -382,6 +388,7 @@ class SaleController extends StateNotifier<ViewState> {
           case 2:
             {
               mes2.add(filtro[i].valorPedido!);
+              lista.add('mes2');
               frete2.add(filtro[i].frete!);
               custo2.add(filtro[i].valorCusto!);
               i++;
@@ -392,6 +399,7 @@ class SaleController extends StateNotifier<ViewState> {
               mes3.add(filtro[i].valorPedido!);
               frete3.add(filtro[i].frete!);
               custo3.add(filtro[i].valorCusto!);
+              lista.add('mes3');
               i++;
             }
             break;
@@ -400,6 +408,7 @@ class SaleController extends StateNotifier<ViewState> {
               mes4.add(filtro[i].valorPedido!);
               frete4.add(filtro[i].frete!);
               custo4.add(filtro[i].valorCusto!);
+              lista.add('mes4');
               i++;
             }
             break;
@@ -408,6 +417,7 @@ class SaleController extends StateNotifier<ViewState> {
               mes5.add(filtro[i].valorPedido!);
               frete5.add(filtro[i].frete!);
               custo5.add(filtro[i].valorCusto!);
+              lista.add('mes5');
               i++;
             }
             break;
@@ -416,6 +426,7 @@ class SaleController extends StateNotifier<ViewState> {
               mes6.add(filtro[i].valorPedido!);
               frete6.add(filtro[i].frete!);
               custo6.add(filtro[i].valorCusto!);
+              lista.add('mes6');
               i++;
             }
             break;
@@ -424,6 +435,7 @@ class SaleController extends StateNotifier<ViewState> {
               mes7.add(filtro[i].valorPedido!);
               frete7.add(filtro[i].frete!);
               custo7.add(filtro[i].valorCusto!);
+              lista.add('mes7');
               i++;
             }
             break;
@@ -432,6 +444,7 @@ class SaleController extends StateNotifier<ViewState> {
               mes8.add(filtro[i].valorPedido!);
               frete8.add(filtro[i].frete!);
               custo8.add(filtro[i].valorCusto!);
+              lista.add('mes8');
               i++;
             }
             break;
@@ -440,6 +453,7 @@ class SaleController extends StateNotifier<ViewState> {
               mes9.add(filtro[i].valorPedido!);
               frete9.add(filtro[i].frete!);
               custo9.add(filtro[i].valorCusto!);
+              lista.add('mes9');
               i++;
             }
             break;
@@ -448,6 +462,7 @@ class SaleController extends StateNotifier<ViewState> {
               mes10.add(filtro[i].valorPedido!);
               frete10.add(filtro[i].frete!);
               custo10.add(filtro[i].valorCusto!);
+              lista.add('mes10');
               i++;
             }
             break;
@@ -456,6 +471,7 @@ class SaleController extends StateNotifier<ViewState> {
               mes11.add(filtro[i].valorPedido!);
               frete11.add(filtro[i].frete!);
               custo11.add(filtro[i].valorCusto!);
+              lista.add('mes11');
               i++;
             }
             break;
@@ -464,6 +480,7 @@ class SaleController extends StateNotifier<ViewState> {
               mes12.add(filtro[i].valorPedido!);
               frete12.add(filtro[i].frete!);
               custo12.add(filtro[i].valorCusto!);
+              lista.add('mes12');
               i++;
             }
             break;
@@ -472,7 +489,7 @@ class SaleController extends StateNotifier<ViewState> {
         i++;
       }
     }
-    state = ViewState(
+    state = ViewStates(
       mes1: mes1,
       mes2: mes2,
       mes3: mes3,
@@ -515,77 +532,80 @@ class SaleController extends StateNotifier<ViewState> {
       filtered: state.filtered,
       isChecked: state.isChecked,
       count: state.count,
+      meses: lista,
     );
   }
-  total() {
-    var list = [
-      state.mes1!.sum,
-      state.mes2!.sum,
-      state.mes3!.sum,
-      state.mes4!.sum,
-      state.mes5!.sum,
-      state.mes6!.sum,
-      state.mes7!.sum,
-      state.mes8!.sum,
-      state.mes9!.sum,
-      state.mes10!.sum,
-      state.mes11!.sum,
-      state.mes12!.sum,
-    ];
-    var listFrete = [
-      state.frete1!.sum,
-      state.frete2!.sum,
-      state.frete3!.sum,
-      state.frete4!.sum,
-      state.frete5!.sum,
-      state.frete6!.sum,
-      state.frete7!.sum,
-      state.frete8!.sum,
-      state.frete9!.sum,
-      state.frete10!.sum,
-      state.frete11!.sum,
-      state.frete12!.sum,
-    ];
-    var listCusto = [
-      state.custo1!.sum,
-      state.custo2!.sum,
-      state.custo3!.sum,
-      state.custo4!.sum,
-      state.custo5!.sum,
-      state.custo6!.sum,
-      state.custo7!.sum,
-      state.custo8!.sum,
-      state.custo9!.sum,
-      state.custo10!.sum,
-      state.custo11!.sum,
-      state.custo12!.sum,
-    ];
-    for (var i = 0; i < list.length;) {
-      if (list[i] == 0) {
-        list.remove(list[i]);
-        i++;
-      } else {
-        i++;
-      }
-    }
-    for (var i = 0; i < listFrete.length;) {
-      if (listFrete[i] == 0) {
-        listFrete.remove(listFrete[i]);
-        i++;
-      } else {
-        i++;
-      }
-    }
-    for (var i = 0; i < listCusto.length;) {
-      if (listCusto[i] == 0) {
-        listCusto.remove(listCusto[i]);
-        i++;
-      } else {
-        i++;
-      }
-    }
 
-    state = ViewState(
+  total() {
+    List<num> list = [];
+    List<num> listFrete = [];
+    List<num> listCusto = [];
+    var valor = lista.length;
+    for (var i = 0; i < valor; i++) {
+      if (lista.contains('mes1')) {
+        list.add(state.mes1!.sum);
+        listFrete.add(state.frete1!.sum);
+        listCusto.add(state.custo1!.sum);
+        lista.remove('mes1');
+      } else if (lista.contains('mes2')) {
+        list.add(state.mes2!.sum);
+        listFrete.add(state.frete2!.sum);
+        listCusto.add(state.custo2!.sum);
+        lista.remove('mes2');
+      } else if (lista.contains('mes3')) {
+        list.add(state.mes3!.sum);
+        listFrete.add(state.frete3!.sum);
+        listCusto.add(state.custo3!.sum);
+        lista.remove('mes3');
+      } else if (lista.contains('mes4')) {
+        list.add(state.mes4!.sum);
+        listFrete.add(state.frete4!.sum);
+        listCusto.add(state.custo4!.sum);
+        lista.remove('mes4');
+      } else if (lista.contains('mes5')) {
+        list.add(state.mes5!.sum);
+        listFrete.add(state.frete5!.sum);
+        listCusto.add(state.custo5!.sum);
+        lista.remove('mes5');
+      } else if (lista.contains('mes6')) {
+        list.add(state.mes6!.sum);
+        listFrete.add(state.frete6!.sum);
+        listCusto.add(state.custo6!.sum);
+        lista.remove('mes6');
+      } else if (lista.contains('mes7')) {
+        list.add(state.mes7!.sum);
+        listFrete.add(state.frete7!.sum);
+        listCusto.add(state.custo7!.sum);
+        lista.remove('mes7');
+      } else if (lista.contains('mes8')) {
+        list.add(state.mes8!.sum);
+        listFrete.add(state.frete8!.sum);
+        listCusto.add(state.custo8!.sum);
+        lista.remove('mes8');
+      } else if (lista.contains('mes9')) {
+        list.add(state.mes9!.sum);
+        listFrete.add(state.frete9!.sum);
+        listCusto.add(state.custo9!.sum);
+        lista.remove('mes9');
+      } else if (lista.contains('mes10')) {
+        list.add(state.mes10!.sum);
+        listFrete.add(state.frete10!.sum);
+        listCusto.add(state.custo10!.sum);
+        lista.remove('mes10');
+      } else if (lista.contains('mes11')) {
+        list.add(state.mes11!.sum);
+        listFrete.add(state.frete11!.sum);
+        listCusto.add(state.custo11!.sum);
+        lista.remove('mes11');
+      } else {
+        list.add(state.mes12!.sum);
+        listFrete.add(state.frete12!.sum);
+        listCusto.add(state.custo12!.sum);
+        lista.remove('mes12');
+      }
+    }
+print('stado de meses : ${state.meses}');
+    state = ViewStates(
         mes1: state.mes1,
         mes2: state.mes2,
         mes3: state.mes3,
@@ -605,7 +625,8 @@ class SaleController extends StateNotifier<ViewState> {
         isChecked: state.isChecked,
         rest: list,
         count: state.count,
-    restFrete: listFrete,
-    restCusto : listCusto);
+        restFrete: listFrete,
+        restCusto: listCusto,
+        meses: state.meses);
   }
 }
