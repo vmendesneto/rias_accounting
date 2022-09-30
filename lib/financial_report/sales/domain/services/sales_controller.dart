@@ -240,6 +240,7 @@ List<String> lista =[];
   }
 
   void onSelection(int option) {
+    List<String> mesesOpt = [];
     switch (option) {
       case 1:
         {
@@ -247,6 +248,9 @@ List<String> lista =[];
               DateTime(variables.today.year, variables.today.month - 1, 01);
           var dateFinal =
               DateTime(variables.today.year, variables.today.month, 01);
+          mesesOpt.add((variables.today.month - 1).toString());
+
+
           state = ViewStates(
             initialDate: dateInitial,
             endDate: dateFinal,
@@ -256,6 +260,7 @@ List<String> lista =[];
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: 1,
+            meses: mesesOpt,
           );
         }
         break;
@@ -265,6 +270,9 @@ List<String> lista =[];
               DateTime(variables.today.year, variables.today.month - 3, 01);
           var dateFinal =
               DateTime(variables.today.year, variables.today.month, 01);
+          mesesOpt.add((variables.today.month - 1).toString());
+          mesesOpt.add((variables.today.month - 2).toString());
+          mesesOpt.add((variables.today.month - 3).toString());
           state = ViewStates(
             initialDate: dateInitial,
             endDate: dateFinal,
@@ -274,6 +282,7 @@ List<String> lista =[];
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: 3,
+            meses: mesesOpt,
           );
         }
         break;
@@ -283,6 +292,13 @@ List<String> lista =[];
               DateTime(variables.today.year, variables.today.month - 6, 01);
           var dateFinal =
               DateTime(variables.today.year, variables.today.month, 01);
+          mesesOpt.add((variables.today.month - 1).toString());
+          mesesOpt.add((variables.today.month - 2).toString());
+          mesesOpt.add((variables.today.month - 3).toString());
+          mesesOpt.add((variables.today.month - 4).toString());
+          mesesOpt.add((variables.today.month - 5).toString());
+          mesesOpt.add((variables.today.month - 6).toString());
+
           state = ViewStates(
             initialDate: dateInitial,
             endDate: dateFinal,
@@ -292,6 +308,7 @@ List<String> lista =[];
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: 6,
+            meses: mesesOpt,
           );
         }
         break;
@@ -301,6 +318,19 @@ List<String> lista =[];
               DateTime(variables.today.year, variables.today.month - 12, 01);
           var dateFinal =
               DateTime(variables.today.year, variables.today.month, 01);
+          mesesOpt.add((variables.today.month - 1).toString());
+          mesesOpt.add((variables.today.month - 2).toString());
+          mesesOpt.add((variables.today.month - 3).toString());
+          mesesOpt.add((variables.today.month - 4).toString());
+          mesesOpt.add((variables.today.month - 5).toString());
+          mesesOpt.add((variables.today.month - 6).toString());
+          mesesOpt.add((variables.today.month - 7).toString());
+          mesesOpt.add((variables.today.month - 8).toString());
+          mesesOpt.add((variables.today.month - 9).toString());
+          mesesOpt.add((variables.today.month - 10).toString());
+          mesesOpt.add((variables.today.month - 11).toString());
+          mesesOpt.add((variables.today.month - 12).toString());
+
           state = ViewStates(
             initialDate: dateInitial,
             endDate: dateFinal,
@@ -310,6 +340,7 @@ List<String> lista =[];
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: 12,
+            meses: mesesOpt,
           );
         }
         break;
@@ -532,8 +563,9 @@ List<String> lista =[];
       filtered: state.filtered,
       isChecked: state.isChecked,
       count: state.count,
-      meses: lista,
+      meses: state.meses,
     );
+    print('sales meses: ${state.meses}');
   }
 
   total() {
@@ -546,65 +578,65 @@ List<String> lista =[];
         list.add(state.mes1!.sum);
         listFrete.add(state.frete1!.sum);
         listCusto.add(state.custo1!.sum);
-        lista.remove('mes1');
+        lista.removeWhere((element) => element == 'mes1');
       } else if (lista.contains('mes2')) {
         list.add(state.mes2!.sum);
         listFrete.add(state.frete2!.sum);
         listCusto.add(state.custo2!.sum);
-        lista.remove('mes2');
+        lista.removeWhere((element) => element == 'mes2');
       } else if (lista.contains('mes3')) {
         list.add(state.mes3!.sum);
         listFrete.add(state.frete3!.sum);
         listCusto.add(state.custo3!.sum);
-        lista.remove('mes3');
+        lista.removeWhere((element) => element == 'mes3');
       } else if (lista.contains('mes4')) {
         list.add(state.mes4!.sum);
         listFrete.add(state.frete4!.sum);
         listCusto.add(state.custo4!.sum);
-        lista.remove('mes4');
+        lista.removeWhere((element) => element == 'mes4');
       } else if (lista.contains('mes5')) {
         list.add(state.mes5!.sum);
         listFrete.add(state.frete5!.sum);
         listCusto.add(state.custo5!.sum);
-        lista.remove('mes5');
+        lista.removeWhere((element) => element == 'mes5');
       } else if (lista.contains('mes6')) {
         list.add(state.mes6!.sum);
         listFrete.add(state.frete6!.sum);
         listCusto.add(state.custo6!.sum);
-        lista.remove('mes6');
+        lista.removeWhere((element) => element == 'mes6');
       } else if (lista.contains('mes7')) {
         list.add(state.mes7!.sum);
         listFrete.add(state.frete7!.sum);
         listCusto.add(state.custo7!.sum);
-        lista.remove('mes7');
+        lista.removeWhere((element) => element == 'mes7');
       } else if (lista.contains('mes8')) {
         list.add(state.mes8!.sum);
         listFrete.add(state.frete8!.sum);
         listCusto.add(state.custo8!.sum);
-        lista.remove('mes8');
+        lista.removeWhere((element) => element == 'mes8');
       } else if (lista.contains('mes9')) {
         list.add(state.mes9!.sum);
         listFrete.add(state.frete9!.sum);
         listCusto.add(state.custo9!.sum);
-        lista.remove('mes9');
+        lista.removeWhere((element) => element == 'mes9');
       } else if (lista.contains('mes10')) {
         list.add(state.mes10!.sum);
         listFrete.add(state.frete10!.sum);
         listCusto.add(state.custo10!.sum);
-        lista.remove('mes10');
+        lista.removeWhere((element) => element == 'mes10');
       } else if (lista.contains('mes11')) {
         list.add(state.mes11!.sum);
         listFrete.add(state.frete11!.sum);
         listCusto.add(state.custo11!.sum);
-        lista.remove('mes11');
+        lista.removeWhere((element) => element == 'mes11');
       } else {
         list.add(state.mes12!.sum);
         listFrete.add(state.frete12!.sum);
         listCusto.add(state.custo12!.sum);
-        lista.remove('mes12');
+        lista.removeWhere((element) => element == 'mes12');
       }
     }
-print('stado de meses : ${state.meses}');
+
     state = ViewStates(
         mes1: state.mes1,
         mes2: state.mes2,
@@ -627,6 +659,10 @@ print('stado de meses : ${state.meses}');
         count: state.count,
         restFrete: listFrete,
         restCusto: listCusto,
-        meses: state.meses);
+      meses: state.meses,
+        );
+    print('meses total sales: ${state.meses}');
+
   }
+
 }

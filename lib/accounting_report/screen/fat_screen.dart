@@ -4,14 +4,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rias_accounting/financial_report/%20devolution/providers/devolution_provider.dart';
 import 'package:rias_accounting/financial_report/receive/providers/receive_provider.dart';
 
-
+import '../../core/global_variables.dart';
 import '../../financial_report/sales/provider/sale_provider.dart';
 
 class FatScreen extends ConsumerStatefulWidget {
   final String title;
+  final int option;
 
   FatScreen({
     required this.title,
+    required this.option,
     Key? key,
   }) : super(key: key);
 
@@ -42,7 +44,7 @@ class FatScreenState extends ConsumerState<FatScreen> {
   Widget build(
     BuildContext context,
   ) {
-    final _height = MediaQuery.of(context).size.height;
+    final sales = ref.watch(saleProvider);
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -50,239 +52,382 @@ class FatScreenState extends ConsumerState<FatScreen> {
         body: SingleChildScrollView(
             scrollDirection: Axis.horizontal,
             child: SizedBox(
-                height: double.infinity,
-                width: 1200,
-                child: SingleChildScrollView(
-                    scrollDirection: Axis.vertical,
-                    child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          SizedBox(height: _height * 0.009),
-                          sale(),
-                          SizedBox(height: _height * 0.003),
-                          dev(),
-                          SizedBox(height: _height * 0.003),
-                          frete(),
-                          SizedBox(height: _height * 0.003),
-                          fatLiq(),
-                          SizedBox(height: _height * 0.003),
-                          cmv(),
-                          SizedBox(height: _height * 0.003),
-                          rec(),
-                        ])))));
+              height: double.infinity,
+              width: 1310,
+              child: SingleChildScrollView(
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: [
+                      meses(),
+                      const SizedBox(height: 1.2),
+                      sale(),
+                      const SizedBox(height: 1.2),
+                      dev(),
+                      const SizedBox(height: 1.2),
+                      frete(),
+                      const SizedBox(height: 1.2),
+                      fatLiq(),
+                      const SizedBox(height: 1.2),
+                      cmv(),
+                      const SizedBox(height: 1.2),
+                      rec(),
+                    ],
+                  )),
+            )));
   }
 
-  Widget rec() {
+  rec() {
     final receive = ref.watch(receiveProvider);
-    return Row(children: [
-      Container(
-          width: 100,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1.0),
-          ),
-          padding: const EdgeInsets.all(2),
-          child: const Text('Recebimento',
-              //                   // style: state.textTheme.bodyText1,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w600))),
-      const SizedBox(
-        width: 20,
-      ),
-      SizedBox(
-          width: 1000,
-          height: 20,
-          child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: receive.count,
-              itemBuilder: (context, int index) {
-                double value = double.parse(receive.rest![index].toString());
-                return Row(
-                  children: [
-                    Text(value.toStringAsFixed(2)),
-                    const SizedBox(width: 20),
-                  ],
-                );
-              })),
-    ]);
+    return Container(
+        height: 15,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Table(
+                defaultColumnWidth: const FixedColumnWidth(100),
+                border: TableBorder.all(color: Colors.black),
+                children: const <TableRow>[
+                  TableRow(children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(top: 2, bottom: 2),
+                        child: Text("Recebido", textAlign: TextAlign.center))
+                  ])
+                ]),
+            ListView.builder(
+                reverse: true,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: receive.count,
+                itemBuilder: (context, int index) {
+                  double value = double.parse(receive.rest![index].toString());
+                  return Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Table(
+                            defaultColumnWidth: FixedColumnWidth(100),
+                            border: TableBorder.all(color: Colors.black),
+                            children: <TableRow>[
+                              TableRow(children: <Widget>[
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 2, bottom: 2),
+                                    child: Text(value.toStringAsFixed(2),
+                                        textAlign: TextAlign.center))
+                              ])
+                            ])
+                      ]);
+                })
+          ],
+        ));
   }
-  Widget sale() {
+
+  sale() {
     final sale = ref.watch(saleProvider);
-    return Row(children: [
-      Container(
-          width: 100,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1.0),
-          ),
-          padding: const EdgeInsets.all(2),
-          child: const Text('Faturamento',
-              //                   // style: state.textTheme.bodyText1,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w600))),
-      const SizedBox(
-        width: 20,
-      ),
-      SizedBox(
-          width: 1000,
-          height: 20,
-          child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: sale.count,
-              itemBuilder: (context, int index) {
-                double value = double.parse(sale.rest![index].toString());
-                return Row(
-                  children: [
-                    Text(value.toStringAsFixed(2)),
-                    const SizedBox(width: 20),
-                  ],
-                );
-              })),
-    ]);
+    return Container(
+        height: 15,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Table(
+                defaultColumnWidth: const FixedColumnWidth(100),
+                border: TableBorder.all(color: Colors.black),
+                children: const <TableRow>[
+                  TableRow(children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(top: 2, bottom: 2),
+                        child: Text("Vendas", textAlign: TextAlign.center))
+                  ])
+                ]),
+            ListView.builder(
+                reverse: true,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: sale.count,
+                itemBuilder: (context, int index) {
+                  double value = double.parse(sale.rest![index].toString());
+                  return Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Table(
+                            defaultColumnWidth: FixedColumnWidth(100),
+                            border: TableBorder.all(color: Colors.black),
+                            children: <TableRow>[
+                              TableRow(children: <Widget>[
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 2, bottom: 2),
+                                    child: Text(value.toStringAsFixed(2),
+                                        textAlign: TextAlign.center))
+                              ])
+                            ])
+                      ]);
+                })
+          ],
+        ));
   }
-  Widget frete() {
+
+  frete() {
     final sale = ref.watch(saleProvider);
-    return Row(children: [
-      Container(
-          width: 100,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1.0),
-          ),
-          padding: const EdgeInsets.all(2),
-          child: const Text('Frete',
-              //                   // style: state.textTheme.bodyText1,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w600))),
-      const SizedBox(
-        width: 20,
-      ),
-      SizedBox(
-          width: 1000,
-          height: 20,
-          child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: sale.count,
-              itemBuilder: (context, int index) {
-                double value = double.parse(sale.restFrete![index].toString());
-                return Row(
-                  children: [
-                    Text(value != null ? value.toStringAsFixed(2): "0.00"),
-                    const SizedBox(width: 20),
-                  ],
-                );
-              })),
-    ]);
+    return Container(
+        height: 15,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Table(
+                defaultColumnWidth: const FixedColumnWidth(100),
+                border: TableBorder.all(color: Colors.black),
+                children: const <TableRow>[
+                  TableRow(children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(top: 2, bottom: 2),
+                        child: Text("Frete", textAlign: TextAlign.center))
+                  ])
+                ]),
+            ListView.builder(
+                reverse: true,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: sale.count,
+                itemBuilder: (context, int index) {
+                  double value =
+                      double.parse(sale.restFrete![index].toString());
+                  return Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Table(
+                            defaultColumnWidth: FixedColumnWidth(100),
+                            border: TableBorder.all(color: Colors.black),
+                            children: <TableRow>[
+                              TableRow(children: <Widget>[
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 2, bottom: 2),
+                                    child: Text(value.toStringAsFixed(2),
+                                        textAlign: TextAlign.center))
+                              ])
+                            ])
+                      ]);
+                })
+          ],
+        ));
   }
-  Widget fatLiq() {
-    final sale = ref.watch(saleProvider);
-    final dev = ref.watch(devolutionProvider);
-    return Row(children: [
-      Container(
-          width: 100,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1.0),
-          ),
-          padding: const EdgeInsets.all(2),
-          child: const Text('Fat. Liquido',
-              //                   // style: state.textTheme.bodyText1,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w600))),
-      const SizedBox(
-        width: 20,
-      ),
-      SizedBox(
-          width: 1000,
-          height: 20,
-          child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: sale.count,
-              itemBuilder: (context, int index) {
-                double value = double.parse((sale.rest![index] - dev.rest![index]).toString());
-                return Row(
-                  children: [
-                    Text(value.toStringAsFixed(2)),
-                    const SizedBox(width: 20),
-                  ],
-                );
-              })),
-    ]);
-  }
-  Widget dev() {
-    final dev = ref.watch(devolutionProvider);
-    return Row(children: [
-      Container(
-          width: 100,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1.0),
-          ),
-          padding: const EdgeInsets.all(2),
-          child: const Text('Devoluções',
-              //                   // style: state.textTheme.bodyText1,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w600))),
-      const SizedBox(
-        width: 20,
-      ),
-      SizedBox(
-          width: 1000,
-          height: 20,
-          child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: dev.count,
-              itemBuilder: (context, int index) {
-                double value = double.parse(dev.rest![index].toString());
-                return Row(
-                  children: [
-                    Text(value.toStringAsFixed(2)),
-                    const SizedBox(width: 20),
-                  ],
-                );
-              })),
-    ]);
-  }
-  Widget cmv() {
+
+  fatLiq() {
     final sale = ref.watch(saleProvider);
     final dev = ref.watch(devolutionProvider);
-    return Row(children: [
-      Container(
-          width: 100,
-          decoration: BoxDecoration(
-            border: Border.all(color: Colors.black, width: 1.0),
-          ),
-          padding: const EdgeInsets.all(2),
-          child: const Text('CMV Liq.',
-              //                   // style: state.textTheme.bodyText1,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.w600))),
-      const SizedBox(
-        width: 20,
-      ),
-      SizedBox(
-          width: 1000,
-          height: 20,
-          child: ListView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: dev.count,
-              itemBuilder: (context, int index) {
-                double value = double.parse((sale.restCusto![index]- dev.restCusto![index]).toString());
-                return Row(
-                  children: [
-                    Text(value.toStringAsFixed(2)),
-                    const SizedBox(width: 20),
-                  ],
-                );
-              })),
-    ]);
+
+    return Container(
+        height: 15,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Table(
+                defaultColumnWidth: const FixedColumnWidth(100),
+                border: TableBorder.all(color: Colors.black),
+                children: const <TableRow>[
+                  TableRow(children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(top: 2, bottom: 2),
+                        child:
+                            Text('Fat. Liquido', textAlign: TextAlign.center))
+                  ])
+                ]),
+            ListView.builder(
+                reverse: true,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: sale.count,
+                itemBuilder: (context, int index) {
+                  double value = double.parse(
+                      (sale.rest![index] - dev.rest![index]).toString());
+                  return Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Table(
+                            defaultColumnWidth: FixedColumnWidth(100),
+                            border: TableBorder.all(color: Colors.black),
+                            children: <TableRow>[
+                              TableRow(children: <Widget>[
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 2, bottom: 2),
+                                    child: Text(value.toStringAsFixed(2),
+                                        textAlign: TextAlign.center))
+                              ])
+                            ])
+                      ]);
+                })
+          ],
+        ));
+  }
+
+  dev() {
+    final dev = ref.watch(devolutionProvider);
+    return Container(
+        height: 15,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Table(
+                defaultColumnWidth: const FixedColumnWidth(100),
+                border: TableBorder.all(color: Colors.black),
+                children: const <TableRow>[
+                  TableRow(children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(top: 2, bottom: 2),
+                        child: Text('Devoluções', textAlign: TextAlign.center))
+                  ])
+                ]),
+            ListView.builder(
+                reverse: true,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: dev.count,
+                itemBuilder: (context, int index) {
+                  double value = double.parse(dev.rest![index].toString());
+                  return Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Table(
+                            defaultColumnWidth: FixedColumnWidth(100),
+                            border: TableBorder.all(color: Colors.black),
+                            children: <TableRow>[
+                              TableRow(children: <Widget>[
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 2, bottom: 2),
+                                    child: Text(value.toStringAsFixed(2),
+                                        textAlign: TextAlign.center))
+                              ])
+                            ])
+                      ]);
+                })
+          ],
+        ));
+  }
+
+  cmv() {
+    final sale = ref.watch(saleProvider);
+    final dev = ref.watch(devolutionProvider);
+    return Container(
+        height: 15,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Table(
+                defaultColumnWidth: const FixedColumnWidth(100),
+                border: TableBorder.all(color: Colors.black),
+                children: const <TableRow>[
+                  TableRow(children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(top: 2, bottom: 2),
+                        child: Text('CMV Liq.', textAlign: TextAlign.center))
+                  ])
+                ]),
+            ListView.builder(
+                reverse: true,
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: dev.count,
+                itemBuilder: (context, int index) {
+                  double value = double.parse(
+                      (sale.restCusto![index] - dev.restCusto![index])
+                          .toString());
+                  return Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Table(
+                            defaultColumnWidth: FixedColumnWidth(100),
+                            border: TableBorder.all(color: Colors.black),
+                            children: <TableRow>[
+                              TableRow(children: <Widget>[
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 2, bottom: 2),
+                                    child: Text(value.toStringAsFixed(2),
+                                        textAlign: TextAlign.center))
+                              ])
+                            ])
+                      ]);
+                })
+          ],
+        ));
+  }
+
+  meses() {
+    final sale = ref.watch(saleProvider);
+    List mesesList = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"];
+    return Container(
+        height: 15,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Table(
+                defaultColumnWidth: const FixedColumnWidth(100),
+                border: TableBorder.all(color: Colors.black),
+                children: const <TableRow>[
+                  TableRow(children: <Widget>[
+                    Padding(
+                        padding: EdgeInsets.only(top: 2, bottom: 2),
+                        child: Text('Mês', textAlign: TextAlign.center))
+                  ])
+                ]),
+            ListView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                scrollDirection: Axis.horizontal,
+                itemCount: sale.meses!.length,
+                itemBuilder: (context, int index) {
+                  int mes = int.parse(sale.meses![index])-1;
+                  if(mes == -1){
+                    mes = 11;
+                  }else if(mes == -2){
+                    mes = 10;
+                  }else if(mes == -3){
+                    mes = 9;
+                  }else if(mes == -4){
+                    mes = 8;
+                  }
+                  String meses = mesesList[mes];
+                  print(meses);
+                  return Flex(
+                      direction: Axis.horizontal,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Table(
+                            defaultColumnWidth: FixedColumnWidth(100),
+                            border: TableBorder.all(color: Colors.black),
+                            children: <TableRow>[
+                              TableRow(children: <Widget>[
+                                Padding(
+                                    padding: const EdgeInsets.only(
+                                        top: 2, bottom: 2),
+                                    child: Text(meses,
+                                        textAlign: TextAlign.center))
+                              ])
+                            ])
+                      ]);
+                })
+          ],
+        ));
   }
 }

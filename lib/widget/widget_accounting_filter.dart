@@ -29,6 +29,8 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
     final stateSale = ref.watch(saleProvider);
     final sales = ref.read(saleProvider.notifier);
 
+
+
     var periodo = <List<String>, int>{
       ['Periodo']: 0,
       ['ultimo mês']: 1,
@@ -57,7 +59,8 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
       body: Column(
         children: [
           SizedBox(height: _height * 0.009),
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Row(
+              mainAxisAlignment: MainAxisAlignment.center, children: [
             const Text(
               "Periodo : ",
               style: TextStyle(fontSize: 20.0),
@@ -68,7 +71,7 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
             Container(
               color: const Color(0xffDCDCDC),
               height: _height * 0.05,
-              width: _width * 0.43,
+              width: _width * 0.3,
               child: DropdownButton<String>(
                 alignment: Alignment.center,
                 dropdownColor: Colors.white,
@@ -122,7 +125,7 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
                 onPressed: () async {
                   onTouch();
                    Navigator.of(context).push(MaterialPageRoute(
-                       builder: (context) => FatScreen(title: "Faturamento")));
+                       builder: (context) => FatScreen(title: "Faturamento", option: option,)));
                 },
                 child: const Text(
                   "Exibir",
@@ -145,11 +148,10 @@ onTouch() async {
     receive.onSelection(option);
     dev.onSelection(option);
     await sales.separateMonth();
-    //await receive.separateMonth();
+    await receive.separateMonth();
     await dev.separateMonth();
     await sales.total();
-   // await receive.total();
-
+    await receive.total();
     await dev.total();
   }
   Widget listEmpresas(stateReceive, receive, stateDev, dev, stateSale, sales) {

@@ -85,6 +85,7 @@ Future<List<Receive>> fetchReceive() async {
     return receives = (json.decode(response.body) as List)
         .map((data) => Receive.fromJson(data))
         .toList();
+
   } else {
     throw Exception('Verifique Conexão e tente novamente');
   }

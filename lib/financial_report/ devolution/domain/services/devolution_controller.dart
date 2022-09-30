@@ -83,7 +83,7 @@ class DevolutionController extends StateNotifier<ViewState> {
   DevolutionController([ViewState? state]) : super(ViewState());
 
   Variables variables = Variables();
-
+  List<String> lista =[];
 
   void dateInitial() {
     var now = DateTime.now().subtract(const Duration(days: 4));
@@ -333,6 +333,7 @@ class DevolutionController extends StateNotifier<ViewState> {
             {
               mes1.add(filtro[i].valor!);
               custo1.add(filtro[i].valorCusto!);
+              lista.add('mes1');
               i++;
             }
             break;
@@ -340,11 +341,13 @@ class DevolutionController extends StateNotifier<ViewState> {
             {
               mes2.add(filtro[i].valor!);
               custo2.add(filtro[i].valorCusto!);
+              lista.add('mes2');
               i++;
             }
             break;
           case 3:
             {
+              lista.add('mes3');
               mes3.add(filtro[i].valor!);
               custo3.add(filtro[i].valorCusto!);
               i++;
@@ -355,12 +358,14 @@ class DevolutionController extends StateNotifier<ViewState> {
               mes4.add(filtro[i].valor!);
               custo4.add(filtro[i].valorCusto!);
               i++;
+              lista.add('mes4');
             }
             break;
           case 5:
             {
               mes5.add(filtro[i].valor!);
               custo5.add(filtro[i].valorCusto!);
+              lista.add('mes5');
               i++;
             }
             break;
@@ -368,6 +373,7 @@ class DevolutionController extends StateNotifier<ViewState> {
             {
               mes6.add(filtro[i].valor!);
               custo6.add(filtro[i].valorCusto!);
+              lista.add('mes6');
               i++;
             }
             break;
@@ -375,6 +381,7 @@ class DevolutionController extends StateNotifier<ViewState> {
             {
               mes7.add(filtro[i].valor!);
               custo7.add(filtro[i].valorCusto!);
+              lista.add('mes7');
               i++;
             }
             break;
@@ -382,6 +389,7 @@ class DevolutionController extends StateNotifier<ViewState> {
             {
               mes8.add(filtro[i].valor!);
               custo8.add(filtro[i].valorCusto!);
+              lista.add('mes8');
               i++;
             }
             break;
@@ -389,6 +397,7 @@ class DevolutionController extends StateNotifier<ViewState> {
             {
               mes9.add(filtro[i].valor!);
               custo9.add(filtro[i].valorCusto!);
+              lista.add('mes9');
               i++;
             }
             break;
@@ -396,6 +405,7 @@ class DevolutionController extends StateNotifier<ViewState> {
             {
               mes10.add(filtro[i].valor!);
               custo10.add(filtro[i].valorCusto!);
+              lista.add('mes10');
               i++;
             }
             break;
@@ -403,6 +413,7 @@ class DevolutionController extends StateNotifier<ViewState> {
             {
               mes11.add(filtro[i].valor!);
               custo11.add(filtro[i].valorCusto!);
+              lista.add('mes11');
               i++;
             }
             break;
@@ -410,6 +421,7 @@ class DevolutionController extends StateNotifier<ViewState> {
             {
               mes12.add(filtro[i].valor!);
               custo12.add(filtro[i].valorCusto!);
+              lista.add('mes12');
               i++;
             }
             break;
@@ -453,69 +465,69 @@ class DevolutionController extends StateNotifier<ViewState> {
   }
 
   total() {
-    List<String>? lista = ViewStates().meses;
+    //List<String>? lista = ViewStates().meses;
     List<num> list = [];
     List<num> listCusto = [];
-    var valor = lista!.length;
+    var valor = lista.length;
     for (var i = 0; i < valor; i++) {
-      if (lista!.contains('mes1')) {
+      if (lista.contains('mes1')) {
         list.add(state.mes1!.sum);
         listCusto.add(state.custo1!.sum);
-        lista!.remove('mes1');
-      } else if (lista!.contains('mes2')) {
+        lista.removeWhere((element) => element == 'mes1');
+      } else if (lista.contains('mes2')) {
         list.add(state.mes2!.sum);
 
         listCusto.add(state.custo2!.sum);
-        lista!.remove('mes2');
-      } else if (lista!.contains('mes3')) {
+        lista.removeWhere((element) => element == 'mes2');
+      } else if (lista.contains('mes3')) {
         list.add(state.mes3!.sum);
 
         listCusto.add(state.custo3!.sum);
-        lista!.remove('mes3');
-      } else if (lista!.contains('mes4')) {
+        lista.removeWhere((element) => element == 'mes3');
+      } else if (lista.contains('mes4')) {
         list.add(state.mes4!.sum);
 
         listCusto.add(state.custo4!.sum);
-        lista!.remove('mes4');
-      } else if (lista!.contains('mes5')) {
+        lista.removeWhere((element) => element == 'mes4');
+      } else if (lista.contains('mes5')) {
         list.add(state.mes5!.sum);
 
         listCusto.add(state.custo5!.sum);
-        lista!.remove('mes5');
-      } else if (lista!.contains('mes6')) {
+        lista.removeWhere((element) => element == 'mes5');
+      } else if (lista.contains('mes6')) {
         list.add(state.mes6!.sum);
 
         listCusto.add(state.custo6!.sum);
-        lista!.remove('mes6');
-      } else if (lista!.contains('mes7')) {
+        lista.removeWhere((element) => element == 'mes6');
+      } else if (lista.contains('mes7')) {
         list.add(state.mes7!.sum);
 
         listCusto.add(state.custo7!.sum);
-        lista!.remove('mes7');
-      } else if (lista!.contains('mes8')) {
+        lista.removeWhere((element) => element == 'mes7');
+      } else if (lista.contains('mes8')) {
         list.add(state.mes8!.sum);
 
         listCusto.add(state.custo8!.sum);
-        lista!.remove('mes8');
-      } else if (lista!.contains('mes9')) {
+        lista.removeWhere((element) => element == 'mes8');
+      } else if (lista.contains('mes9')) {
         list.add(state.mes9!.sum);
 
         listCusto.add(state.custo9!.sum);
-        lista!.remove('mes9');
-      } else if (lista!.contains('mes10')) {
+        lista.removeWhere((element) => element == 'mes9');
+      } else if (lista.contains('mes10')) {
         list.add(state.mes10!.sum);
 
         listCusto.add(state.custo10!.sum);
-        lista!.remove('mes10');
-      } else if (lista!.contains('mes11')) {
+        lista.removeWhere((element) => element == 'mes10');
+      } else if (lista.contains('mes11')) {
         list.add(state.mes11!.sum);
 
         listCusto.add(state.custo11!.sum);
-        lista!.remove('mes11');
+        lista.removeWhere((element) => element == 'mes11');
       } else {
         list.add(state.mes12!.sum);
         listCusto.add(state.custo12!.sum);
-        lista!.remove('mes12');
+        lista.removeWhere((element) => element == 'mes12');
       }
     }
 

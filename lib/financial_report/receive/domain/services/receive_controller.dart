@@ -56,7 +56,7 @@ class ReceiveController extends StateNotifier<ViewReceiveState> {
   ReceiveController([ViewReceiveState? state]) : super(ViewReceiveState());
 
   Variables variables = Variables();
-
+  List<String> lista =[];
   void dateInitial() {
     var now = DateTime.now().subtract(const Duration(days: 4));
     var end = DateTime.now().add(const Duration(days: 0));
@@ -66,6 +66,7 @@ class ReceiveController extends StateNotifier<ViewReceiveState> {
   Future<List<Receive>> emp() async {
     List<int> lista = [];
     List<Receive> receives = await fetchReceive();
+    print(receives);
     for (var i = 0; i < receives.length;) {
       if (lista.isEmpty) {
         lista.add(receives[i].empresa!);
@@ -300,6 +301,7 @@ class ReceiveController extends StateNotifier<ViewReceiveState> {
         switch (ola.month) {
           case 1:
             {
+              lista.add('mes1');
               mes1.add(filtro[i].valor_pago!);
               i++;
             }
@@ -307,66 +309,77 @@ class ReceiveController extends StateNotifier<ViewReceiveState> {
           case 2:
             {
               mes2.add(filtro[i].valor_pago!);
+              lista.add('mes2');
               i++;
             }
             break;
           case 3:
             {
               mes3.add(filtro[i].valor_pago!);
+              lista.add('mes3');
               i++;
             }
             break;
           case 4:
             {
               mes4.add(filtro[i].valor_pago!);
+              lista.add('mes4');
               i++;
             }
             break;
           case 5:
             {
               mes5.add(filtro[i].valor_pago!);
+              lista.add('mes5');
               i++;
             }
             break;
           case 6:
             {
               mes6.add(filtro[i].valor_pago!);
+              lista.add('mes6');
               i++;
             }
             break;
           case 7:
             {
               mes7.add(filtro[i].valor_pago!);
+              lista.add('mes7');
               i++;
             }
             break;
           case 8:
             {
               mes8.add(filtro[i].valor_pago!);
+              lista.add('mes8');
               i++;
             }
             break;
           case 9:
             {
               mes9.add(filtro[i].valor_pago!);
+              lista.add('mes9');
               i++;
             }
             break;
           case 10:
             {
               mes10.add(filtro[i].valor_pago!);
+              lista.add('mes10');
               i++;
             }
             break;
           case 11:
             {
               mes11.add(filtro[i].valor_pago!);
+              lista.add('mes11');
               i++;
             }
             break;
           case 12:
             {
               mes12.add(filtro[i].valor_pago!);
+              lista.add('mes12');
               i++;
             }
             break;
@@ -398,28 +411,50 @@ class ReceiveController extends StateNotifier<ViewReceiveState> {
   }
 
   total() {
-    var list = [
-      state.mes1!.sum,
-      state.mes2!.sum,
-      state.mes3!.sum,
-      state.mes4!.sum,
-      state.mes5!.sum,
-      state.mes6!.sum,
-      state.mes7!.sum,
-      state.mes8!.sum,
-      state.mes9!.sum,
-      state.mes10!.sum,
-      state.mes11!.sum,
-      state.mes12!.sum,
-    ];
-    for (var i = 0; i < list.length;) {
-      if (list[i] == 0) {
-        list.remove(list[i]);
-        i++;
+    List<num> list = [];
+    var valor = lista.length;
+    print(lista);
+    for (var i = 0; i < valor; i++) {
+      print(lista);
+      if (lista.contains('mes1')) {
+        list.add(state.mes1!.sum);
+        lista.removeWhere((element) => element == 'mes1');
+      } else if (lista.contains('mes2')) {
+        list.add(state.mes2!.sum);
+        lista.removeWhere((element) => element == 'mes2');
+      } else if (lista.contains('mes3')) {
+        list.add(state.mes3!.sum);
+        lista.removeWhere((element) => element == 'mes3');
+      } else if (lista.contains('mes4')) {
+        list.add(state.mes4!.sum);
+        lista.removeWhere((element) => element == 'mes4');
+      } else if (lista.contains('mes5')) {
+        list.add(state.mes5!.sum);
+        lista.removeWhere((element) => element == 'mes5');
+      } else if (lista.contains('mes6')) {
+        list.add(state.mes6!.sum);
+        lista.removeWhere((element) => element == 'mes6');
+      } else if (lista.contains('mes7')) {
+        list.add(state.mes7!.sum);
+        lista.removeWhere((element) => element == 'mes7');
+      } else if (lista.contains('mes8')) {
+        list.add(state.mes8!.sum);
+        lista.removeWhere((element) => element == 'mes8');
+      } else if (lista.contains('mes9')) {
+        list.add(state.mes9!.sum);
+        lista.removeWhere((element) => element == 'mes9');
+      } else if (lista.contains('mes10')) {
+        list.add(state.mes10!.sum);
+        lista.removeWhere((element) => element == 'mes10');
+      } else if (lista.contains('mes11')) {
+        list.add(state.mes11!.sum);
+        lista.removeWhere((element) => element == 'mes11');
       } else {
-        i++;
+        list.add(state.mes12!.sum);
+        lista.removeWhere((element) => element == 'mes12');
       }
     }
+
 
     state = ViewReceiveState(
         mes1: state.mes1,
