@@ -66,7 +66,6 @@ class ReceiveController extends StateNotifier<ViewReceiveState> {
   Future<List<Receive>> emp() async {
     List<int> lista = [];
     List<Receive> receives = await fetchReceive();
-    print(receives);
     for (var i = 0; i < receives.length;) {
       if (lista.isEmpty) {
         lista.add(receives[i].empresa!);
@@ -413,9 +412,9 @@ class ReceiveController extends StateNotifier<ViewReceiveState> {
   total() {
     List<num> list = [];
     var valor = lista.length;
-    print(lista);
+
     for (var i = 0; i < valor; i++) {
-      print(lista);
+
       if (lista.contains('mes1')) {
         list.add(state.mes1!.sum);
         lista.removeWhere((element) => element == 'mes1');

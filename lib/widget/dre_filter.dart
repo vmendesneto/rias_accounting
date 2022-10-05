@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rias_accounting/financial_report/%20devolution/providers/devolution_provider.dart';
-import '../accounting_report/screen/fat_screen.dart';
 import '../financial_report/receive/providers/receive_provider.dart';
 import '../financial_report/sales/provider/sale_provider.dart';
 
-class FilterAccounting extends ConsumerStatefulWidget {
-  FilterAccounting({Key? key}) : super(key: key);
+class FilterDre extends ConsumerStatefulWidget {
+  FilterDre({Key? key}) : super(key: key);
 
   @override
-  ConsumerState createState() => FilterAccountingState();
+  ConsumerState createState() => FilterDreState();
 }
 
-class FilterAccountingState extends ConsumerState<FilterAccounting> {
+class FilterDreState extends ConsumerState<FilterDre> {
   var _itemSelecionado = 'Periodo';
   int option = 0;
 
@@ -50,9 +49,9 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
       appBar: AppBar(
         title: const Center(
             child: Text(
-          "Filtro",
-          //style: TextStyle(fontSize: _width * 0.1),
-        )),
+              "Filtro",
+              //style: TextStyle(fontSize: _width * 0.1),
+            )),
       ),
       body: Column(
         children: [
@@ -121,9 +120,31 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
             width: double.infinity,
             child: ElevatedButton(
                 onPressed: () async {
-                  onTouch();
-                   Navigator.of(context).push(MaterialPageRoute(
-                       builder: (context) => FatScreen(title: "Faturamento", option: option,)));
+                  List fatLiq = [];
+                  List cmv = [];
+                  await onTouch();
+                  // Navigator.of(context).push(MaterialPageRoute(
+                  //     builder: (context) => (title: "D.R.E", option: option,)));
+                  //VENDIDO
+                  print(stateSale.rest);
+                  //DEVOLUÇÃO
+                  print(stateDev.rest);
+                  //FAT. LIQUIDO
+                  for(var i =0; i < stateSale.rest!.length;i++){
+                    print(stateSale.rest![i] - stateDev.rest![i]);
+                    fatLiq.add(stateSale.rest![i] - stateDev.rest![i]);
+                  }
+                  //CMV
+                  for(var i =0; i < stateSale.restCusto!.length;i++){
+                    print(stateSale.restCusto![i] - stateDev.restCusto![i]);
+                    cmv.add(stateSale.restCusto![i] - stateDev.restCusto![i]);
+                  }
+                  //MARGEM BRUTA
+                  for(var i =0; i < stateSale.restCusto!.length;i++){
+                    print('Margem Bruta : ${fatLiq[i] - cmv[i]}');
+                  }
+
+
                 },
                 child: const Text(
                   "Exibir",
@@ -135,16 +156,13 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
     );
   }
 
-onTouch() async {
-    final stateReceive = ref.watch(receiveProvider);
+  onTouch() async {
     final receive = ref.read(receiveProvider.notifier);
-    final stateDev = ref.watch(devolutionProvider);
     final dev = ref.read(devolutionProvider.notifier);
-    final stateSale = ref.watch(saleProvider);
     final sales = ref.read(saleProvider.notifier);
-    sales.onSelection(option);
-    receive.onSelection(option);
-    dev.onSelection(option);
+     sales.onSelection(option);
+     receive.onSelection(option);
+     dev.onSelection(option);
     await sales.separateMonth();
     await receive.separateMonth();
     await dev.separateMonth();
@@ -160,14 +178,14 @@ onTouch() async {
           return Container(
               width: 105,
               child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 Text(
                   stateReceive.empresas[index].toString(),
                   style: const TextStyle(fontSize: 20),
                 ),
                 Checkbox(
                     value: stateReceive.check
-                            .contains(stateReceive.empresas[index])
+                        .contains(stateReceive.empresas[index])
                         ? true
                         : false,
                     onChanged: (val) {

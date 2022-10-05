@@ -414,7 +414,7 @@ class FatScreenState extends ConsumerState<FatScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Table(
-                            defaultColumnWidth: FixedColumnWidth(100),
+                            defaultColumnWidth: const FixedColumnWidth(100),
                             border: TableBorder.all(color: Colors.black),
                             children: <TableRow>[
                               TableRow(children: <Widget>[

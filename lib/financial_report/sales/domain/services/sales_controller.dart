@@ -565,14 +565,13 @@ List<String> lista =[];
       count: state.count,
       meses: state.meses,
     );
-    print('sales meses: ${state.meses}');
   }
 
   total() {
     List<num> list = [];
     List<num> listFrete = [];
     List<num> listCusto = [];
-    var valor = lista.length;
+    var valor = lista.length / 2;
     for (var i = 0; i < valor; i++) {
       if (lista.contains('mes1')) {
         list.add(state.mes1!.sum);
@@ -661,7 +660,6 @@ List<String> lista =[];
         restCusto: listCusto,
       meses: state.meses,
         );
-    print('meses total sales: ${state.meses}');
 
   }
 
