@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rias_accounting/financial_report/%20devolution/providers/devolution_provider.dart';
+import '../financial_report/pay/providers/pay_provider.dart';
 import '../financial_report/receive/providers/receive_provider.dart';
 import '../financial_report/sales/provider/sale_provider.dart';
+import 'package:collection/collection.dart';
+
 
 class FilterDre extends ConsumerStatefulWidget {
   FilterDre({Key? key}) : super(key: key);
@@ -24,6 +27,8 @@ class FilterDreState extends ConsumerState<FilterDre> {
     final stateDev = ref.watch(devolutionProvider);
     final dev = ref.read(devolutionProvider.notifier);
     final stateSale = ref.watch(saleProvider);
+    final statePay = ref.watch(payProvider);
+    final pay = ref.read(payProvider.notifier);
     final sales = ref.read(saleProvider.notifier);
 
 
@@ -109,7 +114,7 @@ class FilterDreState extends ConsumerState<FilterDre> {
             padding: const EdgeInsets.only(left: 10, right: 10),
             height: 40.0,
             child: listEmpresas(
-                stateReceive, receive, stateDev, dev, stateSale, sales),
+                stateReceive, receive, stateDev, dev, stateSale, sales, statePay, pay),
           ),
           SizedBox(
             height: _height * 0.02,
@@ -120,31 +125,52 @@ class FilterDreState extends ConsumerState<FilterDre> {
             width: double.infinity,
             child: ElevatedButton(
                 onPressed: () async {
-                  List fatLiq = [];
-                  List cmv = [];
+                  List<num> fatLiq = [];
+                  List<num> cmv = [];
+                  num despCom = 0;
                   await onTouch();
                   // Navigator.of(context).push(MaterialPageRoute(
                   //     builder: (context) => (title: "D.R.E", option: option,)));
                   //VENDIDO
-                  print(stateSale.rest);
+                  print('vendido: ${stateSale.rest}');
                   //DEVOLUÇÃO
-                  print(stateDev.rest);
+                  print('devolução: ${stateDev.rest}');
                   //FAT. LIQUIDO
                   for(var i =0; i < stateSale.rest!.length;i++){
-                    print(stateSale.rest![i] - stateDev.rest![i]);
+                    print('fat liq. ${stateSale.rest![i] - stateDev.rest![i]}');
                     fatLiq.add(stateSale.rest![i] - stateDev.rest![i]);
                   }
                   //CMV
                   for(var i =0; i < stateSale.restCusto!.length;i++){
-                    print(stateSale.restCusto![i] - stateDev.restCusto![i]);
+                    print( 'CMV : ${stateSale.restCusto![i] - stateDev.restCusto![i]}');
                     cmv.add(stateSale.restCusto![i] - stateDev.restCusto![i]);
                   }
                   //MARGEM BRUTA
                   for(var i =0; i < stateSale.restCusto!.length;i++){
                     print('Margem Bruta : ${fatLiq[i] - cmv[i]}');
                   }
-
-
+                  //Frete Reembolso
+                  for(var i =0; i < stateSale.restFrete!.length;i++){
+                    print('frete Reembolso ${stateSale.restFrete![i]}');
+                  }
+                  //Frete Pago
+                  for(var i =0; i < statePay.rest!.length;i++){
+                    print('frete Pago ${statePay.rest![i]}');
+                  }
+                  //pro labore variavel comp.
+                  for(var i =0; i < fatLiq.length;i++){
+                    print("Pro-Labore ${fatLiq[i] * 0.01}");
+                  }
+                  //Despesas Comercialização
+                  for(var i =0; i < fatLiq.length;i++){
+                    despCom = stateSale.restFrete![i] - statePay.rest![i] - fatLiq[i] * 0.01;
+                    print('desp. Comer. $despCom');
+                  }
+                  //Margem de contribuição
+                  for(var i =0; i < fatLiq.length;i++){
+                    var margem = fatLiq[i] - cmv[i];
+                   print('Margem: ${margem - despCom}');
+                  }
                 },
                 child: const Text(
                   "Exibir",
@@ -160,17 +186,22 @@ class FilterDreState extends ConsumerState<FilterDre> {
     final receive = ref.read(receiveProvider.notifier);
     final dev = ref.read(devolutionProvider.notifier);
     final sales = ref.read(saleProvider.notifier);
+    final pay = ref.read(payProvider.notifier);
+    pay.onSelection(option);
      sales.onSelection(option);
      receive.onSelection(option);
      dev.onSelection(option);
     await sales.separateMonth();
     await receive.separateMonth();
     await dev.separateMonth();
+    //Cod. da conta do frete deve ser cadastrado nas configurações
+    await pay.separateMonth(300010);
+    await pay.total();
     await sales.total();
     await receive.total();
     await dev.total();
   }
-  Widget listEmpresas(stateReceive, receive, stateDev, dev, stateSale, sales) {
+  Widget listEmpresas(stateReceive, receive, stateDev, dev, stateSale, sales, pay, statePay) {
     return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: stateReceive.empresas.length,
@@ -190,13 +221,15 @@ class FilterDreState extends ConsumerState<FilterDre> {
                         : false,
                     onChanged: (val) {
                       if (val == true) {
+                        statePay.trueCheck(pay.empresas[index]);
                         sales.trueCheck(stateSale.empresas[index]);
                         dev.trueCheck(stateDev.empresas[index]);
                         receive.trueCheck(stateReceive.empresas[index]);
                       } else {
-                        sales.trueCheck(stateSale.empresas[index]);
-                        dev.trueCheck(stateDev.empresas[index]);
+                        sales.falseCheck(stateSale.empresas[index]);
+                        dev.falseCheck(stateDev.empresas[index]);
                         receive.falseCheck(stateReceive.empresas[index]);
+                        statePay.falseCheck(pay.empresas[index]);
                       }
                     })
               ]));
