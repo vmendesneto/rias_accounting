@@ -176,7 +176,6 @@ devolucoes(WidgetRef ref) {
 }
 
 Widget fatLiq(WidgetRef ref, fatList) {
-  final stateSale = ref.watch(saleProvider);
 
 
   return Container(
@@ -200,7 +199,7 @@ Widget fatLiq(WidgetRef ref, fatList) {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: stateSale.rest!.length,
+              itemCount: fatList.length,
               itemBuilder: (context, int i) {
                 double value = double.parse((fatList![i]).toString());
                 return Flex(
@@ -227,7 +226,6 @@ Widget fatLiq(WidgetRef ref, fatList) {
 }
 
 cmv(WidgetRef ref, cmvList) {
-  final stateSale = ref.watch(saleProvider);
 
 
   return Container(
@@ -251,7 +249,7 @@ cmv(WidgetRef ref, cmvList) {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: stateSale.restCusto!.length,
+              itemCount: cmvList.length,
               itemBuilder: (context, int i) {
                 double value = double.parse(
                     (cmvList[i])
@@ -280,7 +278,7 @@ cmv(WidgetRef ref, cmvList) {
 }
 
 margemBruta(WidgetRef ref, cmvList, fatList) {
-  final stateSale = ref.watch(saleProvider);
+
 
   return Container(
       height: 15,
@@ -303,11 +301,10 @@ margemBruta(WidgetRef ref, cmvList, fatList) {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: stateSale.restCusto!.length,
+              itemCount: fatList.length,
               itemBuilder: (context, int i) {
                 double value =
                     double.parse((fatList[i] - cmvList[i]).toString());
-                //cmvList.add(value);
                 return Flex(
                     direction: Axis.horizontal,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -354,7 +351,7 @@ despComerc(WidgetRef ref, fatList, despCom) {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
-              itemCount: fatList.length,
+              itemCount: despCom.length,
               itemBuilder: (context, int i) {
                 double value = double.parse((despCom[i]).toString());
                 return Flex(
