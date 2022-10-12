@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rias_accounting/financial_report/%20devolution/providers/devolution_provider.dart';
+import '../DRE_report/dre_screen.dart';
 import '../financial_report/pay/providers/pay_provider.dart';
 import '../financial_report/receive/providers/receive_provider.dart';
 import '../financial_report/sales/provider/sale_provider.dart';
@@ -89,7 +90,6 @@ class FilterDreState extends ConsumerState<FilterDre> {
                   for (final entry in periodo.entries) {
                     if (entry.key.contains(novoItemSelecionado)) {
                       option = entry.value;
-                      print(option);
                     }
                   }
                   _dropDownItemSelected(novoItemSelecionado!);
@@ -125,52 +125,9 @@ class FilterDreState extends ConsumerState<FilterDre> {
             width: double.infinity,
             child: ElevatedButton(
                 onPressed: () async {
-                  List<num> fatLiq = [];
-                  List<num> cmv = [];
-                  num despCom = 0;
                   await onTouch();
-                  // Navigator.of(context).push(MaterialPageRoute(
-                  //     builder: (context) => (title: "D.R.E", option: option,)));
-                  //VENDIDO
-                  print('vendido: ${stateSale.rest}');
-                  //DEVOLUÇÃO
-                  print('devolução: ${stateDev.rest}');
-                  //FAT. LIQUIDO
-                  for(var i =0; i < stateSale.rest!.length;i++){
-                    print('fat liq. ${stateSale.rest![i] - stateDev.rest![i]}');
-                    fatLiq.add(stateSale.rest![i] - stateDev.rest![i]);
-                  }
-                  //CMV
-                  for(var i =0; i < stateSale.restCusto!.length;i++){
-                    print( 'CMV : ${stateSale.restCusto![i] - stateDev.restCusto![i]}');
-                    cmv.add(stateSale.restCusto![i] - stateDev.restCusto![i]);
-                  }
-                  //MARGEM BRUTA
-                  for(var i =0; i < stateSale.restCusto!.length;i++){
-                    print('Margem Bruta : ${fatLiq[i] - cmv[i]}');
-                  }
-                  //Frete Reembolso
-                  for(var i =0; i < stateSale.restFrete!.length;i++){
-                    print('frete Reembolso ${stateSale.restFrete![i]}');
-                  }
-                  //Frete Pago
-                  for(var i =0; i < statePay.rest!.length;i++){
-                    print('frete Pago ${statePay.rest![i]}');
-                  }
-                  //pro labore variavel comp.
-                  for(var i =0; i < fatLiq.length;i++){
-                    print("Pro-Labore ${fatLiq[i] * 0.01}");
-                  }
-                  //Despesas Comercialização
-                  for(var i =0; i < fatLiq.length;i++){
-                    despCom = stateSale.restFrete![i] - statePay.rest![i] - fatLiq[i] * 0.01;
-                    print('desp. Comer. $despCom');
-                  }
-                  //Margem de contribuição
-                  for(var i =0; i < fatLiq.length;i++){
-                    var margem = fatLiq[i] - cmv[i];
-                   print('Margem: ${margem - despCom}');
-                  }
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const DreScreen(title: "D.R.E")));
                 },
                 child: const Text(
                   "Exibir",
@@ -188,9 +145,9 @@ class FilterDreState extends ConsumerState<FilterDre> {
     final sales = ref.read(saleProvider.notifier);
     final pay = ref.read(payProvider.notifier);
     pay.onSelection(option);
-     sales.onSelection(option);
-     receive.onSelection(option);
-     dev.onSelection(option);
+    sales.onSelection(option);
+    receive.onSelection(option);
+    dev.onSelection(option);
     await sales.separateMonth();
     await receive.separateMonth();
     await dev.separateMonth();
@@ -200,6 +157,7 @@ class FilterDreState extends ConsumerState<FilterDre> {
     await sales.total();
     await receive.total();
     await dev.total();
+    await sales.fillList(ref);
   }
   Widget listEmpresas(stateReceive, receive, stateDev, dev, stateSale, sales, pay, statePay) {
     return ListView.builder(

@@ -123,7 +123,7 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
                 onPressed: () async {
                   onTouch();
                    Navigator.of(context).push(MaterialPageRoute(
-                       builder: (context) => FatScreen(title: "Faturamento", option: option,)));
+                       builder: (context) => FatScreen(title: "Faturamento")));
                 },
                 child: const Text(
                   "Exibir",

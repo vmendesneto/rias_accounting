@@ -7,5 +7,6 @@ class Variables{
   DateTime today= DateTime.now();
  List test = [];
  int option = 0;
+ List<num> faturaList = [];
 
 }
