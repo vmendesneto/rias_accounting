@@ -46,7 +46,6 @@ class DreScreenState extends ConsumerState<DreScreen> {
         body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: SizedBox(
-              //height: mediaHeight * 1.59,
               width: double.infinity,
               child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
@@ -55,27 +54,27 @@ class DreScreenState extends ConsumerState<DreScreen> {
                     children: [
                       const SizedBox(height: 2),
                       meses(ref),
-//                      const SizedBox(height: 1.2),
+
                       fatBruto(ref, fatList),
-                    //  const SizedBox(height: 1.2),
+
                       devolucoes(ref),
-                    //  const SizedBox(height: 1.2),
+
                       fatLiq(ref, fatList),
-                    //  const SizedBox(height: 1.2),
+
                       cmv(ref, cmvList),
-                    //  const SizedBox(height: 1.2),
+
                       margemBruta(ref, cmvList, fatList),
-                    //  const SizedBox(height: 1.2),
+
                       despComerc(ref, fatList, despCom),
-                     // const SizedBox(height: 1.2),
+
                       freteReemb(ref),
-                    //  const SizedBox(height: 1.2),
+
                       freteSaida(ref),
-                    //  const SizedBox(height: 1.2),
+
                       proLabore(fatList),
-                     // const SizedBox(height: 1.2),
+
                       margemCont(cmvList, fatList, despCom),
-                     // const SizedBox(height: 1.2),
+                  
                     ],
                   )),
             )));
