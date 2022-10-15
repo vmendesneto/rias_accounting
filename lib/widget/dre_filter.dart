@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rias_accounting/financial_report/%20devolution/providers/devolution_provider.dart';
-import '../accounting_report/Invoicing_report/fat_screen.dart';
+import '../accounting_report/DRE_report/dre_screen.dart';
+import '../financial_report/pay/providers/pay_provider.dart';
 import '../financial_report/receive/providers/receive_provider.dart';
 import '../financial_report/sales/provider/sale_provider.dart';
 
-class FilterAccounting extends ConsumerStatefulWidget {
-  FilterAccounting({Key? key}) : super(key: key);
+
+
+class FilterDre extends ConsumerStatefulWidget {
+  FilterDre({Key? key}) : super(key: key);
 
   @override
-  ConsumerState createState() => FilterAccountingState();
+  ConsumerState createState() => FilterDreState();
 }
 
-class FilterAccountingState extends ConsumerState<FilterAccounting> {
+class FilterDreState extends ConsumerState<FilterDre> {
   var _itemSelecionado = 'Periodo';
   int option = 0;
 
@@ -25,6 +28,8 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
     final stateDev = ref.watch(devolutionProvider);
     final dev = ref.read(devolutionProvider.notifier);
     final stateSale = ref.watch(saleProvider);
+    final statePay = ref.watch(payProvider);
+    final pay = ref.read(payProvider.notifier);
     final sales = ref.read(saleProvider.notifier);
 
 
@@ -50,9 +55,9 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
       appBar: AppBar(
         title: const Center(
             child: Text(
-          "Filtro",
-          //style: TextStyle(fontSize: _width * 0.1),
-        )),
+              "Filtro",
+              //style: TextStyle(fontSize: _width * 0.1),
+            )),
       ),
       body: Column(
         children: [
@@ -85,7 +90,6 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
                   for (final entry in periodo.entries) {
                     if (entry.key.contains(novoItemSelecionado)) {
                       option = entry.value;
-                      print(option);
                     }
                   }
                   _dropDownItemSelected(novoItemSelecionado!);
@@ -110,7 +114,7 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
             padding: const EdgeInsets.only(left: 10, right: 10),
             height: 40.0,
             child: listEmpresas(
-                stateReceive, receive, stateDev, dev, stateSale, sales),
+                stateReceive, receive, stateDev, dev, stateSale, sales, statePay, pay),
           ),
           SizedBox(
             height: _height * 0.02,
@@ -121,9 +125,9 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
             width: double.infinity,
             child: ElevatedButton(
                 onPressed: () async {
-                  onTouch();
-                   Navigator.of(context).push(MaterialPageRoute(
-                       builder: (context) => FatScreen(title: "Faturamento")));
+                  await onTouch();
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => const DreScreen(title: "D.R.E")));
                 },
                 child: const Text(
                   "Exibir",
@@ -135,24 +139,27 @@ class FilterAccountingState extends ConsumerState<FilterAccounting> {
     );
   }
 
-onTouch() async {
-    final stateReceive = ref.watch(receiveProvider);
+  onTouch() async {
     final receive = ref.read(receiveProvider.notifier);
-    final stateDev = ref.watch(devolutionProvider);
     final dev = ref.read(devolutionProvider.notifier);
-    final stateSale = ref.watch(saleProvider);
     final sales = ref.read(saleProvider.notifier);
+    final pay = ref.read(payProvider.notifier);
+    pay.onSelection(option);
     sales.onSelection(option);
     receive.onSelection(option);
     dev.onSelection(option);
     await sales.separateMonth();
     await receive.separateMonth();
     await dev.separateMonth();
+    //Cod. da conta do frete deve ser cadastrado nas configurações
+    await pay.separateMonth(300010);
+    await pay.total();
     await sales.total();
     await receive.total();
     await dev.total();
+    await sales.fillList(ref);
   }
-  Widget listEmpresas(stateReceive, receive, stateDev, dev, stateSale, sales) {
+  Widget listEmpresas(stateReceive, receive, stateDev, dev, stateSale, sales, pay, statePay) {
     return ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: stateReceive.empresas.length,
@@ -160,25 +167,27 @@ onTouch() async {
           return Container(
               width: 105,
               child:
-                  Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
+              Row(crossAxisAlignment: CrossAxisAlignment.center, children: [
                 Text(
                   stateReceive.empresas[index].toString(),
                   style: const TextStyle(fontSize: 20),
                 ),
                 Checkbox(
                     value: stateReceive.check
-                            .contains(stateReceive.empresas[index])
+                        .contains(stateReceive.empresas[index])
                         ? true
                         : false,
                     onChanged: (val) {
                       if (val == true) {
+                        statePay.trueCheck(pay.empresas[index]);
                         sales.trueCheck(stateSale.empresas[index]);
                         dev.trueCheck(stateDev.empresas[index]);
                         receive.trueCheck(stateReceive.empresas[index]);
                       } else {
-                        sales.trueCheck(stateSale.empresas[index]);
-                        dev.trueCheck(stateDev.empresas[index]);
+                        sales.falseCheck(stateSale.empresas[index]);
+                        dev.falseCheck(stateDev.empresas[index]);
                         receive.falseCheck(stateReceive.empresas[index]);
+                        statePay.falseCheck(pay.empresas[index]);
                       }
                     })
               ]));

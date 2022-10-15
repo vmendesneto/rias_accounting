@@ -1,5 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../Settings/settings_screen.dart';
 import '../financial_report/ devolution/domain/models/devolution_model.dart';
 import '../financial_report/ devolution/providers/devolution_provider.dart';
 import '../financial_report/inventory/domain/models/inventory_model.dart';
@@ -84,6 +86,13 @@ class _HomePageState extends ConsumerState<HomePage> {
                 _onSelectItem(2);
               },
             ),
+            ListTile(
+              selected: 3 == _selectedIndex,
+              title: const Text('Configurações'),
+              onTap: () {
+                _onSelectItem(3);
+              },
+            ),
           ],
         ),
       ),
@@ -99,6 +108,7 @@ class _HomePageState extends ConsumerState<HomePage> {
         return const ReportScreen();
       case 2 :
         return MyCalender(title: "Estoque", select: 4,);
+      case 3: return const SettingsScreen();
     }
   }
 

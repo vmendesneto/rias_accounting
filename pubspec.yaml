@@ -41,6 +41,7 @@ dependencies:
   flutter_riverpod: ^1.0.4
   linked_scroll_controller: ^0.2.0
   month_year_picker: ^0.2.0+1
+  extended_masked_text: ^2.3.1
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rias_accounting/widget/dre_filter.dart';
 import 'package:rias_accounting/widget/widget_accounting_filter.dart';
 
 import '../../widget/wigted_calender.dart';
@@ -248,8 +249,8 @@ Widget expandCont(
     GestureDetector(
         onTap: () {
           _task = b;
-          // Navigator.of(context).push(MaterialPageRoute(
-          //     builder: (context) => MyCalender(title: _task, select: 1)));
+           Navigator.of(context).push(MaterialPageRoute(
+               builder: (context) => FilterDre()));
         },
         child: Container(
             alignment: Alignment.center,

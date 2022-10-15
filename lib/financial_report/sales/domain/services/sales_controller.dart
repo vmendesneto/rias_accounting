@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rias_accounting/core/global_variables.dart';
+import 'package:rias_accounting/financial_report/pay/providers/pay_provider.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:collection/collection.dart';
+import '../../../ devolution/providers/devolution_provider.dart';
 import '../models/sales_model.dart';
 
 class ViewStates {
@@ -13,7 +15,10 @@ class ViewStates {
   DateTime? initialDate;
   DateTime? endDate;
   int? count;
-  List<String>? meses =[];
+  List<num>? faturList = [];
+  List<num>? cmvSaleList = [];
+  List<num>? despComSaleList = [];
+  List<String>? meses = [];
   List<num>? result;
   List<num>? rest;
   List<num>? restFrete;
@@ -55,55 +60,59 @@ class ViewStates {
   List<num>? custo11;
   List<num>? custo12;
 
-  ViewStates(
-      {this.sales,
-      this.check,
-      this.isChecked = false,
-      this.empresas,
-      this.filtered,
-      this.initialDate,
-      this.endDate,
-      this.count,
-      this.frete1,
-      this.frete2,
-      this.frete3,
-      this.frete4,
-      this.frete5,
-      this.frete6,
-      this.frete7,
-      this.frete8,
-      this.frete9,
-      this.frete10,
-      this.frete11,
-      this.frete12,
-      this.mes1,
-      this.mes2,
-      this.mes3,
-      this.mes4,
-      this.mes5,
-      this.mes6,
-      this.mes7,
-      this.mes8,
-      this.mes9,
-      this.mes10,
-      this.mes11,
-      this.mes12,
-      this.custo1,
-      this.custo2,
-      this.custo3,
-      this.custo4,
-      this.custo5,
-      this.custo6,
-      this.custo7,
-      this.custo8,
-      this.custo9,
-      this.custo10,
-      this.custo11,
-      this.custo12,
-      this.rest,
-      this.restFrete,
-      this.restCusto,
-      this.meses});
+  ViewStates({
+    this.sales,
+    this.check,
+    this.isChecked = false,
+    this.empresas,
+    this.filtered,
+    this.initialDate,
+    this.endDate,
+    this.count,
+    this.frete1,
+    this.frete2,
+    this.frete3,
+    this.frete4,
+    this.frete5,
+    this.frete6,
+    this.frete7,
+    this.frete8,
+    this.frete9,
+    this.frete10,
+    this.frete11,
+    this.frete12,
+    this.mes1,
+    this.mes2,
+    this.mes3,
+    this.mes4,
+    this.mes5,
+    this.mes6,
+    this.mes7,
+    this.mes8,
+    this.mes9,
+    this.mes10,
+    this.mes11,
+    this.mes12,
+    this.custo1,
+    this.custo2,
+    this.custo3,
+    this.custo4,
+    this.custo5,
+    this.custo6,
+    this.custo7,
+    this.custo8,
+    this.custo9,
+    this.custo10,
+    this.custo11,
+    this.custo12,
+    this.rest,
+    this.restFrete,
+    this.restCusto,
+    this.meses,
+    this.faturList,
+    this.cmvSaleList,
+    this.despComSaleList,
+  });
 }
 
 class SaleController extends StateNotifier<ViewStates> {
@@ -117,7 +126,7 @@ class SaleController extends StateNotifier<ViewStates> {
     state = ViewStates(initialDate: now, endDate: end);
   }
 
-List<String> lista =[];
+  List<String> lista = [];
 
   Future<List<Sale>> emp() async {
     List<int> lista = [];
@@ -140,14 +149,18 @@ List<String> lista =[];
     state.check ??= [];
     state.filtered ??= [];
     state = ViewStates(
-        empresas: lista,
-        sales: sales,
-        isChecked: state.isChecked,
-        check: state.check,
-        filtered: state.filtered,
-        initialDate: state.initialDate,
-        endDate: state.endDate,
-        count: state.count);
+      empresas: lista,
+      sales: sales,
+      isChecked: state.isChecked,
+      check: state.check,
+      filtered: state.filtered,
+      initialDate: state.initialDate,
+      endDate: state.endDate,
+      count: state.count,
+      faturList: state.faturList,
+      cmvSaleList: state.cmvSaleList,
+      despComSaleList: state.despComSaleList,
+    );
     return sales;
   }
 
@@ -186,14 +199,18 @@ List<String> lista =[];
     //ORDENANDO POR DATA DE PG
     filters.sort((a, b) => a.dataFaturamento!.compareTo(b.dataFaturamento!));
     state = ViewStates(
-        empresas: state.empresas,
-        sales: state.sales,
-        check: state.check,
-        filtered: filters,
-        initialDate: state.initialDate,
-        endDate: state.endDate,
-        count: state.count,
-        meses: state.meses);
+      empresas: state.empresas,
+      sales: state.sales,
+      check: state.check,
+      filtered: filters,
+      initialDate: state.initialDate,
+      endDate: state.endDate,
+      count: state.count,
+      meses: state.meses,
+      faturList: state.faturList,
+      cmvSaleList: state.cmvSaleList,
+      despComSaleList: state.despComSaleList,
+    );
     return filters;
   }
 
@@ -201,27 +218,35 @@ List<String> lista =[];
     state.check!.add(emp);
 
     state = ViewStates(
-        empresas: state.empresas,
-        sales: state.sales,
-        check: state.check,
-        endDate: state.endDate,
-        filtered: state.filtered,
-        initialDate: state.initialDate,
-        count: state.count,
-        meses: state.meses);
+      empresas: state.empresas,
+      sales: state.sales,
+      check: state.check,
+      endDate: state.endDate,
+      filtered: state.filtered,
+      initialDate: state.initialDate,
+      count: state.count,
+      meses: state.meses,
+      faturList: state.faturList,
+      cmvSaleList: state.cmvSaleList,
+      despComSaleList: state.despComSaleList,
+    );
   }
 
   falseCheck(int emp) {
     state.check!.remove(emp);
     state = ViewStates(
-        empresas: state.empresas,
-        sales: state.sales,
-        check: state.check,
-        endDate: state.endDate,
-        filtered: state.filtered,
-        initialDate: state.initialDate,
-        count: state.count,
-    meses: state.meses);
+      empresas: state.empresas,
+      sales: state.sales,
+      check: state.check,
+      endDate: state.endDate,
+      filtered: state.filtered,
+      initialDate: state.initialDate,
+      count: state.count,
+      meses: state.meses,
+      faturList: state.faturList,
+      cmvSaleList: state.cmvSaleList,
+      despComSaleList: state.despComSaleList,
+    );
   }
 
   void onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
@@ -229,13 +254,17 @@ List<String> lista =[];
       var now = args.value.startDate;
       var end = args.value.endDate ?? args.value.startDate;
       state = ViewStates(
-          initialDate: now,
-          endDate: end,
-          empresas: state.empresas,
-          sales: state.sales,
-          check: state.check,
-          filtered: state.filtered,
-          isChecked: state.isChecked);
+        initialDate: now,
+        endDate: end,
+        empresas: state.empresas,
+        sales: state.sales,
+        check: state.check,
+        filtered: state.filtered,
+        isChecked: state.isChecked,
+        faturList: state.faturList,
+        cmvSaleList: state.cmvSaleList,
+        despComSaleList: state.despComSaleList,
+      );
     }
   }
 
@@ -250,7 +279,6 @@ List<String> lista =[];
               DateTime(variables.today.year, variables.today.month, 01);
           mesesOpt.add((variables.today.month - 1).toString());
 
-
           state = ViewStates(
             initialDate: dateInitial,
             endDate: dateFinal,
@@ -261,6 +289,9 @@ List<String> lista =[];
             isChecked: state.isChecked,
             count: 1,
             meses: mesesOpt,
+            faturList: state.faturList,
+            cmvSaleList: state.cmvSaleList,
+            despComSaleList: state.despComSaleList,
           );
         }
         break;
@@ -283,6 +314,9 @@ List<String> lista =[];
             isChecked: state.isChecked,
             count: 3,
             meses: mesesOpt,
+            faturList: state.faturList,
+            cmvSaleList: state.cmvSaleList,
+            despComSaleList: state.despComSaleList,
           );
         }
         break;
@@ -309,6 +343,9 @@ List<String> lista =[];
             isChecked: state.isChecked,
             count: 6,
             meses: mesesOpt,
+            faturList: state.faturList,
+            cmvSaleList: state.cmvSaleList,
+            despComSaleList: state.despComSaleList,
           );
         }
         break;
@@ -341,6 +378,9 @@ List<String> lista =[];
             isChecked: state.isChecked,
             count: 12,
             meses: mesesOpt,
+            faturList: state.faturList,
+            cmvSaleList: state.cmvSaleList,
+            despComSaleList: state.despComSaleList,
           );
         }
         break;
@@ -358,6 +398,9 @@ List<String> lista =[];
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: variables.today.month - 1,
+            faturList: state.faturList,
+            cmvSaleList: state.cmvSaleList,
+            despComSaleList: state.despComSaleList,
           );
         }
         break;
@@ -564,15 +607,17 @@ List<String> lista =[];
       isChecked: state.isChecked,
       count: state.count,
       meses: state.meses,
+      faturList: state.faturList,
+      cmvSaleList: state.cmvSaleList,
+      despComSaleList: state.despComSaleList,
     );
-    print('sales meses: ${state.meses}');
   }
 
   total() {
     List<num> list = [];
     List<num> listFrete = [];
     List<num> listCusto = [];
-    var valor = lista.length;
+    var valor = lista.length / 2;
     for (var i = 0; i < valor; i++) {
       if (lista.contains('mes1')) {
         list.add(state.mes1!.sum);
@@ -638,31 +683,81 @@ List<String> lista =[];
     }
 
     state = ViewStates(
-        mes1: state.mes1,
-        mes2: state.mes2,
-        mes3: state.mes3,
-        mes4: state.mes4,
-        mes5: state.mes5,
-        mes6: state.mes6,
-        mes7: state.mes7,
-        mes8: state.mes8,
-        mes9: state.mes9,
-        mes10: state.mes10,
-        mes11: state.mes11,
-        mes12: state.mes12,
-        empresas: state.empresas,
-        sales: state.sales,
-        check: state.check,
-        filtered: state.filtered,
-        isChecked: state.isChecked,
-        rest: list,
-        count: state.count,
-        restFrete: listFrete,
-        restCusto: listCusto,
+      mes1: state.mes1,
+      mes2: state.mes2,
+      mes3: state.mes3,
+      mes4: state.mes4,
+      mes5: state.mes5,
+      mes6: state.mes6,
+      mes7: state.mes7,
+      mes8: state.mes8,
+      mes9: state.mes9,
+      mes10: state.mes10,
+      mes11: state.mes11,
+      mes12: state.mes12,
+      empresas: state.empresas,
+      sales: state.sales,
+      check: state.check,
+      filtered: state.filtered,
+      isChecked: state.isChecked,
+      rest: list,
+      count: state.count,
+      restFrete: listFrete,
+      restCusto: listCusto,
       meses: state.meses,
-        );
-    print('meses total sales: ${state.meses}');
-
+      faturList: state.faturList,
+      cmvSaleList: state.cmvSaleList,
+      despComSaleList: state.despComSaleList,
+    );
   }
 
+  fillList(WidgetRef ref) {
+    final stateDev = ref.watch(devolutionProvider);
+    final statePay = ref.watch(payProvider);
+
+    final restDev = stateDev.rest;
+    final restDevCusto = stateDev.restCusto;
+    final restPay = statePay.rest;
+
+    List<num> fatList = [];
+    List<num> cmvList = [];
+    List<num> despCom = [];
+    final rest = state.rest;
+    final restCusto = state.restCusto;
+    final restFrete = state.restFrete;
+
+    for (var i = 0; i < rest!.length; i++) {
+      fatList.add(rest[i] - restDev![i]);
+      cmvList.add(restCusto![i] - restDevCusto![i]);
+      despCom.add(restFrete![i] - restPay![i] - (fatList[i] * 0.01));
+    }
+
+    state = ViewStates(
+      mes1: state.mes1,
+      mes2: state.mes2,
+      mes3: state.mes3,
+      mes4: state.mes4,
+      mes5: state.mes5,
+      mes6: state.mes6,
+      mes7: state.mes7,
+      mes8: state.mes8,
+      mes9: state.mes9,
+      mes10: state.mes10,
+      mes11: state.mes11,
+      mes12: state.mes12,
+      empresas: state.empresas,
+      sales: state.sales,
+      check: state.check,
+      filtered: state.filtered,
+      isChecked: state.isChecked,
+      rest: state.rest,
+      count: state.count,
+      restFrete: state.restFrete,
+      restCusto: state.restCusto,
+      meses: state.meses,
+      faturList: fatList,
+      cmvSaleList: cmvList,
+      despComSaleList: despCom,
+    );
+  }
 }
