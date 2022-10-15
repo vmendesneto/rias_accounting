@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../financial_report/ devolution/providers/devolution_provider.dart';
-import '../financial_report/pay/providers/pay_provider.dart';
-import '../financial_report/sales/provider/sale_provider.dart';
+import '../../financial_report/ devolution/providers/devolution_provider.dart';
+import '../../financial_report/pay/providers/pay_provider.dart';
+import '../../financial_report/sales/provider/sale_provider.dart';
+
 
 class DreScreen extends ConsumerStatefulWidget {
   final String title;
@@ -20,6 +21,8 @@ class DreScreenState extends ConsumerState<DreScreen> {
   List<num> cmvList = [];
   List<num> despCom = [];
   List<num> fatList = [];
+  double mediaHeight = 0.00;
+
 
   @override
   void initState() {
@@ -35,6 +38,7 @@ class DreScreenState extends ConsumerState<DreScreen> {
   Widget build(
     BuildContext context,
   ) {
+    mediaHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
           title: Text(widget.title),
@@ -42,34 +46,36 @@ class DreScreenState extends ConsumerState<DreScreen> {
         body: SingleChildScrollView(
             scrollDirection: Axis.vertical,
             child: SizedBox(
-              height: 1300,
+              //height: mediaHeight * 1.59,
               width: double.infinity,
               child: SingleChildScrollView(
                   scrollDirection: Axis.horizontal,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      const SizedBox(height: 2),
                       meses(ref),
-                      const SizedBox(height: 1.2),
+//                      const SizedBox(height: 1.2),
                       fatBruto(ref, fatList),
-                      const SizedBox(height: 1.2),
+                    //  const SizedBox(height: 1.2),
                       devolucoes(ref),
-                      const SizedBox(height: 1.2),
+                    //  const SizedBox(height: 1.2),
                       fatLiq(ref, fatList),
-                      const SizedBox(height: 1.2),
+                    //  const SizedBox(height: 1.2),
                       cmv(ref, cmvList),
-                      const SizedBox(height: 1.2),
+                    //  const SizedBox(height: 1.2),
                       margemBruta(ref, cmvList, fatList),
-                      const SizedBox(height: 1.2),
+                    //  const SizedBox(height: 1.2),
                       despComerc(ref, fatList, despCom),
-                      const SizedBox(height: 1.2),
+                     // const SizedBox(height: 1.2),
                       freteReemb(ref),
-                      const SizedBox(height: 1.2),
+                    //  const SizedBox(height: 1.2),
                       freteSaida(ref),
-                      const SizedBox(height: 1.2),
+                    //  const SizedBox(height: 1.2),
                       proLabore(fatList),
-                      const SizedBox(height: 1.2),
+                     // const SizedBox(height: 1.2),
                       margemCont(cmvList, fatList, despCom),
+                     // const SizedBox(height: 1.2),
                     ],
                   )),
             )));
@@ -80,17 +86,19 @@ fatBruto(WidgetRef ref, fatList) {
   final stateSale = ref.watch(saleProvider);
 
   return Container(
-      height: 15,
+      height: 17,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Table(
               defaultColumnWidth: const FixedColumnWidth(200),
+              defaultVerticalAlignment:
+              TableCellVerticalAlignment.middle,
               border: TableBorder.all(color: Colors.black),
               children: const <TableRow>[
                 TableRow(children: <Widget>[
                   Padding(
-                      padding: EdgeInsets.only(top: 2, bottom: 2),
+                      padding: EdgeInsets.all(2.0),
                       child:
                           Text("(=) Fat. Bruto", textAlign: TextAlign.center))
                 ])
@@ -109,7 +117,9 @@ fatBruto(WidgetRef ref, fatList) {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Table(
-                          defaultColumnWidth: FixedColumnWidth(100),
+                          defaultVerticalAlignment:
+                          TableCellVerticalAlignment.middle,
+                          defaultColumnWidth: const FixedColumnWidth(100),
                           border: TableBorder.all(color: Colors.black),
                           children: <TableRow>[
                             TableRow(children: <Widget>[
@@ -129,7 +139,7 @@ fatBruto(WidgetRef ref, fatList) {
 devolucoes(WidgetRef ref) {
   final stateDev = ref.watch(devolutionProvider);
   return Container(
-      height: 15,
+      height: 17,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -176,10 +186,8 @@ devolucoes(WidgetRef ref) {
 }
 
 Widget fatLiq(WidgetRef ref, fatList) {
-
-
   return Container(
-      height: 15,
+      height: 17,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -226,10 +234,8 @@ Widget fatLiq(WidgetRef ref, fatList) {
 }
 
 cmv(WidgetRef ref, cmvList) {
-
-
   return Container(
-      height: 15,
+      height: 17,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -251,9 +257,7 @@ cmv(WidgetRef ref, cmvList) {
               scrollDirection: Axis.horizontal,
               itemCount: cmvList.length,
               itemBuilder: (context, int i) {
-                double value = double.parse(
-                    (cmvList[i])
-                        .toString());
+                double value = double.parse((cmvList[i]).toString());
                 return Flex(
                     direction: Axis.horizontal,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -278,10 +282,8 @@ cmv(WidgetRef ref, cmvList) {
 }
 
 margemBruta(WidgetRef ref, cmvList, fatList) {
-
-
   return Container(
-      height: 15,
+      height: 17,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -329,9 +331,8 @@ margemBruta(WidgetRef ref, cmvList, fatList) {
 }
 
 despComerc(WidgetRef ref, fatList, despCom) {
-
   return Container(
-      height: 15,
+      height: 17,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -380,7 +381,7 @@ despComerc(WidgetRef ref, fatList, despCom) {
 freteReemb(WidgetRef ref) {
   final stateSale = ref.watch(saleProvider);
   return Container(
-      height: 15,
+      height: 17,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -430,7 +431,7 @@ freteReemb(WidgetRef ref) {
 freteSaida(WidgetRef ref) {
   final statePay = ref.watch(payProvider);
   return Container(
-      height: 15,
+      height: 17,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -477,7 +478,7 @@ freteSaida(WidgetRef ref) {
 
 proLabore(fatList) {
   return Container(
-      height: 15,
+      height: 17,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -525,7 +526,7 @@ proLabore(fatList) {
 
 margemCont(cmvList, fatList, despCom) {
   return Container(
-      height: 15,
+      height: 17,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -548,7 +549,8 @@ margemCont(cmvList, fatList, despCom) {
               itemCount: fatList.length,
               itemBuilder: (context, int i) {
                 var margem = fatList[i] - cmvList[i];
-                double value = double.parse((margem - (-despCom[i])).toString());
+                double value =
+                    double.parse((margem - (-despCom[i])).toString());
                 return Flex(
                     direction: Axis.horizontal,
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -589,7 +591,7 @@ meses(WidgetRef ref) {
     "Dezembro"
   ];
   return Container(
-      height: 15,
+      height: 17,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

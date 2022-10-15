@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rias_accounting/financial_report/%20devolution/providers/devolution_provider.dart';
-import '../DRE_report/dre_screen.dart';
+import '../accounting_report/DRE_report/dre_screen.dart';
 import '../financial_report/pay/providers/pay_provider.dart';
 import '../financial_report/receive/providers/receive_provider.dart';
 import '../financial_report/sales/provider/sale_provider.dart';
-import 'package:collection/collection.dart';
+
 
 
 class FilterDre extends ConsumerStatefulWidget {

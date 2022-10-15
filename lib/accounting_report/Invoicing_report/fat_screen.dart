@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rias_accounting/financial_report/%20devolution/providers/devolution_provider.dart';
 import 'package:rias_accounting/financial_report/receive/providers/receive_provider.dart';
 
-
 import '../../financial_report/sales/provider/sale_provider.dart';
+
 
 class FatScreen extends ConsumerStatefulWidget {
   final String title;

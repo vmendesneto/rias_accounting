@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:rias_accounting/financial_report/%20devolution/providers/devolution_provider.dart';
-import '../accounting_report/screen/fat_screen.dart';
+import '../accounting_report/Invoicing_report/fat_screen.dart';
 import '../financial_report/receive/providers/receive_provider.dart';
 import '../financial_report/sales/provider/sale_provider.dart';
 
