@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../Settings/payroll_manual/domain/models/payroll_maunal_model.dart';
-import '../core/replace_money.dart';
-import 'db_firestore.dart';
+import '../models/payroll_maunal_model.dart';
+import '../../../../core/replace_money.dart';
+import '../../../../database/db_firestore.dart';
 
 saveAll(filial, data,folhaAV, folhaAR,extFolhaAV, extFolhaAR,vtAV, vtAR,vaAV, vaAR,vatCV, vatCR,folhaCV, folhaCR,
     extFolhaCV,

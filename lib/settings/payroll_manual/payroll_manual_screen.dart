@@ -3,7 +3,11 @@ import 'package:flutter/material.dart';
 
 import 'package:rias_accounting/Settings/payroll_manual/widgets.dart';
 
-import '../../database/dados_manual_repository.dart';
+import 'domain/service/dados_manual_repository.dart';
+
+
+
+
 
 class PayrollManualScreen extends StatefulWidget {
   const PayrollManualScreen({Key? key}) : super(key: key);

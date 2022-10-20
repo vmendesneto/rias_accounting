@@ -1,0 +1,5 @@
+
+
+class Synthetic {
+  String? name;
+}
