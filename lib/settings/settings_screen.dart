@@ -10,9 +10,8 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Material(
-        child: Center(
-        child:
-        Column(
+      child: Center(
+        child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             GestureDetector(
@@ -24,10 +23,16 @@ class SettingsScreen extends StatelessWidget {
                     height: 80,
                     width: 250,
                     child: const Card(
-                  color: Colors.blue,
-                  child: Center(child: Text("Dados Manuais", style: TextStyle(fontSize: 20.0, color: Colors.white),)),
-                ))),
-            const SizedBox(height: 15,),
+                      color: Colors.blue,
+                      child: Center(
+                          child: Text(
+                        "Dados Manuais",
+                        style: TextStyle(fontSize: 20.0, color: Colors.white),
+                      )),
+                    ))),
+            const SizedBox(
+              height: 15,
+            ),
             GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -38,9 +43,15 @@ class SettingsScreen extends StatelessWidget {
                     width: 250,
                     child: const Card(
                       color: Colors.blue,
-                      child: Center(child: Text("Cadastrar Contas Sintéticas", style: TextStyle(fontSize: 20.0, color: Colors.white),)),
+                      child: Center(
+                          child: Text(
+                        "Cadastrar Contas Sintéticas",
+                        style: TextStyle(fontSize: 20.0, color: Colors.white),
+                      )),
                     ))),
-            const SizedBox(height: 15,),
+            const SizedBox(
+              height: 15,
+            ),
             GestureDetector(
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
@@ -51,7 +62,11 @@ class SettingsScreen extends StatelessWidget {
                     width: 250,
                     child: const Card(
                       color: Colors.blue,
-                      child: Center(child: Text("Cadastrar Contas Analiticas", style: TextStyle(fontSize: 20.0, color: Colors.white),)),
+                      child: Center(
+                          child: Text(
+                        "Cadastrar Contas Analiticas",
+                        style: TextStyle(fontSize: 20.0, color: Colors.white),
+                      )),
                     ))),
           ],
         ),

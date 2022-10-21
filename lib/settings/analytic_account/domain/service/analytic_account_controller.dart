@@ -1,5 +1,3 @@
-
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -13,14 +11,31 @@ class AnalyticState {
 
 class AnalyticController extends StateNotifier<AnalyticState> {
   AnalyticController([AnalyticState? state]) : super(AnalyticState()) {
-    readAllAnalytic('Conta q será vinculada');
+    //readAllAnalytic(name);
   }
 
   saveAllAnalytic(String cod, String name) async {
     late FirebaseFirestore db;
     db = DBFirestore.get();
-    final data = {'cod': cod, 'data': DateTime.now()};
-    await db.collection(name).doc().set(data);
+    final data = {
+      'cod': FieldValue.arrayUnion([cod])
+    };
+    List<String> listAddress = [];
+    final snapshot = await db.collection(name).get();
+    if (snapshot.docs.isNotEmpty) {
+      for (var i = 0; i < snapshot.docs.length; i++) {
+        var cod = snapshot.docs[i].get('cod');
+        listAddress.add(cod.toString());
+      }
+      if (listAddress.contains(cod) == false) {
+        await db.collection(name).doc('uid').update(data);
+      } else {}
+    } else {
+      await db.collection(name).doc('uid').set(data);
+      listAddress.add(cod.toString());
+    }
+    state = AnalyticState(listAddress: listAddress);
+    return listAddress;
   }
 
   readAllAnalytic(String name) async {
@@ -28,11 +43,13 @@ class AnalyticController extends StateNotifier<AnalyticState> {
     db = DBFirestore.get();
     List<String> listAddress = [];
     final snapshot = await db.collection(name).get();
-    print(snapshot.docs);
+    if (snapshot.docs.isNotEmpty) {
       for (var i = 0; i < snapshot.docs.length; i++) {
-        var name = snapshot.docs[i].get('cod');
-        listAddress.add(name.toString());
-
+        var cod = snapshot.docs[i].get('cod');
+        listAddress.add(cod.toString());
+      }
+    } else {
+      print('COLEÇÃO VAZIA');
     }
     state = AnalyticState(listAddress: listAddress);
     return listAddress;

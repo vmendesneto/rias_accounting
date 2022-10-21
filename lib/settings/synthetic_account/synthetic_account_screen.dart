@@ -26,7 +26,6 @@ class _SyntheticAccountScreenState
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
@@ -72,7 +71,7 @@ class _SyntheticAccountScreenState
                           disabledBorder: InputBorder.none,
                         ),
                         inputFormatters: [
-                          LengthLimitingTextInputFormatter(20),
+                          LengthLimitingTextInputFormatter(28),
                         ],
                         controller: name,
                       ))),
@@ -81,7 +80,7 @@ class _SyntheticAccountScreenState
               ),
               ElevatedButton(
                   onPressed: () async {
-                    synthetic.name = name.text;
+                    synthetic.name = name.text.toLowerCase();
                     await data.saveAllSynthetic(name.text);
                     name.text = '';
                     FocusScope.of(context).requestFocus(FocusNode());
