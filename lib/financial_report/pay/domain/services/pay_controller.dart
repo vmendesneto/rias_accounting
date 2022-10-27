@@ -1,8 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rias_accounting/settings/synthetic_account/domain/service/synthetic_account_controller.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:collection/collection.dart';
 import '../../../../core/global_variables.dart';
+import '../../../../database/db_firestore.dart';
+import '../../../../settings/analytic_account/domain/service/analytic_account_controller.dart';
 import '../models/pay_model.dart';
+
 
 class PayState {
   bool isChecked;
@@ -13,7 +18,7 @@ class PayState {
   DateTime? initialDate;
   DateTime? endDate;
   int? count;
-  List<String>? meses =[];
+  List<String>? meses = [];
   List<num>? mes1;
   List<num>? mes2;
   List<num>? mes3;
@@ -27,7 +32,7 @@ class PayState {
   List<num>? mes11;
   List<num>? mes12;
   List<num>? rest;
-
+  List<num>? freteSaida;
   PayState(
       {this.pays,
       this.check,
@@ -36,26 +41,29 @@ class PayState {
       this.filtered,
       this.initialDate,
       this.endDate,
-      this.count, this.meses,
-        this.mes1,
-        this.mes2,
-        this.mes3,
-        this.mes4,
-        this.mes5,
-        this.mes6,
-        this.mes7,
-        this.mes8,
-        this.mes9,
-        this.mes10,
-        this.mes11,
-        this.mes12,this.rest});
+      this.count,
+      this.meses,
+      this.mes1,
+      this.mes2,
+      this.mes3,
+      this.mes4,
+      this.mes5,
+      this.mes6,
+      this.mes7,
+      this.mes8,
+      this.mes9,
+      this.mes10,
+      this.mes11,
+      this.mes12,
+      this.rest, this.freteSaida});
 }
 
 class PayController extends StateNotifier<PayState> {
   PayController([PayState? state]) : super(PayState());
 
   Variables variables = Variables();
-  List<String> lista =[];
+  List<String> lista = [];
+  List<String> listaFrete =[];
 
   void dateInitial() {
     var now = DateTime.now().subtract(const Duration(days: 4));
@@ -90,7 +98,7 @@ class PayController extends StateNotifier<PayState> {
         check: state.check,
         filtered: state.filtered,
         initialDate: state.initialDate,
-        endDate: state.endDate);
+        endDate: state.endDate, freteSaida: state.freteSaida);
     return pays;
   }
 
@@ -131,7 +139,7 @@ class PayController extends StateNotifier<PayState> {
         check: state.check,
         filtered: filters,
         initialDate: state.initialDate,
-        endDate: state.endDate);
+        endDate: state.endDate, freteSaida: state.freteSaida, rest: state.rest);
     return filters;
   }
 
@@ -146,7 +154,7 @@ class PayController extends StateNotifier<PayState> {
         filtered: state.filtered,
         initialDate: state.initialDate,
         count: state.count,
-        meses: state.meses);
+        meses: state.meses, freteSaida: state.freteSaida);
   }
 
   falseCheck(int emp) {
@@ -157,8 +165,9 @@ class PayController extends StateNotifier<PayState> {
         check: state.check,
         endDate: state.endDate,
         filtered: state.filtered,
-        initialDate: state.initialDate, count: state.count,
-        meses: state.meses);
+        initialDate: state.initialDate,
+        count: state.count,
+        meses: state.meses, freteSaida: state.freteSaida);
   }
 
   void onSelectionChanged(DateRangePickerSelectionChangedArgs args) {
@@ -172,20 +181,20 @@ class PayController extends StateNotifier<PayState> {
           pays: state.pays,
           check: state.check,
           filtered: state.filtered,
-          isChecked: state.isChecked);
+          isChecked: state.isChecked, freteSaida: state.freteSaida);
     }
   }
+
   void onSelection(int option) {
     List<String> mesesOpt = [];
     switch (option) {
       case 1:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 1, 01);
+              DateTime(variables.today.year, variables.today.month - 1, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
+              DateTime(variables.today.year, variables.today.month, 01);
           mesesOpt.add((variables.today.month - 1).toString());
-
 
           state = PayState(
             initialDate: dateInitial,
@@ -197,15 +206,16 @@ class PayController extends StateNotifier<PayState> {
             isChecked: state.isChecked,
             count: 1,
             meses: mesesOpt,
+            freteSaida: state.freteSaida,
           );
         }
         break;
       case 2:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 3, 01);
+              DateTime(variables.today.year, variables.today.month - 3, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
+              DateTime(variables.today.year, variables.today.month, 01);
           mesesOpt.add((variables.today.month - 1).toString());
           mesesOpt.add((variables.today.month - 2).toString());
           mesesOpt.add((variables.today.month - 3).toString());
@@ -219,15 +229,16 @@ class PayController extends StateNotifier<PayState> {
             isChecked: state.isChecked,
             count: 3,
             meses: mesesOpt,
+            freteSaida: state.freteSaida,
           );
         }
         break;
       case 3:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 6, 01);
+              DateTime(variables.today.year, variables.today.month - 6, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
+              DateTime(variables.today.year, variables.today.month, 01);
           mesesOpt.add((variables.today.month - 1).toString());
           mesesOpt.add((variables.today.month - 2).toString());
           mesesOpt.add((variables.today.month - 3).toString());
@@ -245,15 +256,16 @@ class PayController extends StateNotifier<PayState> {
             isChecked: state.isChecked,
             count: 6,
             meses: mesesOpt,
+            freteSaida: state.freteSaida,
           );
         }
         break;
       case 4:
         {
           var dateInitial =
-          DateTime(variables.today.year, variables.today.month - 12, 01);
+              DateTime(variables.today.year, variables.today.month - 12, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
+              DateTime(variables.today.year, variables.today.month, 01);
           mesesOpt.add((variables.today.month - 1).toString());
           mesesOpt.add((variables.today.month - 2).toString());
           mesesOpt.add((variables.today.month - 3).toString());
@@ -277,6 +289,7 @@ class PayController extends StateNotifier<PayState> {
             isChecked: state.isChecked,
             count: 12,
             meses: mesesOpt,
+            freteSaida: state.freteSaida,
           );
         }
         break;
@@ -284,7 +297,7 @@ class PayController extends StateNotifier<PayState> {
         {
           var dateInitial = DateTime(variables.today.year, 01, 01);
           var dateFinal =
-          DateTime(variables.today.year, variables.today.month, 01);
+              DateTime(variables.today.year, variables.today.month, 01);
           state = PayState(
             initialDate: dateInitial,
             endDate: dateFinal,
@@ -294,121 +307,125 @@ class PayController extends StateNotifier<PayState> {
             filtered: state.filtered,
             isChecked: state.isChecked,
             count: variables.today.month - 1,
+            freteSaida: state.freteSaida,
           );
         }
         break;
     }
   }
-  separateMonth(int conta) {
-    List<num> mes1 = [];
-    List<num> mes2 = [];
-    List<num> mes3 = [];
-    List<num> mes4 = [];
-    List<num> mes5 = [];
-    List<num> mes6 = [];
-    List<num> mes7 = [];
-    List<num> mes8 = [];
-    List<num> mes9 = [];
-    List<num> mes10 = [];
-    List<num> mes11 = [];
-    List<num> mes12 = [];
+
+  separateMonth(List<int> conta) {
+    List<num>? mes1 = [];
+    List<num>? mes2 = [];
+    List<num>? mes3 = [];
+    List<num>? mes4 = [];
+    List<num>? mes5 = [];
+    List<num>? mes6 = [];
+    List<num>? mes7 = [];
+    List<num>? mes8 =  [];
+    List<num>? mes9 =  [];
+    List<num>? mes10 =  [];
+    List<num>? mes11 = [];
+    List<num>? mes12 = [];
     List<Pay>? filtro = filter();
-    for (var i = 0; i < filtro!.length;) {
-      if (filtro[i].datapagamento != null) {
-        DateTime ola = DateTime.parse((filtro[i].datapagamento!));
-        if (filtro[i].codConta == conta) {
-          //colcar na lista do mes certo
-          switch (ola.month) {
-            case 1:
-              {
-                mes1.add(filtro[i].total!);
-                lista.add('mes1');
-                i++;
-              }
-              break;
-            case 2:
-              {
-                mes2.add(filtro[i].total!);
-                lista.add('mes2');
-                i++;
-              }
-              break;
-            case 3:
-              {
-                mes3.add(filtro[i].total!);
-                lista.add('mes3');
-                i++;
-              }
-              break;
-            case 4:
-              {
-                mes4.add(filtro[i].total!);
-                lista.add('mes4');
-                i++;
-              }
-              break;
-            case 5:
-              {
-                mes5.add(filtro[i].total!);
-                lista.add('mes5');
-                i++;
-              }
-              break;
-            case 6:
-              {
-                mes6.add(filtro[i].total!);
-                lista.add('mes6');
-                i++;
-              }
-              break;
-            case 7:
-              {
-                mes7.add(filtro[i].total!);
-                lista.add('mes7');
-                i++;
-              }
-              break;
-            case 8:
-              {
-                mes8.add(filtro[i].total!);
-                lista.add('mes8');
-                i++;
-              }
-              break;
-            case 9:
-              {
-                mes9.add(filtro[i].total!);
-                lista.add('mes9');
-                i++;
-              }
-              break;
-            case 10:
-              {
-                mes10.add(filtro[i].total!);
-                lista.add('mes10');
-                i++;
-              }
-              break;
-            case 11:
-              {
-                mes11.add(filtro[i].total!);
-                lista.add('mes11');
-                i++;
-              }
-              break;
-            case 12:
-              {
-                mes12.add(filtro[i].total!);
-                lista.add('mes12');
-                i++;
-              }
-              break;
+    for(var c =0; c < conta.length;c++) {
+      for (var i = 0; i < filtro!.length;) {
+        if (filtro[i].datapagamento != null) {
+          DateTime ola = DateTime.parse((filtro[i].datapagamento!));
+          if (filtro[i].codConta == conta[c]) {
+            //colcar na lista do mes certo
+            switch (ola.month) {
+              case 1:
+                {
+                  mes1.add(filtro[i].total!);
+                  lista.add('mes1');
+                  i++;
+                }
+                break;
+              case 2:
+                {
+                  mes2.add(filtro[i].total!);
+                  lista.add('mes2');
+                  i++;
+                }
+                break;
+              case 3:
+                {
+                  mes3.add(filtro[i].total!);
+                  lista.add('mes3');
+                  i++;
+                }
+                break;
+              case 4:
+                {
+                  mes4.add(filtro[i].total!);
+                  lista.add('mes4');
+                  i++;
+                }
+                break;
+              case 5:
+                {
+                  mes5.add(filtro[i].total!);
+                  lista.add('mes5');
+                  i++;
+                }
+                break;
+              case 6:
+                {
+                  mes6.add(filtro[i].total!);
+                  lista.add('mes6');
+                  i++;
+                }
+                break;
+              case 7:
+                {
+                  mes7.add(filtro[i].total!);
+                  lista.add('mes7');
+                  i++;
+                }
+                break;
+              case 8:
+                {
+                  mes8.add(filtro[i].total!);
+                  lista.add('mes8');
+                  i++;
+                }
+                break;
+              case 9:
+                {
+                  mes9.add(filtro[i].total!);
+                  lista.add('mes9');
+                  i++;
+                }
+                break;
+              case 10:
+                {
+                  mes10.add(filtro[i].total!);
+                  lista.add('mes10');
+                  i++;
+                }
+                break;
+              case 11:
+                {
+                  mes11.add(filtro[i].total!);
+                  lista.add('mes11');
+                  i++;
+                }
+                break;
+              case 12:
+                {
+                  mes12.add(filtro[i].total!);
+                  lista.add('mes12');
+                  i++;
+                }
+                break;
+            }
+          } else {
+            i++;
           }
         } else {
           i++;
         }
-      }else{
-        i++;
       }
     }
     state = PayState(
@@ -431,8 +448,48 @@ class PayController extends StateNotifier<PayState> {
       isChecked: state.isChecked,
       count: state.count,
       meses: state.meses,
+      initialDate: state.initialDate,
+      endDate: state.endDate,
+      freteSaida: state.freteSaida,
+      rest: state.rest,
     );
   }
+
+  initialFrete() async {
+    List<int> dado = [];
+    AnalyticController analit = AnalyticController();
+    List listAddress = await analit.readByCodAnalytic('FRETE');
+    for (var i = 0; i < listAddress.length; i++) {
+      dado.add(
+          int.parse(listAddress[i].replaceAll(r'[', "").replaceAll(r']', "")));
+    }
+      await separFretMonth(dado);
+      await totalFrete();
+  }
+
+  despesasFixas() async {
+    late FirebaseFirestore db;
+    db = DBFirestore.get();
+    List<int> dado = [];
+    SharedController sint = SharedController();
+    AnalyticController analit = AnalyticController();
+    List sintAddress = await sint.readAllSynthetic();
+    for (var i = 0; i < sintAddress.length; i++) {
+      final dados = await db.collection(sintAddress[i].toString()).get();
+      if (dados != null) {
+        List listAddress =
+            await analit.readByCodAnalytic(sintAddress[i].toString());
+        for (var i = 0; i < listAddress.length; i++) {
+          dado.add(int.parse(
+              listAddress[i].replaceAll(r'[', "").replaceAll(r']', "")));
+        }
+      }
+    }
+    await separateMonth(dado);
+    await total();
+  }
+
+
   total() {
     List<num> list = [];
     var valor = lista.length;
@@ -497,8 +554,218 @@ class PayController extends StateNotifier<PayState> {
       rest: list,
       count: state.count,
       meses: state.meses,
+      initialDate: state.initialDate,
+      endDate: state.endDate,
+      freteSaida: state.freteSaida
     );
-
   }
+  totalFrete() {
+    List<num> list = [];
+    var valor = listaFrete.length;
+    for (var i = 0; i < valor; i++) {
+      if (listaFrete.contains('mes1')) {
+        list.add(state.mes1!.sum);
+        listaFrete.removeWhere((element) => element == 'mes1');
+      } else if (listaFrete.contains('mes2')) {
+        list.add(state.mes2!.sum);
+        listaFrete.removeWhere((element) => element == 'mes2');
+      } else if (listaFrete.contains('mes3')) {
+        list.add(state.mes3!.sum);
+        listaFrete.removeWhere((element) => element == 'mes3');
+      } else if (listaFrete.contains('mes4')) {
+        list.add(state.mes4!.sum);
+        listaFrete.removeWhere((element) => element == 'mes4');
+      } else if (listaFrete.contains('mes5')) {
+        list.add(state.mes5!.sum);
+        listaFrete.removeWhere((element) => element == 'mes5');
+      } else if (listaFrete.contains('mes6')) {
+        list.add(state.mes6!.sum);
+        listaFrete.removeWhere((element) => element == 'mes6');
+      } else if (listaFrete.contains('mes7')) {
+        list.add(state.mes7!.sum);
+        listaFrete.removeWhere((element) => element == 'mes7');
+      } else if (listaFrete.contains('mes8')) {
+        list.add(state.mes8!.sum);
+        listaFrete.removeWhere((element) => element == 'mes8');
+      } else if (listaFrete.contains('mes9')) {
+        list.add(state.mes9!.sum);
+        listaFrete.removeWhere((element) => element == 'mes9');
+      } else if (listaFrete.contains('mes10')) {
+        list.add(state.mes10!.sum);
+        listaFrete.removeWhere((element) => element == 'mes10');
+      } else if (listaFrete.contains('mes11')) {
+        list.add(state.mes11!.sum);
+        listaFrete.removeWhere((element) => element == 'mes11');
+      } else {
+        list.add(state.mes12!.sum);
+        listaFrete.removeWhere((element) => element == 'mes12');
+      }
+    }
 
+    state = PayState(
+      mes1: state.mes1,
+      mes2: state.mes2,
+      mes3: state.mes3,
+      mes4: state.mes4,
+      mes5: state.mes5,
+      mes6: state.mes6,
+      mes7: state.mes7,
+      mes8: state.mes8,
+      mes9: state.mes9,
+      mes10: state.mes10,
+      mes11: state.mes11,
+      mes12: state.mes12,
+      empresas: state.empresas,
+      pays: state.pays,
+      check: state.check,
+      filtered: state.filtered,
+      isChecked: state.isChecked,
+      rest: state.rest,
+      freteSaida: list,
+      count: state.count,
+      meses: state.meses,
+      initialDate: state.initialDate,
+      endDate: state.endDate,
+    );
+  }
+  separFretMonth(List<int> conta) {
+    List<num>? mes1 = [];
+    List<num>? mes2 = [];
+    List<num>? mes3 = [];
+    List<num>? mes4 = [];
+    List<num>? mes5 = [];
+    List<num>? mes6 = [];
+    List<num>? mes7 = [];
+    List<num>? mes8 =  [];
+    List<num>? mes9 =  [];
+    List<num>? mes10 =  [];
+    List<num>? mes11 = [];
+    List<num>? mes12 = [];
+    List<Pay>? filtro = filter();
+    for(var c =0; c < conta.length;c++) {
+      for (var i = 0; i < filtro!.length;) {
+        if (filtro[i].datapagamento != null) {
+          DateTime ola = DateTime.parse((filtro[i].datapagamento!));
+          if (filtro[i].codConta == conta[c]) {
+            //colcar na lista do mes certo
+            switch (ola.month) {
+              case 1:
+                {
+                  mes1.add(filtro[i].total!);
+                  listaFrete.add('mes1');
+                  i++;
+                }
+                break;
+              case 2:
+                {
+                  mes2.add(filtro[i].total!);
+                  listaFrete.add('mes2');
+                  i++;
+                }
+                break;
+              case 3:
+                {
+                  mes3.add(filtro[i].total!);
+                  listaFrete.add('mes3');
+                  i++;
+                }
+                break;
+              case 4:
+                {
+                  mes4.add(filtro[i].total!);
+                  listaFrete.add('mes4');
+                  i++;
+                }
+                break;
+              case 5:
+                {
+                  mes5.add(filtro[i].total!);
+                  listaFrete.add('mes5');
+                  i++;
+                }
+                break;
+              case 6:
+                {
+                  mes6.add(filtro[i].total!);
+                  listaFrete.add('mes6');
+                  i++;
+                }
+                break;
+              case 7:
+                {
+                  mes7.add(filtro[i].total!);
+                  listaFrete.add('mes7');
+                  i++;
+                }
+                break;
+              case 8:
+                {
+                  mes8.add(filtro[i].total!);
+                  listaFrete.add('mes8');
+                  i++;
+                }
+                break;
+              case 9:
+                {
+                  mes9.add(filtro[i].total!);
+                  listaFrete.add('mes9');
+                  i++;
+                }
+                break;
+              case 10:
+                {
+                  mes10.add(filtro[i].total!);
+                  listaFrete.add('mes10');
+                  i++;
+                }
+                break;
+              case 11:
+                {
+                  mes11.add(filtro[i].total!);
+                  listaFrete.add('mes11');
+                  i++;
+                }
+                break;
+              case 12:
+                {
+                  mes12.add(filtro[i].total!);
+                  listaFrete.add('mes12');
+                  i++;
+                }
+                break;
+            }
+          } else {
+            i++;
+          }
+        } else {
+          i++;
+        }
+      }
+    }
+    state = PayState(
+      mes1: mes1,
+      mes2: mes2,
+      mes3: mes3,
+      mes4: mes4,
+      mes5: mes5,
+      mes6: mes6,
+      mes7: mes7,
+      mes8: mes8,
+      mes9: mes9,
+      mes10: mes10,
+      mes11: mes11,
+      mes12: mes12,
+      empresas: state.empresas,
+      pays: state.pays,
+      check: state.check,
+      filtered: state.filtered,
+      isChecked: state.isChecked,
+      count: state.count,
+      meses: state.meses,
+      initialDate: state.initialDate,
+      endDate: state.endDate,
+      freteSaida: state.freteSaida,
+      rest: state.rest,
+    );
+  }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:rias_accounting/settings/synthetic_account/domain/service/synthetic_account_controller.dart';
+import 'package:rias_accounting/settings/synthetic_account/providers/synthetic_provider.dart';
 import '../../financial_report/ devolution/providers/devolution_provider.dart';
 import '../../financial_report/pay/providers/pay_provider.dart';
 import '../../financial_report/sales/provider/sale_provider.dart';
-
 
 class DreScreen extends ConsumerStatefulWidget {
   final String title;
@@ -23,7 +24,6 @@ class DreScreenState extends ConsumerState<DreScreen> {
   List<num> fatList = [];
   double mediaHeight = 0.00;
 
-
   @override
   void initState() {
     super.initState();
@@ -38,6 +38,10 @@ class DreScreenState extends ConsumerState<DreScreen> {
   Widget build(
     BuildContext context,
   ) {
+    final stateSale = ref.watch(saleProvider);
+    final stateSint = ref.watch(sharedProvider);
+    final statePay = ref.watch(payProvider);
+
     mediaHeight = MediaQuery.of(context).size.height;
     return Scaffold(
         appBar: AppBar(
@@ -57,28 +61,78 @@ class DreScreenState extends ConsumerState<DreScreen> {
                       meses(ref),
 //                      const SizedBox(height: 1.2),
                       fatBruto(ref, fatList),
-                    //  const SizedBox(height: 1.2),
+                      //  const SizedBox(height: 1.2),
                       devolucoes(ref),
-                    //  const SizedBox(height: 1.2),
+                      //  const SizedBox(height: 1.2),
                       fatLiq(ref, fatList),
-                    //  const SizedBox(height: 1.2),
+                      //  const SizedBox(height: 1.2),
                       cmv(ref, cmvList),
-                    //  const SizedBox(height: 1.2),
+                      //  const SizedBox(height: 1.2),
                       margemBruta(ref, cmvList, fatList),
-                    //  const SizedBox(height: 1.2),
+                      //  const SizedBox(height: 1.2),
                       despComerc(ref, fatList, despCom),
-                     // const SizedBox(height: 1.2),
+                      // const SizedBox(height: 1.2),
                       freteReemb(ref),
-                    //  const SizedBox(height: 1.2),
+                      //  const SizedBox(height: 1.2),
                       freteSaida(ref),
-                    //  const SizedBox(height: 1.2),
+                      //  const SizedBox(height: 1.2),
                       proLabore(fatList),
-                     // const SizedBox(height: 1.2),
+                      // const SizedBox(height: 1.2),
                       margemCont(cmvList, fatList, despCom),
-                     // const SizedBox(height: 1.2),
-                    ],
-                  )),
-            )));
+                      // const SizedBox(height: 1.2),
+                      despFixas(ref),
+                  LimitedBox(
+                    maxHeight: 300,
+                    maxWidth:200,
+                    child:Container(color: Colors.blue,child:
+                    ListView.builder(
+                            reverse: true,
+                            shrinkWrap: true,
+                           physics: const NeverScrollableScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: stateSint.listAddress.length,
+                            itemBuilder: (context, int i) {
+                              return SizedBox(
+                                  height: 17,
+                                  child: Row(
+                                    crossAxisAlignment: CrossAxisAlignment
+                                        .start,
+                                    children: [Table(
+                                        defaultColumnWidth:
+                                        const FixedColumnWidth(200),
+                                        defaultVerticalAlignment:
+                                        TableCellVerticalAlignment.middle,
+                                        border: TableBorder.all(
+                                            color: Colors.black),
+                                        children: <TableRow>[
+                                          TableRow(children: <Widget>[
+                                            Padding(
+                                                padding:
+                                                const EdgeInsets.all(2.0),
+                                                child: Text(
+                                                  stateSint.listAddress[i]
+                                                      .toString(),
+                                                  textAlign: TextAlign
+                                                      .center,
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                      FontWeight.bold,
+                                                      fontSize: 15),
+                                                ))
+                                          ])
+                                        ]),
+
+                                      //VALORES SÓ PARA TESTE
+
+                                    ],
+                                  ));
+                            })
+                        ))
+                      ],
+                  )
+                                  ),
+            ),
+            ));
   }
 }
 
@@ -92,15 +146,18 @@ fatBruto(WidgetRef ref, fatList) {
         children: [
           Table(
               defaultColumnWidth: const FixedColumnWidth(200),
-              defaultVerticalAlignment:
-              TableCellVerticalAlignment.middle,
+              defaultVerticalAlignment: TableCellVerticalAlignment.middle,
               border: TableBorder.all(color: Colors.black),
               children: const <TableRow>[
                 TableRow(children: <Widget>[
                   Padding(
                       padding: EdgeInsets.all(2.0),
-                      child:
-                          Text("(=) Fat. Bruto", textAlign: TextAlign.center))
+                      child: Text(
+                        "(=) Faturamento Bruto",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ))
                 ])
               ]),
           ListView.builder(
@@ -118,7 +175,7 @@ fatBruto(WidgetRef ref, fatList) {
                     children: [
                       Table(
                           defaultVerticalAlignment:
-                          TableCellVerticalAlignment.middle,
+                              TableCellVerticalAlignment.middle,
                           defaultColumnWidth: const FixedColumnWidth(100),
                           border: TableBorder.all(color: Colors.black),
                           children: <TableRow>[
@@ -127,7 +184,10 @@ fatBruto(WidgetRef ref, fatList) {
                                   padding:
                                       const EdgeInsets.only(top: 2, bottom: 2),
                                   child: Text(value.toStringAsFixed(2),
-                                      textAlign: TextAlign.center))
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)))
                             ])
                           ])
                     ]);
@@ -198,8 +258,10 @@ Widget fatLiq(WidgetRef ref, fatList) {
                 TableRow(children: <Widget>[
                   Padding(
                       padding: EdgeInsets.only(top: 2, bottom: 2),
-                      child:
-                          Text("(=) Fat. Liquido", textAlign: TextAlign.center))
+                      child: Text("(=) Faturamento Liquido",
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15)))
                 ])
               ]),
           ListView.builder(
@@ -224,7 +286,10 @@ Widget fatLiq(WidgetRef ref, fatList) {
                                   padding:
                                       const EdgeInsets.only(top: 2, bottom: 2),
                                   child: Text(value.toStringAsFixed(2),
-                                      textAlign: TextAlign.center))
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)))
                             ])
                           ])
                     ]);
@@ -247,7 +312,9 @@ cmv(WidgetRef ref, cmvList) {
                   Padding(
                       padding: EdgeInsets.only(top: 2, bottom: 2),
                       child: Text('(-) Custo Mercadoria Vendida',
-                          textAlign: TextAlign.center))
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15)))
                 ])
               ]),
           ListView.builder(
@@ -272,7 +339,10 @@ cmv(WidgetRef ref, cmvList) {
                                   padding:
                                       const EdgeInsets.only(top: 2, bottom: 2),
                                   child: Text(value.toStringAsFixed(2),
-                                      textAlign: TextAlign.center))
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)))
                             ])
                           ])
                     ]);
@@ -294,8 +364,10 @@ margemBruta(WidgetRef ref, cmvList, fatList) {
                 TableRow(children: <Widget>[
                   Padding(
                       padding: EdgeInsets.only(top: 2, bottom: 2),
-                      child:
-                          Text("(=) Margem Bruta", textAlign: TextAlign.center))
+                      child: Text("(=) Margem Bruta",
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15)))
                 ])
               ]),
           ListView.builder(
@@ -321,7 +393,10 @@ margemBruta(WidgetRef ref, cmvList, fatList) {
                                   padding:
                                       const EdgeInsets.only(top: 2, bottom: 2),
                                   child: Text(value.toStringAsFixed(2),
-                                      textAlign: TextAlign.center))
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)))
                             ])
                           ])
                     ]);
@@ -344,6 +419,8 @@ despComerc(WidgetRef ref, fatList, despCom) {
                   Padding(
                       padding: EdgeInsets.only(top: 2, bottom: 2),
                       child: Text("(-) Despesas de Comercialização",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
                           textAlign: TextAlign.center))
                 ])
               ]),
@@ -369,7 +446,10 @@ despComerc(WidgetRef ref, fatList, despCom) {
                                   padding:
                                       const EdgeInsets.only(top: 2, bottom: 2),
                                   child: Text(value.toStringAsFixed(2),
-                                      textAlign: TextAlign.center))
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)))
                             ])
                           ])
                     ]);
@@ -429,6 +509,7 @@ freteReemb(WidgetRef ref) {
 }
 
 freteSaida(WidgetRef ref) {
+  final stateSale = ref.watch(saleProvider);
   final statePay = ref.watch(payProvider);
   return Container(
       height: 17,
@@ -449,26 +530,57 @@ freteSaida(WidgetRef ref) {
               reverse: true,
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              itemCount: statePay.rest!.length,
+              scrollDirection: Axis
+                  .horizontal,
+              itemCount: stateSale.count,
               itemBuilder: (context, int i) {
-                double value = double.parse(statePay.rest![i].toString());
+                double value = double.parse(
+                    statePay.freteSaida![i]
+                        .toString());
                 return Flex(
-                    direction: Axis.horizontal,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    direction: Axis
+                        .horizontal,
+                    mainAxisAlignment:
+                    MainAxisAlignment.start,
+                    crossAxisAlignment:
+                    CrossAxisAlignment.start,
                     children: [
                       Table(
-                          defaultColumnWidth: FixedColumnWidth(100),
-                          border: TableBorder.all(color: Colors.black),
-                          children: <TableRow>[
-                            TableRow(children: <Widget>[
-                              Padding(
-                                  padding:
-                                      const EdgeInsets.only(top: 2, bottom: 2),
-                                  child: Text(value.toStringAsFixed(2),
-                                      textAlign: TextAlign.center))
-                            ])
+                          defaultVerticalAlignment:
+                          TableCellVerticalAlignment
+                              .middle,
+                          defaultColumnWidth:
+                          const FixedColumnWidth(
+                              100),
+                          border: TableBorder
+                              .all(
+                              color: Colors
+                                  .black),
+                          children: <
+                              TableRow>[
+                            TableRow(
+                                children: <
+                                    Widget>[
+                                  Padding(
+                                      padding:
+                                      const EdgeInsets
+                                          .only(
+                                          top: 2,
+                                          bottom: 2),
+                                      child: Text(
+                                          value
+                                              .toStringAsFixed(
+                                              2),
+                                          textAlign: TextAlign
+                                              .center,
+                                          style:
+                                          const TextStyle(
+                                              fontWeight:
+                                              FontWeight
+                                                  .bold,
+                                              fontSize:
+                                              15)))
+                                ])
                           ])
                     ]);
               })
@@ -538,7 +650,9 @@ margemCont(cmvList, fatList, despCom) {
                   Padding(
                       padding: EdgeInsets.only(top: 2, bottom: 2),
                       child: Text("(=) Margem de Contribuição",
-                          textAlign: TextAlign.center))
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15)))
                 ])
               ]),
           ListView.builder(
@@ -565,7 +679,10 @@ margemCont(cmvList, fatList, despCom) {
                                   padding:
                                       const EdgeInsets.only(top: 2, bottom: 2),
                                   child: Text(value.toStringAsFixed(2),
-                                      textAlign: TextAlign.center))
+                                      textAlign: TextAlign.center,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 15)))
                             ])
                           ])
                     ]);
@@ -637,6 +754,55 @@ meses(WidgetRef ref) {
                                       const EdgeInsets.only(top: 2, bottom: 2),
                                   child:
                                       Text(meses, textAlign: TextAlign.center))
+                            ])
+                          ])
+                    ]);
+              })
+        ],
+      ));
+}
+
+despFixas(WidgetRef ref) {
+  final statePay = ref.watch(payProvider);
+  final stateSale = ref.watch(saleProvider);
+  return Container(
+      height: 17,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Table(
+              defaultColumnWidth: const FixedColumnWidth(200),
+              border: TableBorder.all(color: Colors.black),
+              children: const <TableRow>[
+                TableRow(children: <Widget>[
+                  Padding(
+                      padding: EdgeInsets.only(top: 2, bottom: 2),
+                      child: Text("Despesas Fixas", textAlign: TextAlign.center))
+                ])
+              ]),
+          ListView.builder(
+              reverse: true,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              scrollDirection: Axis.horizontal,
+              itemCount: stateSale.count,
+              itemBuilder: (context, int i) {
+                double value = double.parse(statePay.rest![i].toString());
+                return Flex(
+                    direction: Axis.horizontal,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Table(
+                          defaultColumnWidth: const FixedColumnWidth(100),
+                          border: TableBorder.all(color: Colors.black),
+                          children: <TableRow>[
+                            TableRow(children: <Widget>[
+                              Padding(
+                                  padding:
+                                  const EdgeInsets.only(top: 2, bottom: 2),
+                                  child: Text(value.toStringAsFixed(2),
+                                      textAlign: TextAlign.center))
                             ])
                           ])
                     ]);

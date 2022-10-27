@@ -5,19 +5,19 @@ import '../../../../database/db_firestore.dart';
 
 class SharedState {
   List<String> listAddress = [];
-
-  SharedState({this.listAddress = const []});
+  List<String> listAddressObrig = [];
+  SharedState({this.listAddress = const [],this.listAddressObrig = const []});
 }
 
 class SharedController extends StateNotifier<SharedState> {
   SharedController([SharedState? state]) : super(SharedState()) {
-    readAllSynthetic();
+    //readAllSynthetic();
   }
 
   saveAllSynthetic(String name) async {
     late FirebaseFirestore db;
     db = DBFirestore.get();
-    final data = {'name': name};
+    final data = {'name': name.toUpperCase()};
     await db.collection('sinteticas').doc().set(data, SetOptions(merge: true));
   }
 
@@ -35,7 +35,35 @@ class SharedController extends StateNotifier<SharedState> {
     state = SharedState(listAddress: listAddress);
     return listAddress;
   }
+inicitial() async {
+  await readAllSyntObrig();
+  if (state.listAddressObrig.contains('FRETE')) {} else {
+    await saveAllSyntObrig('FRETE');
+  }
+  await readAllSynthetic();
+}
+  saveAllSyntObrig(String name) async {
+    late FirebaseFirestore db;
+    db = DBFirestore.get();
+    final data = {'name': name.toUpperCase()};
+    await db.collection('sinteticasobrigatorias').doc().set(data, SetOptions(merge: true));
+  }
 
+    readAllSyntObrig() async {
+      late FirebaseFirestore db;
+      db = DBFirestore.get();
+      List<String> listAddress = [];
+      final snapshot = await db.collection('sinteticasobrigatorias').get();
+      if (snapshot.docs.isNotEmpty) {
+        for (var i = 0; i < snapshot.docs.length; i++) {
+          var name = snapshot.docs[i].get('name');
+          listAddress.add(name.toString());
+        }
+      }
+      state = SharedState(listAddressObrig: listAddress);
+      return listAddress;
+    }
+}
 // Future<List<String>> remove(String name) async {
 //   final preferences = await SharedPreferences.getInstance();
 //   var listAddress = preferences.getStringList('name');
@@ -44,4 +72,4 @@ class SharedController extends StateNotifier<SharedState> {
 //   state = SharedState(listAddress: listAddress);
 //   return listAddress;
 // }
-}
+

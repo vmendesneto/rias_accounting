@@ -151,9 +151,8 @@ class FilterDreState extends ConsumerState<FilterDre> {
     await sales.separateMonth();
     await receive.separateMonth();
     await dev.separateMonth();
-    //Cod. da conta do frete deve ser cadastrado nas configurações
-    await pay.separateMonth(300010);
-    await pay.total();
+    await pay.initialFrete();
+    await pay.despesasFixas();
     await sales.total();
     await receive.total();
     await dev.total();

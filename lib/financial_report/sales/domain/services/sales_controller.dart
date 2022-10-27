@@ -711,25 +711,78 @@ class SaleController extends StateNotifier<ViewStates> {
     );
   }
 
-  fillList(WidgetRef ref) {
+  fillList(WidgetRef ref) async {
     final stateDev = ref.watch(devolutionProvider);
     final statePay = ref.watch(payProvider);
 
-    final restDev = stateDev.rest;
-    final restDevCusto = stateDev.restCusto;
-    final restPay = statePay.rest;
-
+    List<num> restDev = [];
+    List<num> restDevCusto = [];
+    List<num> restPay = [];
     List<num> fatList = [];
     List<num> cmvList = [];
     List<num> despCom = [];
-    final rest = state.rest;
-    final restCusto = state.restCusto;
-    final restFrete = state.restFrete;
+    List<num> rest = [];
+    List<num> restFrete = [];
+    List<num> restCusto = [];
+    final restD = stateDev.rest;
+    final restDevC = stateDev.restCusto;
+    final restP = statePay.freteSaida;
+    final restC = state.restCusto;
+    final restF = state.restFrete;
+    final res = state.rest;
+    if (res == null) {
+      for (var i = 0; i < restPay.length; i++) {
+        rest.add(0);
+        state.rest = rest;
+      }
+    } else {
+      rest = res;
+    }
+    if (restF == null) {
+      for (var i = 0; i < res!.length; i++) {
+        restFrete.add(0);
+        state.restFrete = restFrete;
+      }
+    } else {
+      restFrete = restF;
+    }
+    if (restC == null) {
+      for (var i = 0; i < res!.length; i++) {
+        restCusto.add(0);
+        state.restCusto = restCusto;
+      }
+    } else {
+      restCusto = restC;
+    }
+    if (restP == null) {
+      for (var i = 0; i < rest.length; i++) {
+        restPay.add(0);
+        statePay.rest = restPay;
+      }
+    } else {
+      restPay = statePay.rest!;
+    }
+    if (restD == null) {
+      for (var i = 0; i < rest.length; i++) {
+        restDev.add(0);
+        stateDev.rest = restDev;
+      }
+    } else {
+      restDev = stateDev.rest!;
+    }
+    if (restDevC == null) {
+      for (var i = 0; i < rest.length; i++) {
+        restDevCusto.add(0);
+        stateDev.restCusto = restDevCusto;
+      }
+    } else {
+      restDevCusto = stateDev.restCusto!;
+    }
 
-    for (var i = 0; i < rest!.length; i++) {
-      fatList.add(rest[i] - restDev![i]);
-      cmvList.add(restCusto![i] - restDevCusto![i]);
-      despCom.add(restFrete![i] - restPay![i] - (fatList[i] * 0.01));
+    for (var i = 0; i < rest.length; i++) {
+      fatList.add(rest[i] - restDev[i]);
+      cmvList.add(restCusto[i] - restDevCusto[i]);
+      despCom.add(restFrete[i] - restPay[i] - (fatList[i] * 0.01));
     }
 
     state = ViewStates(

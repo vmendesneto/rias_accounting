@@ -107,7 +107,7 @@ class _SyntheticAccountScreenState
                       itemBuilder: (context, index) {
                         return dataState.listAddress.isNotEmpty
                             ? Text(dataState.listAddress[index].toString())
-                            : Container();
+                            : const Text("Sem contas Cadastradas");
                       }))
             ],
           ),

@@ -1,6 +1,6 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
 import '../Settings/settings_screen.dart';
 import '../financial_report/ devolution/domain/models/devolution_model.dart';
 import '../financial_report/ devolution/providers/devolution_provider.dart';
@@ -15,6 +15,7 @@ import '../financial_report/receive/providers/receive_provider.dart';
 import '../financial_report/report_screen/reportScreen.dart';
 import '../financial_report/sales/domain/models/sales_model.dart';
 import '../financial_report/sales/provider/sale_provider.dart';
+import '../settings/synthetic_account/providers/synthetic_provider.dart';
 import '../widget/wigted_calender.dart';
 
 class HomePage extends ConsumerStatefulWidget {
@@ -32,6 +33,13 @@ class _HomePageState extends ConsumerState<HomePage> {
   Future<List<PayRoll>>? payrolls;
   Future<List<Inventory>>? inventorys;
   Future<List<Sale>>? sales;
+
+  @override
+  initState() {
+    super.initState();
+    final state = ref.read(sharedProvider.notifier);
+    state.inicitial();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -106,9 +114,13 @@ class _HomePageState extends ConsumerState<HomePage> {
         return Container();
       case 1:
         return const ReportScreen();
-      case 2 :
-        return MyCalender(title: "Estoque", select: 4,);
-      case 3: return const SettingsScreen();
+      case 2:
+        return MyCalender(
+          title: "Estoque",
+          select: 4,
+        );
+      case 3:
+        return const SettingsScreen();
     }
   }
 

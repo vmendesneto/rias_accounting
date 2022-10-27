@@ -38,7 +38,7 @@ class AnalyticController extends StateNotifier<AnalyticState> {
     return listAddress;
   }
 
-  readAllAnalytic(String name) async {
+  readByCodAnalytic(String name) async {
     late FirebaseFirestore db;
     db = DBFirestore.get();
     List<String> listAddress = [];
@@ -54,7 +54,23 @@ class AnalyticController extends StateNotifier<AnalyticState> {
     state = AnalyticState(listAddress: listAddress);
     return listAddress;
   }
+  readAllAnalytic(String name) async {
+    late FirebaseFirestore db;
+    db = DBFirestore.get();
+    List<String> listAddress = [];
 
+    final snapshot = await db.collection(name).get();
+    if (snapshot.docs.isNotEmpty) {
+      for (var i = 0; i < snapshot.docs.length; i++) {
+        var cod = snapshot.docs[i].get('cod');
+        listAddress.add(cod.toString());
+      }
+    } else {
+      print('COLEÇÃO VAZIA');
+    }
+    state = AnalyticState(listAddress: listAddress);
+    return listAddress;
+  }
 // Future<List<String>> remove(String name) async {
 //   final preferences = await SharedPreferences.getInstance();
 //   var listAddress = preferences.getStringList('name');

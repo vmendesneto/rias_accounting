@@ -22,9 +22,13 @@ class _AnalyticAccountScreenState extends ConsumerState<AnalyticAccountScreen> {
   Widget build(BuildContext context) {
     final _width = MediaQuery.of(context).size.width;
     final data = ref.watch(analyticProvider.notifier);
-    final dataState = ref.read(analyticProvider);
+
 
     final _sint = FirebaseFirestore.instance.collection('sinteticas').get();
+    final _sintO = FirebaseFirestore.instance.collection('sinteticasobrigatorias').get();
+    List sintetic = [];
+    sintetic.add(_sint);
+    sintetic.add(_sintO);
 
     return Scaffold(
         appBar: AppBar(
@@ -95,9 +99,7 @@ class _AnalyticAccountScreenState extends ConsumerState<AnalyticAccountScreen> {
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (!snapshot.hasData) {
-                      return const Text(
-                        'No Data...',
-                      );
+                      return const CircularProgressIndicator();
                     }
                     if (snapshot.hasError) {
                       return const Text(
@@ -111,7 +113,6 @@ class _AnalyticAccountScreenState extends ConsumerState<AnalyticAccountScreen> {
                               shrinkWrap: true,
                               itemCount: snapshot.data!.docs.length,
                               itemBuilder: (context, i) {
-                                // selecionado = snapshot.data!.docs[i].get('name');
                                 return snapshot.data!.docs.isNotEmpty
                                     ? GestureDetector(
                                         onTap: () {
@@ -139,6 +140,52 @@ class _AnalyticAccountScreenState extends ConsumerState<AnalyticAccountScreen> {
                               }));
                     }
                   }),
+              FutureBuilder(
+                  future: _sintO,
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    }
+                    if (snapshot.hasError) {
+                      return const Text(
+                        'Favor cadastrar conta sintética',
+                      );
+                    } else {
+                      return Container(
+                          padding: const EdgeInsets.all(10.0),
+                          height: 200,
+                          child: ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: snapshot.data!.docs.length,
+                              itemBuilder: (context, i) {
+                                return snapshot.data!.docs.isNotEmpty
+                                    ? GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      selecionado = snapshot.data!.docs[i]
+                                          .get('name');
+                                    });
+                                  },
+                                  child: Container(
+                                      alignment: Alignment.center,
+                                      height: 30,
+                                      width: 150,
+                                      child: Text(
+                                          snapshot.data!.docs[i]
+                                              .get('name')
+                                              .toString(),
+                                          style: const TextStyle(
+                                              fontSize: 24))),
+                                )
+                                    : Container(
+                                  child: const Text(
+                                      'Favor cadastrar conta sintética'),
+                                  alignment: Alignment.center,
+                                );
+                              }));
+                    }
+                  }),
               const SizedBox(
                 height: 30,
               ),
@@ -147,7 +194,7 @@ class _AnalyticAccountScreenState extends ConsumerState<AnalyticAccountScreen> {
                     await data.saveAllAnalytic(name.text, selecionado);
                     name.text = '';
                     FocusScope.of(context).requestFocus(FocusNode());
-                    await data.readAllAnalytic(selecionado);
+                    await data.readByCodAnalytic(selecionado);
                     setState(() {
                       selecionado = '';
                     });
